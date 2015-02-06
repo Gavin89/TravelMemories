@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="list_item_title">#000</color>
+    <color name="list_background">#F0F0F0</color>
+    <color name="list_background_pressed">#D3D3D3</color>
+    <color name="list_divider">#d3d3d3</color>
+    <color name="counter_text_bg">#626262</color>
+    <color name="counter_text_color">#c5c4c4</color>
+    <color name="custom_theme_color">#78AB46</color>
+
+    <!-- Volley custom list view -->
+    <color name="category">#666666</color>
+    <color name="city">#888888</color>
+    <color name="list_view_divider">#d9d9d9</color>
+    <color name="list_row_start_color">#ffffff</color>
+    <color name="list_row_end_color">#ffffff</color>
+    <color name="list_row_hover_start_color">#ebeef0</color>
+    <color name="list_row_hover_end_color">#ebeef0</color>
+
+    <!-- My Custom grid view -->
+    <color name="green">#78AB46</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <drawable name="item_background_selected">#ffffff</drawable>
+
+
+</resources>
