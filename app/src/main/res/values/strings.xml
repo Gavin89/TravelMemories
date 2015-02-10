@@ -22,5 +22,27 @@
         <item>@drawable/ic_gallery</item>
     </array>
 
+    <array name="image_ids">
+    <item>@drawable/download</item>
+    <item>@drawable/download</item>
+    <item>@drawable/download</item>
+    <item>@drawable/download</item>
+        <item>@drawable/download</item>
+        <item>@drawable/download</item>
+        <item>@drawable/download</item>
+        <item>@drawable/download</item>
+        <item>@drawable/download</item>
+        <item>@drawable/download</item>
+        <item>@drawable/download</item>
+        <item>@drawable/download</item>
+        <item>@drawable/download</item>
+        <item>@drawable/download</item>
+        <item>@drawable/download</item>
+        <item>@drawable/download</item>
+
+
+    </array>
+
+
 
 </resources>

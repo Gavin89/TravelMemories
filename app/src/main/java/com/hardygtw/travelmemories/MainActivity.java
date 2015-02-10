@@ -3,6 +3,8 @@ package com.hardygtw.travelmemories;
 import android.app.ActionBar;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -16,13 +18,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.hardygtw.travelmemories.adapters.GridViewAdapter;
 import com.hardygtw.travelmemories.adapters.NavDrawerListAdapter;
 import com.hardygtw.travelmemories.fragments.GalleryFragment;
 import com.hardygtw.travelmemories.fragments.NearbyPlacesFragment;
 import com.hardygtw.travelmemories.fragments.PlacesVisitedFragment;
 import com.hardygtw.travelmemories.fragments.TripFragment;
+import com.hardygtw.travelmemories.model.ImageItem;
 
 import java.util.ArrayList;
 
@@ -43,6 +49,7 @@ public class MainActivity extends FragmentActivity {
 
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
+
 
     public void changeIconColours() {
 
@@ -79,7 +86,7 @@ public class MainActivity extends FragmentActivity {
         // Photos
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
         // Communities, Will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "5"));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
 
         // Recycle the typed array
         navMenuIcons.recycle();

@@ -36,7 +36,7 @@ public class TripFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
         super.onCreateOptionsMenu(menu, menuInflater);
-        menuInflater.inflate(R.menu.menu_edit_trip, menu);
+        menuInflater.inflate(R.menu.menu_trips, menu);
     }
 
     @Override

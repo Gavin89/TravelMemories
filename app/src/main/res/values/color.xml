@@ -22,6 +22,7 @@
     <color name="green">#78AB46</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="blue">#ff2b73ff</color>
     <drawable name="item_background_selected">#ffffff</drawable>
 
 
