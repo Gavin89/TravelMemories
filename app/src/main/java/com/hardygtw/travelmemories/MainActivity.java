@@ -280,6 +280,7 @@ public class MainActivity extends FragmentActivity {
         Fragment[] currentFrags = new Fragment[1];
 
         currentFrags[0] = getSupportFragmentManager().findFragmentByTag("NEW_TRIP_FRAGMENT");
+        currentFrags[0] = getSupportFragmentManager().findFragmentByTag("NEW_PLACE_FRAGMENT");
 
         boolean finished = false;
 
