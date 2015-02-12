@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hardygtw.travelmemories.R;
@@ -35,6 +36,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         // - replace the contents of the view with that element
         holder.mTextView.setText(mDataset[position]);
 
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -49,10 +51,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     public static class TripViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
+        public ImageView mImageView;
 
         public TripViewHolder(View v) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.info_text);
+            mImageView = (ImageView) v.findViewById(R.id.trip_image);
         }
     }
 }

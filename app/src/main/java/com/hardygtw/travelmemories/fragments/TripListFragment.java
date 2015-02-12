@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.adapters.TripAdapter;
 
-public class TripFragment extends Fragment {
+public class TripListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -48,7 +48,7 @@ public class TripFragment extends Fragment {
     }
 
     private String[] getTestData() {
-        String[] strings = new String[5];
+        String[] strings = new String[60];
         for(int i =0; i < strings.length; i++) {
             strings[i] = "Trip " + i;
         }

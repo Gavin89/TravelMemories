@@ -3,8 +3,6 @@ package com.hardygtw.travelmemories;
 import android.app.ActionBar;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -18,17 +16,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.hardygtw.travelmemories.adapters.GridViewAdapter;
 import com.hardygtw.travelmemories.adapters.NavDrawerListAdapter;
 import com.hardygtw.travelmemories.fragments.GalleryFragment;
 import com.hardygtw.travelmemories.fragments.NearbyPlacesFragment;
 import com.hardygtw.travelmemories.fragments.PlacesVisitedFragment;
-import com.hardygtw.travelmemories.fragments.TripFragment;
-import com.hardygtw.travelmemories.model.ImageItem;
+import com.hardygtw.travelmemories.fragments.TripListFragment;
 
 import java.util.ArrayList;
 
@@ -184,7 +178,7 @@ public class MainActivity extends FragmentActivity {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new TripFragment();
+                fragment = new TripListFragment();
                 break;
             case 1:
                 fragment = new NearbyPlacesFragment();
@@ -277,10 +271,10 @@ public class MainActivity extends FragmentActivity {
          * e.g View Places Map is after View Trip so try to remove it first, then break out the loop
          * Break out of the loop when the current displayed element is found so it is removed from screen
          */
-        Fragment[] currentFrags = new Fragment[1];
+        Fragment[] currentFrags = new Fragment[2];
 
         currentFrags[0] = getSupportFragmentManager().findFragmentByTag("NEW_TRIP_FRAGMENT");
-        currentFrags[0] = getSupportFragmentManager().findFragmentByTag("NEW_PLACE_FRAGMENT");
+        currentFrags[1] = getSupportFragmentManager().findFragmentByTag("NEW_PLACE_FRAGMENT");
 
         boolean finished = false;
 
