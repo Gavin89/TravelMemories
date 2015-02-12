@@ -5,6 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,11 +16,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.hardygtw.travelmemories.R;
+import com.hardygtw.travelmemories.adapters.TripAdapter;
 
 public class TripFragment extends Fragment {
 
-    public TripFragment(){}
-
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,7 +30,29 @@ public class TripFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_trip, container, false);
 
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new GridLayoutManager(getActivity(), 2);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+        mAdapter = new TripAdapter(getTestData());
+        mRecyclerView.setAdapter(mAdapter);
+
         return rootView;
+    }
+
+    private String[] getTestData() {
+        String[] strings = new String[5];
+        for(int i =0; i < strings.length; i++) {
+            strings[i] = "Trip " + i;
+        }
+        return strings;
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
