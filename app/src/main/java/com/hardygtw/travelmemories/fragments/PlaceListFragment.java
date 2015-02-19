@@ -19,7 +19,7 @@ import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.adapters.PlacesAdapter;
 import com.hardygtw.travelmemories.adapters.TripAdapter;
 
-public class PlacesVisitedFragment extends Fragment {
+public class PlaceListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -64,7 +64,7 @@ public class PlacesVisitedFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
         super.onCreateOptionsMenu(menu, menuInflater);
-        menuInflater.inflate(R.menu.menu_trips, menu);
+        menuInflater.inflate(R.menu.menu_places, menu);
     }
 
     @Override

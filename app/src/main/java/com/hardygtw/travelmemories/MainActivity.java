@@ -1,9 +1,11 @@
 package com.hardygtw.travelmemories;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -21,7 +23,7 @@ import android.widget.ListView;
 import com.hardygtw.travelmemories.adapters.NavDrawerListAdapter;
 import com.hardygtw.travelmemories.fragments.GalleryFragment;
 import com.hardygtw.travelmemories.fragments.NearbyPlacesFragment;
-import com.hardygtw.travelmemories.fragments.PlacesVisitedFragment;
+import com.hardygtw.travelmemories.fragments.PlaceListFragment;
 import com.hardygtw.travelmemories.fragments.TripListFragment;
 
 import java.util.ArrayList;
@@ -43,6 +45,10 @@ public class MainActivity extends FragmentActivity {
 
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
+
+    // camera
+    protected static final int CAPTURE_IMAGE_CALLBACK = 0;
+    protected static final int SELECT_PICTURE_CALLBACK = 1;
 
 
     public void changeIconColours() {
@@ -184,7 +190,7 @@ public class MainActivity extends FragmentActivity {
                 fragment = new NearbyPlacesFragment();
                 break;
             case 2:
-                fragment = new PlacesVisitedFragment();
+                fragment = new PlaceListFragment();
                 break;
             case 3:
                 fragment = new GalleryFragment();
@@ -271,10 +277,11 @@ public class MainActivity extends FragmentActivity {
          * e.g View Places Map is after View Trip so try to remove it first, then break out the loop
          * Break out of the loop when the current displayed element is found so it is removed from screen
          */
-        Fragment[] currentFrags = new Fragment[2];
+        Fragment[] currentFrags = new Fragment[3];
 
         currentFrags[0] = getSupportFragmentManager().findFragmentByTag("NEW_TRIP_FRAGMENT");
         currentFrags[1] = getSupportFragmentManager().findFragmentByTag("NEW_PLACE_FRAGMENT");
+        currentFrags[2] = getSupportFragmentManager().findFragmentByTag("TRIP_LIST_FRAGMENT");
 
         boolean finished = false;
 
@@ -287,5 +294,16 @@ public class MainActivity extends FragmentActivity {
 
         transaction.commit();
 
+    }
+    public void newImageIntent(View view) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, CAPTURE_IMAGE_CALLBACK);
+    }
+
+    public void existingImageIntent(View view) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
+        intent.setType("image/*");
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, SELECT_PICTURE_CALLBACK);
     }
 }
