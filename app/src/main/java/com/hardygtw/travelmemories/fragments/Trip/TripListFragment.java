@@ -1,14 +1,11 @@
-package com.hardygtw.travelmemories.fragments;
+package com.hardygtw.travelmemories.fragments.Trip;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,10 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.hardygtw.travelmemories.R;
-import com.hardygtw.travelmemories.adapters.PlacesAdapter;
 import com.hardygtw.travelmemories.adapters.TripAdapter;
+import com.hardygtw.travelmemories.fragments.Trip.NewTripFragment;
 
-public class PlaceListFragment extends Fragment {
+public class TripListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -29,7 +26,7 @@ public class PlaceListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_places_visited, container, false);
+        View rootView = inflater.inflate(R.layout.recycler_view, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
@@ -42,16 +39,16 @@ public class PlaceListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new PlacesAdapter(getTestData());
+        mAdapter = new TripAdapter(getTestData());
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
     }
 
     private String[] getTestData() {
-        String[] strings = new String[20];
+        String[] strings = new String[60];
         for(int i =0; i < strings.length; i++) {
-            strings[i] = "Place " + i;
+            strings[i] = "Trip " + i;
         }
         return strings;
     }
@@ -64,7 +61,7 @@ public class PlaceListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
         super.onCreateOptionsMenu(menu, menuInflater);
-        menuInflater.inflate(R.menu.menu_places, menu);
+        menuInflater.inflate(R.menu.menu_trips, menu);
     }
 
     @Override
@@ -76,12 +73,12 @@ public class PlaceListFragment extends Fragment {
                 FragmentTransaction ft = fm.beginTransaction();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("NEW_PLACE", "Create New Place");
+                bundle.putString("NEW_TRIP", "Create New Trip");
 
-                fragment = new NewPlaceFragment();
+                fragment = new NewTripFragment();
                 fragment.setArguments(bundle);
 
-                ft.replace(R.id.frame_container, fragment,"NEW_PLACE_FRAGMENT");
+                ft.replace(R.id.frame_container, fragment,"NEW_TRIP_FRAGMENT");
                 ft.addToBackStack(null);
                 ft.commit();
                 break;

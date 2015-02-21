@@ -99,7 +99,7 @@
             android:layout_gravity="bottom"
             android:layout_margin="1dp"
             android:onClick="existingImageIntent">
-        </Button>
+    </Button>
     </LinearLayout>
 </android.support.v7.widget.CardView>
 

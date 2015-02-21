@@ -2,6 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
     <item android:icon="@drawable/ic_action_new" android:title="@string/action_settings"
-        android:id="@+id/add_icon" android:showAsAction="always" />
+        android:id="@+id/add_icon" android:showAsAction="ifRoom" />
 
 </menu>

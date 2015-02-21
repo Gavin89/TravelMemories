@@ -1,4 +1,4 @@
-package com.hardygtw.travelmemories.fragments;
+package com.hardygtw.travelmemories.fragments.Places;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,9 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.hardygtw.travelmemories.R;
+import com.hardygtw.travelmemories.adapters.PlacesAdapter;
 import com.hardygtw.travelmemories.adapters.TripAdapter;
+import com.hardygtw.travelmemories.fragments.Places.NewPlaceFragment;
 
-public class TripListFragment extends Fragment {
+public class PlaceListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -28,7 +30,7 @@ public class TripListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_trip, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_places_visited, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
@@ -41,16 +43,16 @@ public class TripListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new TripAdapter(getTestData());
+        mAdapter = new PlacesAdapter(getTestData());
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
     }
 
     private String[] getTestData() {
-        String[] strings = new String[60];
+        String[] strings = new String[20];
         for(int i =0; i < strings.length; i++) {
-            strings[i] = "Trip " + i;
+            strings[i] = "Place " + i;
         }
         return strings;
     }
@@ -63,7 +65,7 @@ public class TripListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
         super.onCreateOptionsMenu(menu, menuInflater);
-        menuInflater.inflate(R.menu.menu_trips, menu);
+        menuInflater.inflate(R.menu.menu_places, menu);
     }
 
     @Override
@@ -75,12 +77,12 @@ public class TripListFragment extends Fragment {
                 FragmentTransaction ft = fm.beginTransaction();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("NEW_TRIP", "Create New Trip");
+                bundle.putString("NEW_PLACE", "Create New Place");
 
-                fragment = new NewTripFragment();
+                fragment = new NewPlaceFragment();
                 fragment.setArguments(bundle);
 
-                ft.replace(R.id.frame_container, fragment,"NEW_TRIP_FRAGMENT");
+                ft.replace(R.id.frame_container, fragment,"NEW_PLACE_FRAGMENT");
                 ft.addToBackStack(null);
                 ft.commit();
                 break;

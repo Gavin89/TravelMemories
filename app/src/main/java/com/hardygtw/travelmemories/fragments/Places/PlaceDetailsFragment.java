@@ -1,4 +1,4 @@
-package com.hardygtw.travelmemories.fragments;
+package com.hardygtw.travelmemories.fragments.Places;
 
 /**
  * Created by gavin on 17/02/2015.

@@ -1,4 +1,4 @@
-package com.hardygtw.travelmemories.fragments;
+package com.hardygtw.travelmemories.fragments.Trip;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,13 +11,13 @@ import com.hardygtw.travelmemories.R;
 /**
  * Created by gavin on 12/02/2015.
  */
-public class PlaceNotesFragment extends Fragment{
+public class TripNotesFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.place_notes_view, container, false);
+        View v = inflater.inflate(R.layout.new_trip_notes, container, false);
 
         return v;
 

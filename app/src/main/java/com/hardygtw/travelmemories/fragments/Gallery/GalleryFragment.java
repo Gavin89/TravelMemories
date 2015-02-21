@@ -1,4 +1,4 @@
-package com.hardygtw.travelmemories.fragments;
+package com.hardygtw.travelmemories.fragments.Gallery;
 
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
