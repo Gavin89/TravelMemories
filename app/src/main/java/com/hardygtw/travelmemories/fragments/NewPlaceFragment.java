@@ -61,9 +61,9 @@ public class NewPlaceFragment extends Fragment {
 
     private View getTabIndicator(Context context, int title) {
         View view = LayoutInflater.from(context).inflate(R.layout.tab_layout, null);
-        ImageView iv = (ImageView) view.findViewById(R.id.imageView);
         TextView tv = (TextView) view.findViewById(R.id.textView);
         tv.setText(title);
+
         return view;
     }
 

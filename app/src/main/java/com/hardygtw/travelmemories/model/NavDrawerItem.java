@@ -1,4 +1,4 @@
-package com.hardygtw.travelmemories;
+package com.hardygtw.travelmemories.model;
 
 /**
  * Created by G on 05/02/2015.

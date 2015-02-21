@@ -25,6 +25,7 @@ import com.hardygtw.travelmemories.fragments.GalleryFragment;
 import com.hardygtw.travelmemories.fragments.NearbyPlacesFragment;
 import com.hardygtw.travelmemories.fragments.PlaceListFragment;
 import com.hardygtw.travelmemories.fragments.TripListFragment;
+import com.hardygtw.travelmemories.model.NavDrawerItem;
 
 import java.util.ArrayList;
 

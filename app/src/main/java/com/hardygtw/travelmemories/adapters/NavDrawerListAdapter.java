@@ -1,7 +1,7 @@
 package com.hardygtw.travelmemories.adapters;
 
 import com.hardygtw.travelmemories.R;
-import com.hardygtw.travelmemories.NavDrawerItem;
+import com.hardygtw.travelmemories.model.NavDrawerItem;
 
 import java.util.ArrayList;
 

@@ -27,13 +27,13 @@ public class PlaceDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View rootView = inflater.inflate(R.layout.place_details_view, container, false);
-        imgFavorite = (ImageView) rootView.findViewById(R.id.imageView);
-        imgFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                open();
-            }
-        });
+//        imgFavorite = (ImageView) rootView.findViewById(R.id.imageView);
+//        imgFavorite.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                open();
+//            }
+//        });
         return rootView;
     }
 
