@@ -1,4 +1,4 @@
-package com.hardygtw.travelmemories.fragments.Trip;
+package com.hardygtw.travelmemories.fragments.Places;
 
 
 import android.app.ActionBar;
@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTabHost;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,21 +14,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.support.v4.app.FragmentTabHost;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hardygtw.travelmemories.MainActivity;
 import com.hardygtw.travelmemories.R;
 
 
-public class NewTripFragment extends Fragment {
+public class EditPlaceFragment extends Fragment {
 
     private ActionBar actionBar;
     private FragmentTabHost mTabHost;
 
-    public NewTripFragment() {
+    public EditPlaceFragment() {
         // Required empty public constructor
     }
 
@@ -35,9 +33,9 @@ public class NewTripFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment let me watch the video
+        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.tab_list,container, false);
-        String title = getArguments().getString("NEW_TRIP");
+        String title = getArguments().getString("EDIT_PLACE");
         actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.removeAllTabs();
@@ -46,25 +44,25 @@ public class NewTripFragment extends Fragment {
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.tabFrameLayout);
 
         mTabHost.addTab(
-                mTabHost.newTabSpec("tab1").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_details)),
-                NewTripDetailsFragment.class, null);
+                mTabHost.newTabSpec("tab1").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_details)),
+                NewPlaceDetailsFragment.class, null);
         mTabHost.addTab(
-                mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_notes)),
-                ViewTripNotesFragment.class, null);
-
+                mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_notes)),
+                NewPlaceNotesFragment.class, null);
+        mTabHost.addTab(
+                mTabHost.newTabSpec("tab3").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_companions)),
+                NewPlaceCompanionsFragment.class, null);
         if (!title.equals("")) {
             actionBar.setTitle(title);
         }
-
         return rootView;
     }
 
-
     private View getTabIndicator(Context context, int title) {
         View view = LayoutInflater.from(context).inflate(R.layout.tab_layout, null);
-        ImageView iv = (ImageView) view.findViewById(R.id.imageView);
         TextView tv = (TextView) view.findViewById(R.id.textView);
         tv.setText(title);
+
         return view;
     }
 
@@ -79,7 +77,7 @@ public class NewTripFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
         super.onCreateOptionsMenu(menu, menuInflater);
-        menuInflater.inflate(R.menu.menu_add_trip, menu);
+        menuInflater.inflate(R.menu.menu_add_place, menu);
     }
 
     @Override
@@ -97,12 +95,12 @@ public class NewTripFragment extends Fragment {
                 FragmentTransaction ft = fm.beginTransaction();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("TRIP_LIST", "Trips");
+                bundle.putString("NEW_PLACE", "Places Visited");
 
-                fragment = new TripListFragment();
+                fragment = new PlaceListFragment();
                 fragment.setArguments(bundle);
 
-                ft.replace(R.id.frame_container, fragment,"TRIP_LIST_FRAGMENT");
+                ft.replace(R.id.frame_container, fragment,"NEW_PLACE_FRAGMENT");
                 ft.addToBackStack(null);
                 ft.commit();
                 break;

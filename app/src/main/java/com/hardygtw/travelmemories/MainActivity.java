@@ -278,11 +278,16 @@ public class MainActivity extends FragmentActivity {
          * e.g View Places Map is after View Trip so try to remove it first, then break out the loop
          * Break out of the loop when the current displayed element is found so it is removed from screen
          */
-        Fragment[] currentFrags = new Fragment[3];
+        Fragment[] currentFrags = new Fragment[8];
 
         currentFrags[0] = getSupportFragmentManager().findFragmentByTag("NEW_TRIP_FRAGMENT");
-        currentFrags[1] = getSupportFragmentManager().findFragmentByTag("NEW_PLACE_FRAGMENT");
-        currentFrags[2] = getSupportFragmentManager().findFragmentByTag("TRIP_LIST_FRAGMENT");
+        currentFrags[1] = getSupportFragmentManager().findFragmentByTag("VIEW_TRIP_FRAGMENT");
+        currentFrags[2] = getSupportFragmentManager().findFragmentByTag("EDIT_TRIP_FRAGMENT");
+        currentFrags[3] = getSupportFragmentManager().findFragmentByTag("TRIP_LIST_FRAGMENT");
+        currentFrags[4] = getSupportFragmentManager().findFragmentByTag("NEW_PLACE_FRAGMENT");
+        currentFrags[5] = getSupportFragmentManager().findFragmentByTag("VIEW_PLACE_FRAGMENT");
+        currentFrags[6] = getSupportFragmentManager().findFragmentByTag("EDIT_PLACE_FRAGMENT");
+        currentFrags[7] = getSupportFragmentManager().findFragmentByTag("PLACE_LIST_FRAGMENT");
 
         boolean finished = false;
 

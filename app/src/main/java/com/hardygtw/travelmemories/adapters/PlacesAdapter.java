@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hardygtw.travelmemories.R;
@@ -22,7 +23,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
                                                          int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.trip_list_item, parent, false);
+                .inflate(R.layout.places_list_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
         PlaceViewHolder vh = new PlaceViewHolder(v);
         return vh;
@@ -49,10 +50,12 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     public static class PlaceViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
+        public ImageView mImageView;
 
         public PlaceViewHolder(View v) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.info_text);
+            mImageView = (ImageView) v.findViewById(R.id.place_image);
         }
     }
 }

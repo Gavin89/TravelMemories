@@ -20,10 +20,6 @@ import android.widget.TextView;
 
 import com.hardygtw.travelmemories.MainActivity;
 import com.hardygtw.travelmemories.R;
-import com.hardygtw.travelmemories.fragments.Trip.TripDetailsFragment;
-import com.hardygtw.travelmemories.fragments.Trip.TripListFragment;
-import com.hardygtw.travelmemories.fragments.Trip.TripNotesFragment;
-import com.hardygtw.travelmemories.fragments.Trip.TripPlacesFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,13 +48,13 @@ public class ViewTripFragment extends Fragment {
 
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab1").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_details)),
-                TripDetailsFragment.class, null);
+                ViewTripDetailsFragment.class, null);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_notes)),
-                TripNotesFragment.class, null);
+                ViewTripNotesFragment.class, null);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab3").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.view_places)),
-                TripPlacesFragment.class, null);
+                ViewTripPlacesFragment.class, null);
 
         if (!title.equals("")) {
             actionBar.setTitle(title);

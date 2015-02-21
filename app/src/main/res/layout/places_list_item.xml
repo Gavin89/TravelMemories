@@ -21,7 +21,7 @@ android:background="@drawable/grid_color_selector">
         android:layout_height="match_parent" />
 
     <ImageView
-        android:id="@+id/trip_image"
+        android:id="@+id/place_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

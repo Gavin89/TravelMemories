@@ -45,13 +45,13 @@ public class NewPlaceFragment extends Fragment {
 
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab1").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_details)),
-                PlaceDetailsFragment.class, null);
+                NewPlaceDetailsFragment.class, null);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_notes)),
-                PlaceNotesFragment.class, null);
+                NewPlaceNotesFragment.class, null);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab3").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_companions)),
-                PlaceCompanionsFragment.class, null);
+                NewPlaceCompanionsFragment.class, null);
         if (!title.equals("")) {
             actionBar.setTitle(title);
         }
@@ -95,12 +95,12 @@ public class NewPlaceFragment extends Fragment {
                 FragmentTransaction ft = fm.beginTransaction();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("NEW_PLACE", "Places Visited");
+                bundle.putString("PLACE_LIST", "Places Visited");
 
                 fragment = new PlaceListFragment();
                 fragment.setArguments(bundle);
 
-                ft.replace(R.id.frame_container, fragment,"NEW_PLACE_FRAGMENT");
+                ft.replace(R.id.frame_container, fragment,"PLACE_LIST_FRAGMENT");
                 ft.addToBackStack(null);
                 ft.commit();
                 break;

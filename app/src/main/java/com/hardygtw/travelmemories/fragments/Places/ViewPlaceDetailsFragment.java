@@ -17,7 +17,7 @@ import android.widget.ImageView;
 
 import com.hardygtw.travelmemories.R;
 
-public class PlaceDetailsFragment extends Fragment {
+public class ViewPlaceDetailsFragment extends Fragment {
 
     ImageView imgFavorite;
 
@@ -26,7 +26,7 @@ public class PlaceDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View rootView = inflater.inflate(R.layout.place_details_view, container, false);
+        View rootView = inflater.inflate(R.layout.view_place_details, container, false);
 //        imgFavorite = (ImageView) rootView.findViewById(R.id.imageView);
 //        imgFavorite.setOnClickListener(new View.OnClickListener() {
 //            @Override
