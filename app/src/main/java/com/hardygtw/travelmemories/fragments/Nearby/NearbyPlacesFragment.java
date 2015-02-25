@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hardygtw.travelmemories.R;
+import com.hardygtw.travelmemories.fragments.Places.PlaceListFragment;
 
 public class NearbyPlacesFragment extends Fragment {
 
@@ -29,8 +30,6 @@ public class NearbyPlacesFragment extends Fragment {
         return rootView;
     }
 
-
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -39,18 +38,33 @@ public class NearbyPlacesFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
-
         super.onCreateOptionsMenu(menu, menuInflater);
-        //menuInflater.inflate(R.menu.trip_places_visited, menu);
-
-
+        menuInflater.inflate(R.menu.menu_nearby_places, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        return false;
+        switch (item.getItemId()) {
+            case R.id.map:
+                Fragment fragment = null;
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("MAP", "Map");
+
+                fragment = new MapFragment();
+                fragment.setArguments(bundle);
+
+                ft.replace(R.id.frame_container, fragment,"MAP_FRAGMENT");
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {

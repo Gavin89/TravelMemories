@@ -28,18 +28,40 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
 
-
-        <TextView
-            android:id="@+id/trip_name"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Eifel Tower"
-            android:textSize="25dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="57dp" />
-
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginTop="57dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Place Name:"
+                android:textSize="20dp"
+                android:layout_marginRight="50dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/place_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Eifel Tower"
+                android:textSize="25dp"
+            />
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="15sp"
+        android:layout_marginTop="30dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date Visited: "
+            android:textSize="20dp"
+            android:layout_marginRight="50dp"
+            android:textStyle="bold"/>
         <TextView
             android:id="@+id/startDate"
             style="?android:attr/spinnerStyle"
@@ -47,17 +69,45 @@
             android:layout_height="wrap_content"
             android:text="09/01/2015"
             android:textSize="20sp"
-            android:layout_marginTop="20dp" />
+            />
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="15sp"
+        android:layout_marginTop="30dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location: "
+            android:textSize="20dp"
+            android:layout_marginRight="50dp"
+            android:textStyle="bold"/>
         <TextView
             android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="-1.300 long , 1.3 lat"
-            android:textSize="20sp"
-            android:layout_marginTop="20dp" />
+            android:textSize="20sp"/>
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="15sp"
+        android:layout_marginTop="30dp">
 
-        <EditText
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notes: "
+            android:textSize="20dp"
+            android:layout_marginRight="50dp"
+            android:textStyle="bold"/>
+
+        <TextView
             android:inputType="textMultiLine"
             android:lines="8"
             android:minLines="6"
@@ -66,8 +116,9 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:scrollbars="vertical"
-            android:hint="Add notes here..."
-            android:layout_marginTop="57dp"/>
+            android:hint="Notes"/>
+        </LinearLayout>
+
 
     </LinearLayout>
 

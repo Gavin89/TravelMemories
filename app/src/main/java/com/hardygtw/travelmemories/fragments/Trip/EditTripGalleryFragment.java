@@ -11,12 +11,12 @@ import com.hardygtw.travelmemories.R;
 /**
  * Created by gavin on 21/02/2015.
  */
-public class EditTripNotesFragment extends Fragment{
+public class EditTripGalleryFragment extends Fragment{
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.edit_trip_details, container, false);
+        View v = inflater.inflate(R.layout.edit_trip_gallery, container, false);
 
         return v;
     }

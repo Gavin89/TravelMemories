@@ -39,9 +39,8 @@ public class TripListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new TripAdapter(getTestData());
+        mAdapter = new TripAdapter(getTestData(),getFragmentManager());
         mRecyclerView.setAdapter(mAdapter);
-
         return rootView;
     }
 

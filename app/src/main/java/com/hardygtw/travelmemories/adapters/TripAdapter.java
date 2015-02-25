@@ -1,5 +1,8 @@
 package com.hardygtw.travelmemories.adapters;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,13 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hardygtw.travelmemories.R;
+import com.hardygtw.travelmemories.fragments.Trip.ViewTripFragment;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
     private String[] mDataset;
+    private FragmentManager fm;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TripAdapter(String[] myDataset) {
+    public TripAdapter(String[] myDataset, FragmentManager fm) {
         mDataset = myDataset;
+        this.fm = fm;
     }
 
     // Create new views (invoked by the layout manager)
@@ -35,6 +41,24 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mTextView.setText(mDataset[position]);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                        Fragment fragment = null;
+
+
+                        FragmentTransaction ft = fm.beginTransaction();
+
+                        fragment = new ViewTripFragment();
+
+                        ft.replace(R.id.frame_container, fragment, "VIEW_TRIP_FRAGMENT");
+                        ft.addToBackStack(null);
+                        ft.commit();
+
+            }
+        });
 
 
     }

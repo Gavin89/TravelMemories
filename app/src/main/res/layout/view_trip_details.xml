@@ -58,7 +58,7 @@
             android:textSize="20sp"
             android:layout_marginTop="20dp" />
 
-        <EditText
+        <TextView
             android:inputType="textMultiLine"
             android:lines="8"
             android:minLines="6"

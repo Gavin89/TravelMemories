@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.hardygtw.travelmemories.MainActivity;
 import com.hardygtw.travelmemories.R;
+import com.hardygtw.travelmemories.fragments.Trip.EditTripFragment;
 
 
 public class ViewPlaceFragment extends Fragment {
@@ -35,7 +36,7 @@ public class ViewPlaceFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.tab_list,container, false);
-        String title = getArguments().getString("VIEW_PLACE");
+        String title = "Paris";
         actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.removeAllTabs();
@@ -45,13 +46,13 @@ public class ViewPlaceFragment extends Fragment {
 
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab1").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_details)),
-                NewPlaceDetailsFragment.class, null);
+                ViewPlaceDetailsFragment.class, null);
         mTabHost.addTab(
-                mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_notes)),
-                NewPlaceNotesFragment.class, null);
+                mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_gallery)),
+                ViewPlaceGalleryFragment.class, null);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab3").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_companions)),
-                NewPlaceCompanionsFragment.class, null);
+                ViewPlaceCompanionsFragment.class, null);
         if (!title.equals("")) {
             actionBar.setTitle(title);
         }
@@ -69,9 +70,6 @@ public class ViewPlaceFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu){
         MenuItem settings = menu.findItem(R.id.action_settings);
-        settings.setVisible(false);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setHomeButtonEnabled(false);
     }
 
     @Override
@@ -89,18 +87,18 @@ public class ViewPlaceFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_cancel:
-                Fragment fragment = null;
+            case R.id.edit_place:
+                android.support.v4.app.Fragment fragment = null;
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("VIEW_PLACE", "Place");
+                bundle.putString("EDIT_PLACE", "Edit Place");
 
-                fragment = new PlaceListFragment();
+                fragment = new EditPlaceFragment();
                 fragment.setArguments(bundle);
 
-                ft.replace(R.id.frame_container, fragment,"VIEW_PLACE_FRAGMENT");
+                ft.replace(R.id.frame_container, fragment,"EDIT_PLACE_FRAGMENT");
                 ft.addToBackStack(null);
                 ft.commit();
                 break;

@@ -45,13 +45,13 @@ public class EditPlaceFragment extends Fragment {
 
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab1").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_details)),
-                NewPlaceDetailsFragment.class, null);
+                EditPlaceDetailsFragment.class, null);
         mTabHost.addTab(
-                mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_notes)),
-                NewPlaceNotesFragment.class, null);
+                mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_gallery)),
+                EditPlaceGalleryFragment.class, null);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab3").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_companions)),
-                NewPlaceCompanionsFragment.class, null);
+                EditPlaceCompanionsFragment.class, null);
         if (!title.equals("")) {
             actionBar.setTitle(title);
         }

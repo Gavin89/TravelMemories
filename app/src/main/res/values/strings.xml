@@ -3,6 +3,10 @@
 
     <string name="app_name">Travel Memories</string>
     <string name="action_settings">Settings</string>
+    <string name="action_map">Map</string>
+    <string name="action_accept">Accept</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_new">Add</string>
 
     <!-- Trip Strings -->
     <string name="trip_details">Trip Details</string>
@@ -14,6 +18,7 @@
     <string name="place_companions">Companions</string>
     <string name="place_details">Place Details</string>
     <string name="place_notes">Place Notes</string>
+    <string name="place_gallery">Place Gallery</string>
 
     <!-- Navigation Strings -->
     <string-array name="nav_drawer_items">
@@ -21,6 +26,13 @@
         <item>Nearby Places</item>
         <item>Places Visited</item>
         <item>Travel Gallery</item>
+    </string-array>
+
+    <string-array name="companions">
+        <item>Dave</item>
+        <item>Paul</item>
+        <item>John</item>
+        <item>Frank</item>
     </string-array>
 
     <!-- Navigation Icons -->

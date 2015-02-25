@@ -12,14 +12,14 @@ import android.widget.TextView;
 
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.fragments.Places.ViewPlaceFragment;
-import com.hardygtw.travelmemories.fragments.Trip.ViewTripFragment;
+import com.hardygtw.travelmemories.fragments.Trip.ViewTripPlacesFragment;
 
-public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewHolder> {
+public class TripPlacesAdapter extends RecyclerView.Adapter<TripPlacesAdapter.PlaceViewHolder> {
     private String[] mDataset;
     private FragmentManager fm;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public PlacesAdapter(String[] myDataset, FragmentManager fm) {
+    public TripPlacesAdapter(String[] myDataset, FragmentManager fm) {
 
         mDataset = myDataset;
         this.fm = fm;
@@ -27,11 +27,11 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
 
     // Create new views (invoked by the layout manager)
     @Override
-    public PlacesAdapter.PlaceViewHolder onCreateViewHolder(ViewGroup parent,
+    public TripPlacesAdapter.PlaceViewHolder onCreateViewHolder(ViewGroup parent,
                                                          int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.places_list_item, parent, false);
+                .inflate(R.layout.view_trip_places, parent, false);
         // set the view's size, margins, paddings and layout parameters
         PlaceViewHolder vh = new PlaceViewHolder(v);
         return vh;
@@ -53,9 +53,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
 
                 FragmentTransaction ft = fm.beginTransaction();
 
-                fragment = new ViewPlaceFragment();
+                fragment = new ViewTripPlacesFragment();
 
-                ft.replace(R.id.frame_container, fragment, "VIEW_PLACES_FRAGMENT");
+                ft.replace(R.id.frame_container, fragment, "VIEW_TRIP_PLACES_FRAGMENT");
                 ft.addToBackStack(null);
                 ft.commit();
 

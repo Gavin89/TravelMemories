@@ -12,7 +12,7 @@
         android:id="@+id/info_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Edit Place Details"
+        android:text="Place Details"
         android:layout_gravity="center|top"
         android:gravity="center|top"
         android:typeface="monospace"
@@ -26,50 +26,102 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:weightSum="1">
+        android:layout_centerHorizontal="true">
 
-
-        <EditText
-        android:id="@+id/trip_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="France"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="57dp" />
-
-        <EditText
-            android:id="@+id/dateVisited"
-            style="?android:attr/spinnerStyle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="09/02/2105"
-            android:textSize="20sp"
-            android:layout_marginTop="20dp" />
-
-        <EditText
-            android:id="@+id/location"
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginTop="57dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Place Name:"
+                android:textSize="20dp"
+                android:layout_marginRight="50dp"
+                android:textStyle="bold"/>
+            <EditText
+                android:id="@+id/place_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Eifel Tower"
+                android:textSize="25dp"
+                />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Paris"
-            android:textSize="20sp"
-            android:layout_marginTop="20dp" />
-
-        <EditText
-            android:inputType="textMultiLine"
-            android:lines="8"
-            android:minLines="6"
-            android:gravity="top|left"
-            android:maxLines="10"
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginTop="30dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date Visited: "
+                android:textSize="20dp"
+                android:layout_marginRight="50dp"
+                android:textStyle="bold"/>
+            <EditText
+                android:id="@+id/startDate"
+                style="?android:attr/spinnerStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="09/01/2015"
+                android:textSize="20sp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:scrollbars="vertical"
-            android:hint="Add notes here..."
-            android:layout_marginTop="57dp"/>
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location: "
+                android:textSize="20dp"
+                android:layout_marginRight="50dp"
+                android:textStyle="bold"/>
+            <EditText
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="-1.300 long , 1.3 lat"
+                android:textSize="20sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notes: "
+                android:textSize="20dp"
+                android:layout_marginRight="50dp"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:minLines="6"
+                android:gravity="top|left"
+                android:maxLines="10"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:scrollbars="vertical"
+                android:hint="Notes"/>
+        </LinearLayout>
 
 
     </LinearLayout>
+
 </android.support.v7.widget.CardView>
+
 

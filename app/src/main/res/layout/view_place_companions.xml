@@ -1,31 +1,30 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clickable="true"
-    android:background="@drawable/grid_color_selector">
+    android:layout_height="match_parent">
 
-    <!-- A CardView that contains a TextView -->
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        card_view:cardPreventCornerOverlap="true"
-        card_view:cardElevation="2dp"
-        card_view:cardCornerRadius="4dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="15sp"
+        android:layout_marginTop="57dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Companions: "
+            android:textSize="25dp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/companion_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:text="Dave"
+            android:textSize="25dp"
+            android:layout_marginLeft="30dp"
+            />
+    </LinearLayout>
 
-        <ImageView
-            android:id="@+id/companion_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </android.support.v7.widget.CardView>
-
-</FrameLayout>
-
+</RelativeLayout>

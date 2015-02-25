@@ -49,8 +49,8 @@ public class EditTripFragment extends Fragment {
                 mTabHost.newTabSpec("tab1").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_details)),
                 EditTripDetailsFragment.class, null);
         mTabHost.addTab(
-                mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_notes)),
-                EditTripNotesFragment.class, null);
+                mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_gallery)),
+                EditTripGalleryFragment.class, null);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab3").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.view_places)),
                 EditTripPlacesFragment.class, null);

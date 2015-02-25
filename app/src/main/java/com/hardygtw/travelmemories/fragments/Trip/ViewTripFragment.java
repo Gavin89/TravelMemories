@@ -38,7 +38,7 @@ public class ViewTripFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment let me watch the video
         View rootView = inflater.inflate(R.layout.tab_list,container, false);
-        String title = getArguments().getString("NEW_TRIP");
+        String title = "Trip x";
         actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.removeAllTabs();
@@ -75,9 +75,9 @@ public class ViewTripFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu){
         MenuItem settings = menu.findItem(R.id.action_settings);
-        settings.setVisible(false);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setHomeButtonEnabled(false);
+        settings.setVisible(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
     }
 
     @Override
@@ -95,18 +95,18 @@ public class ViewTripFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_cancel:
+            case R.id.edit_trip:
                 android.support.v4.app.Fragment fragment = null;
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("TRIP_LIST", "Trips");
+                bundle.putString("EDIT_TRIP", "Edit Trip");
 
-                fragment = new TripListFragment();
+                fragment = new EditTripFragment();
                 fragment.setArguments(bundle);
 
-                ft.replace(R.id.frame_container, fragment,"TRIP_LIST_FRAGMENT");
+                ft.replace(R.id.frame_container, fragment,"EDIT_TRIP_FRAGMENT");
                 ft.addToBackStack(null);
                 ft.commit();
                 break;

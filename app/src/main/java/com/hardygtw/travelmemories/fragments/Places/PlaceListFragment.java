@@ -43,7 +43,7 @@ public class PlaceListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new PlacesAdapter(getTestData());
+        mAdapter = new PlacesAdapter(getTestData(),getFragmentManager());
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
