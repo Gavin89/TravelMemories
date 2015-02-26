@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <jenkinei.mytraveljournal.view.TouchImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter" />
+
+    <ImageButton
+        android:id="@+id/closeImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_action_cancel" />
+
+    <ImageButton
+        android:id="@+id/editPhotoImageButton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/closeImageButton"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_action_edit" />
+
+</RelativeLayout>

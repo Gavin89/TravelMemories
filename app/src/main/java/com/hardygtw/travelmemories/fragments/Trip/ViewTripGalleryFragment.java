@@ -1,4 +1,4 @@
-package com.hardygtw.travelmemories.fragments.Places;
+package com.hardygtw.travelmemories.fragments.Trip;
 
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -21,7 +21,8 @@ import java.util.ArrayList;
 /**
  * Created by gavin on 12/02/2015.
  */
-public class ViewPlaceGalleryFragment extends Fragment{
+public class ViewTripGalleryFragment extends Fragment{
+
 
     private GridView gridView;
     private GridViewAdapter customGridAdapter;
@@ -30,8 +31,8 @@ public class ViewPlaceGalleryFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.view_place_gallery, container, false);
-        gridView = (GridView)rootView.findViewById(R.id.gridView);
+        View rootView = inflater.inflate(R.layout.view_trip_gallery, container, false);
+        gridView = (GridView) rootView.findViewById(R.id.gridView);
         customGridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_view_item, getData());
         gridView.setAdapter(customGridAdapter);
 
@@ -44,9 +45,7 @@ public class ViewPlaceGalleryFragment extends Fragment{
 
         });
         return rootView;
-
     }
-
     private ArrayList<ImageItem> getData() {
         final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
         // retrieve String drawable array
@@ -60,5 +59,4 @@ public class ViewPlaceGalleryFragment extends Fragment{
         return imageItems;
 
     }
-
 }

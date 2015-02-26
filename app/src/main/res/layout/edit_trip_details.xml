@@ -12,7 +12,7 @@
         android:id="@+id/info_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Place Details"
+        android:text="Trip Details"
         android:layout_gravity="center|top"
         android:gravity="center|top"
         android:typeface="monospace"
@@ -37,12 +37,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Place Name:"
+                android:text="Trip Name:"
                 android:textSize="20dp"
                 android:layout_marginRight="50dp"
                 android:textStyle="bold"/>
             <EditText
-                android:id="@+id/place_name"
+                android:id="@+id/trip_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Eifel Tower"

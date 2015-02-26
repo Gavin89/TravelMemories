@@ -1,5 +1,6 @@
 package com.hardygtw.travelmemories.fragments.Nearby;
 
+import com.hardygtw.travelmemories.GPSTracker;
 import com.hardygtw.travelmemories.MainActivity;
 import com.hardygtw.travelmemories.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,13 +21,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback{
 
-    public static final LatLng COLOSSEUM = new LatLng(41.8902,12.4923);
+    public static LatLng LOCATION = null;
     private SupportMapFragment fragment;
     private TextView textView;
+
+    private Button btnShowLocation;
+    private GPSTracker gps;
 
     public MapFragment() {
         // Required empty public constructor
@@ -44,6 +49,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.removeAllTabs();
 
+        gps = new GPSTracker(getActivity());
+
+         if(gps.canGetLocation()) {
+                    double latitude = gps.getLatitude();
+                    double longitude = gps.getLongitude();
+                    LOCATION = new LatLng(latitude, longitude);
+
+
+                } else {
+                    gps.showSettingsAlert();
+                }
 
         textView = (TextView) rootView.findViewById(R.id.mapLoadingText);
 
@@ -102,7 +118,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public void onMapReady(GoogleMap map) {
 
-        map.addMarker(new MarkerOptions().position(MapFragment.COLOSSEUM));
+        map.addMarker(new MarkerOptions().position(MapFragment.LOCATION));
 
         // Move the camera instantly to COLOSSEUM with a zoom of 15.
         //map.moveCamera(CameraUpdateFactory.newLatLngZoom(COLOSSEUM, 10));
@@ -115,7 +131,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
         // Construct a CameraPosition focusing on Mountain View and animate the camera to that position.
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(MapFragment.COLOSSEUM)      // Sets the center of the map to COLOSSEUM
+                .target(MapFragment.LOCATION)      // Sets the center of the map to COLOSSEUM
                 .zoom(10)                   // Sets the zoom
                         //.bearing(90)                // Sets the orientation of the camera to east
                         //.tilt(30)                   // Sets the tilt of the camera to 30 degrees

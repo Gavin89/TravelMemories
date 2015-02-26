@@ -44,7 +44,7 @@ public class GalleryFragment extends Fragment {
 
         //gridView = (GridView) findViewById(R.id.gridView);
         gridView = (GridView)rootView.findViewById(R.id.gridView);
-        customGridAdapter = new GridViewAdapter(getActivity(), R.layout.row_grid, getData());
+        customGridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_view_item, getData());
         gridView.setAdapter(customGridAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

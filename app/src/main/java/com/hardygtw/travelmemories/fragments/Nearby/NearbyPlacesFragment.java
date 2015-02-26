@@ -12,14 +12,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.hardygtw.travelmemories.GPSTracker;
+import com.hardygtw.travelmemories.MainActivity;
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.fragments.Places.PlaceListFragment;
 
 public class NearbyPlacesFragment extends Fragment {
 
     public NearbyPlacesFragment(){}
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +43,7 @@ public class NearbyPlacesFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
         super.onCreateOptionsMenu(menu, menuInflater);
         menuInflater.inflate(R.menu.menu_nearby_places, menu);
+
     }
 
     @Override

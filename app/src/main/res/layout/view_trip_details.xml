@@ -28,47 +28,96 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
 
-
-        <TextView
-            android:id="@+id/trip_name"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Paris"
-            android:textSize="25dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="57dp" />
-
-        <TextView
-            android:id="@+id/startDate"
-            style="?android:attr/spinnerStyle"
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginTop="57dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trip Name:"
+                android:textSize="20dp"
+                android:layout_marginRight="50dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/trip_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Paris"
+                android:textSize="25dp"
+                />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="09/01/2015"
-            android:textSize="20sp"
-            android:layout_marginTop="20dp" />
-
-        <TextView
-            android:id="@+id/endDate"
-            style="?android:attr/spinnerStyle"
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginTop="30dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Date: "
+                android:textSize="20dp"
+                android:layout_marginRight="50dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/startDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="09/01/2015"
+                android:textSize="20sp"
+                />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="12/01/2015"
-            android:textSize="20sp"
-            android:layout_marginTop="20dp" />
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginTop="30dp">
 
-        <TextView
-            android:inputType="textMultiLine"
-            android:lines="8"
-            android:minLines="6"
-            android:gravity="top|left"
-            android:maxLines="10"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End Date: "
+                android:textSize="20dp"
+                android:layout_marginRight="50dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/endDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="09/01/2015"
+                android:textSize="20sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:scrollbars="vertical"
-            android:hint="Add notes here..."
-            android:layout_marginTop="57dp"/>
+            android:orientation="horizontal"
+            android:paddingTop="15sp"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notes: "
+                android:textSize="20dp"
+                android:layout_marginRight="50dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:inputType="textMultiLine"
+                android:lines="8"
+                android:minLines="6"
+                android:gravity="top|left"
+                android:maxLines="10"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:scrollbars="vertical"
+                android:hint="Notes"/>
+        </LinearLayout>
+
 
     </LinearLayout>
 

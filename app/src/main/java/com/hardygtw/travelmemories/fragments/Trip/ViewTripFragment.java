@@ -3,6 +3,7 @@ package com.hardygtw.travelmemories.fragments.Trip;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -50,8 +51,8 @@ public class ViewTripFragment extends Fragment {
                 mTabHost.newTabSpec("tab1").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_details)),
                 ViewTripDetailsFragment.class, null);
         mTabHost.addTab(
-                mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_notes)),
-                ViewTripNotesFragment.class, null);
+                mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_gallery)),
+                ViewTripGalleryFragment.class, null);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab3").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.view_places)),
                 ViewTripPlacesFragment.class, null);
@@ -110,6 +111,12 @@ public class ViewTripFragment extends Fragment {
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
+            case R.id.share_place:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
         }
         return super.onOptionsItemSelected(item);
     }

@@ -50,7 +50,7 @@ public class NewTripFragment extends Fragment {
                 NewTripDetailsFragment.class, null);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_notes)),
-                ViewTripNotesFragment.class, null);
+                ViewTripGalleryFragment.class, null);
 
         if (!title.equals("")) {
             actionBar.setTitle(title);

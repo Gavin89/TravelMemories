@@ -18,7 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.hardygtw.travelmemories.adapters.NavDrawerListAdapter;
 import com.hardygtw.travelmemories.fragments.Gallery.GalleryFragment;
@@ -50,7 +52,6 @@ public class MainActivity extends FragmentActivity {
     // camera
     protected static final int CAPTURE_IMAGE_CALLBACK = 0;
     protected static final int SELECT_PICTURE_CALLBACK = 1;
-
 
     public void changeIconColours() {
 

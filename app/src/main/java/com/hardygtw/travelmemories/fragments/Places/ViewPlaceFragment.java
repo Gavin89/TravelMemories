@@ -3,6 +3,7 @@ package com.hardygtw.travelmemories.fragments.Places;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -102,6 +103,12 @@ public class ViewPlaceFragment extends Fragment {
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
+            case R.id.share_place:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
         }
         return super.onOptionsItemSelected(item);
     }
