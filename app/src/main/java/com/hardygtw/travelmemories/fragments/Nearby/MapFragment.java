@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback{
 
@@ -51,15 +52,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
         gps = new GPSTracker(getActivity());
 
+
          if(gps.canGetLocation()) {
                     double latitude = gps.getLatitude();
                     double longitude = gps.getLongitude();
                     LOCATION = new LatLng(latitude, longitude);
-
-
-                } else {
+         } else {
                     gps.showSettingsAlert();
-                }
+         }
 
         textView = (TextView) rootView.findViewById(R.id.mapLoadingText);
 
@@ -67,6 +67,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     }
 
     public void onViewCreated (View view, Bundle savedInstanceState) {
+        if(LOCATION == null){
+            Toast.makeText(getActivity(), "Unable to retrieve GPS location", Toast.LENGTH_LONG).show();
+
+            //Default location set to London
+            LOCATION = new LatLng(51.5008, 0.1247);
+        }
         new LongOperation(getActivity(), this).execute("");
     }
 

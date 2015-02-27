@@ -13,6 +13,7 @@ package com.hardygtw.travelmemories.fragments.Trip;
         import android.support.v4.app.Fragment;
         import com.hardygtw.travelmemories.R;
         import com.hardygtw.travelmemories.adapters.PlacesAdapter;
+        import com.hardygtw.travelmemories.adapters.TripPlacesAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,16 +47,15 @@ public class ViewTripPlacesFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new PlacesAdapter(getTestData(),getFragmentManager());
+        mAdapter = new TripPlacesAdapter(getTestData(),this);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
 
-
     }
 
     private String[] getTestData() {
-        String[] strings = new String[20];
+        String[] strings = new String[10];
         for(int i =0; i < strings.length; i++) {
             strings[i] = "Place " + i;
         }
