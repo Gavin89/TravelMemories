@@ -3,22 +3,15 @@ package com.hardygtw.travelmemories.fragments.Nearby;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
-import com.hardygtw.travelmemories.GPSTracker;
-import com.hardygtw.travelmemories.MainActivity;
 import com.hardygtw.travelmemories.R;
-import com.hardygtw.travelmemories.fragments.Places.PlaceListFragment;
 
 public class NearbyPlacesFragment extends Fragment {
 

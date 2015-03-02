@@ -1,7 +1,7 @@
 package com.hardygtw.travelmemories.fragments.Nearby;
 
 import com.hardygtw.travelmemories.GPSTracker;
-import com.hardygtw.travelmemories.MainActivity;
+import com.hardygtw.travelmemories.activity.MainActivity;
 import com.hardygtw.travelmemories.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,8 +29,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     public static LatLng LOCATION = null;
     private SupportMapFragment fragment;
     private TextView textView;
-
-    private Button btnShowLocation;
     private GPSTracker gps;
 
     public MapFragment() {
@@ -49,11 +46,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         actionBar.setTitle("View Map");
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.removeAllTabs();
-
         gps = new GPSTracker(getActivity());
 
-
-         if(gps.canGetLocation()) {
+        if(gps.canGetLocation()) {
                     double latitude = gps.getLatitude();
                     double longitude = gps.getLongitude();
                     LOCATION = new LatLng(latitude, longitude);
@@ -67,6 +62,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     }
 
     public void onViewCreated (View view, Bundle savedInstanceState) {
+
         if(LOCATION == null){
             Toast.makeText(getActivity(), "Unable to retrieve GPS location", Toast.LENGTH_LONG).show();
 
@@ -81,15 +77,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         //ProgressDialog progressDialog;
         MapFragment mapFragment;
 
+
         public LongOperation(Context context, MapFragment mapFragment) {
             //progressDialog = new ProgressDialog(context);
             this.mapFragment = mapFragment;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            //progressDialog.setMessage("Map Loading...");
-            //progressDialog.show();
         }
 
         @Override
@@ -101,6 +92,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 if (fragment == null) {
                     fragment = SupportMapFragment.newInstance(new GoogleMapOptions().zOrderOnTop(true));
                     fm.beginTransaction().replace(R.id.map, fragment).commit();
+                    fragment.getMap().setMyLocationEnabled(true);
+                    fragment.getMap().setIndoorEnabled(true);
                 }
 
                 return true;
@@ -125,15 +118,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     public void onMapReady(GoogleMap map) {
 
         map.addMarker(new MarkerOptions().position(MapFragment.LOCATION));
-
-        // Move the camera instantly to COLOSSEUM with a zoom of 15.
-        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(COLOSSEUM, 10));
-
-        // Zoom in, animating the camera.
-        //map.animateCamera(CameraUpdateFactory.zoomIn());
-
-        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
-        //map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
 
         // Construct a CameraPosition focusing on Mountain View and animate the camera to that position.
         CameraPosition cameraPosition = new CameraPosition.Builder()

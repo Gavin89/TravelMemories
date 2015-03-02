@@ -29,7 +29,6 @@ public class ViewTripPlacesFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,11 +46,10 @@ public class ViewTripPlacesFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new TripPlacesAdapter(getTestData(),this);
+        mAdapter = new TripPlacesAdapter(getTestData(), getFragmentManager());
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
-
     }
 
     private String[] getTestData() {

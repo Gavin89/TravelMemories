@@ -18,7 +18,7 @@ import android.support.v4.app.FragmentTabHost;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hardygtw.travelmemories.MainActivity;
+import com.hardygtw.travelmemories.activity.MainActivity;
 import com.hardygtw.travelmemories.R;
 
 
@@ -50,7 +50,7 @@ public class NewTripFragment extends Fragment {
                 NewTripDetailsFragment.class, null);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_notes)),
-                ViewTripGalleryFragment.class, null);
+                NewTripNotesFragment.class, null);
 
         if (!title.equals("")) {
             actionBar.setTitle(title);

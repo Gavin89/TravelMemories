@@ -1,4 +1,4 @@
-package com.hardygtw.travelmemories;
+package com.hardygtw.travelmemories.activity;
 
 import android.app.Activity;
 import android.os.Bundle;

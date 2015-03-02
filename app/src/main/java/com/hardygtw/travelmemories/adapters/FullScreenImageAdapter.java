@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.hardygtw.travelmemories.R;
-import com.hardygtw.travelmemories.MainActivity;
+import com.hardygtw.travelmemories.activity.MainActivity;
 import com.hardygtw.travelmemories.views.TouchImageView;
 
 

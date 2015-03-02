@@ -18,7 +18,7 @@ import android.support.v4.app.FragmentTabHost;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hardygtw.travelmemories.MainActivity;
+import com.hardygtw.travelmemories.activity.MainActivity;
 import com.hardygtw.travelmemories.R;
 
 

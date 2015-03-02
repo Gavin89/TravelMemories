@@ -17,9 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.hardygtw.travelmemories.MainActivity;
+import com.hardygtw.travelmemories.activity.MainActivity;
 import com.hardygtw.travelmemories.R;
-import com.hardygtw.travelmemories.fragments.Trip.EditTripFragment;
 
 
 public class ViewPlaceFragment extends Fragment {

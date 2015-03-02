@@ -1,4 +1,4 @@
-package com.hardygtw.travelmemories;
+package com.hardygtw.travelmemories.activity;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.adapters.NavDrawerListAdapter;
 import com.hardygtw.travelmemories.fragments.Gallery.GalleryFragment;
 import com.hardygtw.travelmemories.fragments.Nearby.NearbyPlacesFragment;
