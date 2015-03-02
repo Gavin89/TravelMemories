@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp" >
+
+    <TextView
+        android:id="@+id/search_place_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_marginTop="1dip"
+        android:gravity="center_vertical"
+        android:text="Yolo" />
+
+    <TextView
+        android:id="@+id/search_place_categories"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_place_name"
+        android:layout_marginTop="1dip"
+        android:gravity="center_vertical"
+        android:textStyle="italic"
+        android:text="Landmarks, Sights, History"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/search_place_city_country"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_place_categories"
+        android:layout_marginTop="1dip"
+        android:gravity="center_vertical"
+        android:text="Tipton, UK"
+        android:textSize="10sp" />
+
+</RelativeLayout>

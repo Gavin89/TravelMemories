@@ -23,6 +23,16 @@ public class GooglePlace implements Serializable {
     //@Key
     private String formatted_phone_number;
 
+    private String categories;
+
+    public String getCategories() {
+        return categories;
+    }
+
+    public void setCategories(String categories) {
+        this.categories = categories;
+    }
+
     //@Key
     private List<String> types;
 

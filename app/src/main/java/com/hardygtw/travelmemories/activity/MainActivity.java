@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.adapters.NavDrawerListAdapter;
 import com.hardygtw.travelmemories.fragments.Gallery.GalleryFragment;
+import com.hardygtw.travelmemories.fragments.Nearby.GooglePlacesFragment;
 import com.hardygtw.travelmemories.fragments.Nearby.NearbyPlacesFragment;
 import com.hardygtw.travelmemories.fragments.Places.PlaceListFragment;
 import com.hardygtw.travelmemories.fragments.Trip.TripListFragment;
@@ -104,6 +105,8 @@ public class MainActivity extends FragmentActivity {
         // enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayShowCustomEnabled(false);
+
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, //nav menu toggle icon
@@ -190,7 +193,7 @@ public class MainActivity extends FragmentActivity {
                 fragment = new TripListFragment();
                 break;
             case 1:
-                fragment = new NearbyPlacesFragment();
+                fragment = new GooglePlacesFragment();
                 break;
             case 2:
                 fragment = new PlaceListFragment();
@@ -262,6 +265,7 @@ public class MainActivity extends FragmentActivity {
         } else {
             getActionBar().setDisplayHomeAsUpEnabled(true);
             getActionBar().setHomeButtonEnabled(true);
+            getActionBar().setDisplayShowCustomEnabled(false);
             mDrawerToggle.setDrawerIndicatorEnabled(true);
             getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
             getActionBar().removeAllTabs();

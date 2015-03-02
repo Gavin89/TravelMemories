@@ -1,4 +1,4 @@
-package com.example.travelotrip;
+package com.hardygtw.travelmemories.fragments.Nearby;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -35,7 +35,24 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+import com.hardygtw.travelmemories.GPSTracker;
 import com.hardygtw.travelmemories.R;
+import com.hardygtw.travelmemories.activity.MainActivity;
+import com.hardygtw.travelmemories.adapters.CustomListSearchPlacesAdapter;
+import com.hardygtw.travelmemories.model.GooglePlace;
+import com.hardygtw.travelmemories.views.AutoCompleteView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -59,26 +76,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SearchPlacesFragment extends LocationFinderFragment implements AdapterView.OnItemClickListener {
+public class GooglePlacesFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     // Log tag
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String GOOGLE_KEY = "AIzaSyBz-YHPJiXQV68X2ZR-PaXTrKVhVXfxoyQ";
+    private static final String GOOGLE_KEY = "AIzaSyBJbwhMjJjpOi60KSPXAIfTjJiBH591g2Q";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
 
-    ArrayList venuesList;
-
     private ListView listView;
     private CustomListSearchPlacesAdapter adapter;
-    private ArrayList<SearchPlaceImageItem> placeList;
-    private ClearableAutoCompleteTextView autoCompView;
+    private ArrayList<GooglePlace> placeList;
+    private AutoCompleteView autoCompView;
     private ImageView searchIcon;
-
-    public SearchPlacesFragment() {
-
-    }
+    private GPSTracker gps;
+    private double latitude;
+    private double longitude;
 
     private ArrayList<String> autocomplete(String input) {
         ArrayList<String> resultList = null;
@@ -182,6 +196,7 @@ public class SearchPlacesFragment extends LocationFinderFragment implements Adap
 
         View rootView = inflater.inflate(R.layout.fragment_search_places, container, false);
 
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -206,13 +221,13 @@ public class SearchPlacesFragment extends LocationFinderFragment implements Adap
             }
         });
 
-        autoCompView = (ClearableAutoCompleteTextView) v.findViewById(R.id.googlePlacesAutoCompleteTextView);
+        autoCompView = (AutoCompleteView) v.findViewById(R.id.placesAutoCompleteTextView);
         autoCompView.setAdapter(new PlacesAutoCompleteAdapter(getActivity(), android.R.layout.simple_list_item_1));
         autoCompView.setOnItemClickListener(this);
         autoCompView.setVisibility(View.INVISIBLE);
         autoCompView.setThreshold(1);
 
-        autoCompView.setOnClearListener(new ClearableAutoCompleteTextView.OnClearListener() {
+        autoCompView.setOnClearListener(new AutoCompleteView.OnClearListener() {
 
             @Override
             public void onClear() {
@@ -225,7 +240,7 @@ public class SearchPlacesFragment extends LocationFinderFragment implements Adap
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     GooglePlacesSearch googlePlacesSearch;
-                    googlePlacesSearch = new GooglePlacesSearch(autoCompView.getText().toString(), "");
+                    googlePlacesSearch = new GooglePlacesSearch(autoCompView.getText().toString());
                     googlePlacesSearch.execute();
                     return true;
                 }
@@ -235,7 +250,7 @@ public class SearchPlacesFragment extends LocationFinderFragment implements Adap
 
         listView = (ListView) rootView.findViewById(R.id.list_search_places);
         //mSearchTerm = (EditText) rootView.findViewById(R.id.search_term);
-        placeList = new ArrayList<SearchPlaceImageItem>();
+        placeList = new ArrayList<GooglePlace>();
 
         // start the AsyncTask that makes the call for the venus search.
         new GooglePlacesNearbySearch().execute();
@@ -283,36 +298,41 @@ public class SearchPlacesFragment extends LocationFinderFragment implements Adap
 
     private void selectItem(int position) {
 
-        Fragment fragment = null;
+        /**Fragment fragment = null;
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
-        fragment = new PlaceFragment();
-        ft.replace(R.id.frame_container, fragment, "VIEW_PLACE_FRAGMENT");
+        fragment = new VIEW PLACE();
+        ft.replace(R.id.frame_container, fragment, "VIEW_PLACE");
 
         ft.addToBackStack(null);
-        ft.commit();
+        ft.commit();**/
     }
 
     private class GooglePlacesNearbySearch extends AsyncTask<View, Void, String> {
 
         String temp;
         ProgressDialog dialog;
+        boolean mFailLocation;
 
         @Override
         protected void onPreExecute() {
-            dialog= ProgressDialog.show(getActivity(), "Loading", "Loading Venues near you...");
+            dialog= ProgressDialog.show(getActivity(), "Loading", "Loading nearby places...");
+            GPSTracker gps = new GPSTracker(getActivity());
+
+            if(gps.canGetLocation()) {
+                mFailLocation = false;
+                latitude = gps.getLatitude();
+                longitude = gps.getLongitude();
+
+            } else {
+                mFailLocation = true;
+                gps.showSettingsAlert();
+            }
         }
 
         @Override
-        protected String doInBackground(View... urls) {
-            // make Call to the url
-            while (((Double)latitude) == 0.0d) {
-                if (mFailLocation == true) {
-                    break;
-                }
-            }
-
+        protected String doInBackground(View... urls) {            // make Call to the url
             if (mFailLocation) {
                 return "FAIL";
             } else {
@@ -360,13 +380,12 @@ public class SearchPlacesFragment extends LocationFinderFragment implements Adap
 
         String temp;
         String searchTerm;
-        String searchQuery;
         ProgressDialog dialog;
 
-        public GooglePlacesSearch(String searchTerm, String searchQuery) {
+        public GooglePlacesSearch(String searchTerm) {
             try {
                 this.searchTerm = URLEncoder.encode(searchTerm, "UTF-8");
-                this.searchQuery = URLEncoder.encode(searchQuery,"UTF-8");
+
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -380,8 +399,7 @@ public class SearchPlacesFragment extends LocationFinderFragment implements Adap
         @Override
         protected String doInBackground(String... text) {
             // make Call to the url
-            double[] latlng = GeoCoder.getLatLongFromAddress(searchTerm);
-            temp = makeCall("https://maps.googleapis.com/maps/api/place/search/json?&location="+ latlng[0] + "," + latlng[1] + "&radius=100&sensor=true&key=" + GOOGLE_KEY);
+            temp = makeCall("https://maps.googleapis.com/maps/api/place/textsearch/json?&query="+ searchTerm + "&radius=100&sensor=true&key=" + GOOGLE_KEY);
 
             return "";
         }
@@ -461,36 +479,30 @@ public class SearchPlacesFragment extends LocationFinderFragment implements Adap
                 JSONArray venues = jsonObject.getJSONArray("results");
 
                 for (int i = 0; i < venues.length(); i++) {
-                    SearchPlaceImageItem poi = new SearchPlaceImageItem();
+                      GooglePlace place = new GooglePlace();
                     if (venues.getJSONObject(i).has("name")) {
-                        poi.setPlaceName(venues.getJSONObject(i).optString("name"));
+                        place.setName(venues.getJSONObject(i).optString("name"));
                         //poi.setRating(jsonArray.getJSONObject(i).optString("rating", " "));
 
                         if (venues.getJSONObject(i).has("vicinity")) {
-                            poi.setPlaceCityCountry(venues.getJSONObject(i).optString("vicinity"));
+                            place.setFormatted_address(venues.getJSONObject(i).optString("vicinity"));
                         }
 
                         if (venues.getJSONObject(i).has("types")) {
                             JSONArray typesArray = venues.getJSONObject(i).getJSONArray("types");
 
                             for (int j = 0; j < typesArray.length(); j++) {
-                                poi.setPlaceCategories(typesArray.getString(j) + ", " + poi.getPlaceCategories());
+                                if (j == typesArray.length() - 1) {
+
+                                } else {
+                                    place.setCategories(typesArray.getString(j) + ", " + place.getCategories());
+                                }
                             }
                         }
 
-                        if (venues.getJSONObject(i).has("photos")) {
-                            JSONArray photoArray = venues.getJSONObject(i).getJSONArray("photos");
 
-                            JSONObject photo = photoArray.getJSONObject(0);
-
-                            String PHOTO_REFERENCE = photo.optString("reference");
-
-                            String photoGet = makeCall("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+ PHOTO_REFERENCE + "&key=" + GOOGLE_KEY );
-                            poi.setPlaceImageSrc(photoGet);
-
-                        }
                     }
-                    temp.add(poi);
+                    temp.add(place);
                 }
             }
 

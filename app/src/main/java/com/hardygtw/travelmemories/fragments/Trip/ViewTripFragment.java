@@ -43,6 +43,8 @@ public class ViewTripFragment extends Fragment {
         actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.removeAllTabs();
+        actionBar.setDisplayShowCustomEnabled(false);
+
         ((MainActivity)getActivity()).getDrawerToggle().setDrawerIndicatorEnabled(false);
         mTabHost = (FragmentTabHost)rootView.findViewById(android.R.id.tabhost);
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.tabFrameLayout);
@@ -76,7 +78,7 @@ public class ViewTripFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu){
         MenuItem settings = menu.findItem(R.id.action_settings);
-        settings.setVisible(true);
+        settings.setVisible(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
     }
