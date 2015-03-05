@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -105,7 +106,13 @@ public class NewTripFragment extends Fragment {
                 ft.replace(R.id.frame_container, fragment,"TRIP_LIST_FRAGMENT");
                 ft.addToBackStack(null);
                 ft.commit();
-                break;
+               return true;
+            case R.id.add_accept:
+                TextView tripTitle = (TextView) getChildFragmentManager().findFragmentById(R.layout.new_trip_details).getView().findViewById(R.id.trip_name);
+
+                Log.d("LO", tripTitle.getText().toString());
+            return true;
+
         }
         return super.onOptionsItemSelected(item);
     }

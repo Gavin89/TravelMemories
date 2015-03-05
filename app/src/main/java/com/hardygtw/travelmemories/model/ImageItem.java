@@ -6,8 +6,27 @@ import android.graphics.Bitmap;
  * Created by gavin on 09/02/2015.
  */
 public class ImageItem {
-    private Bitmap image;
-    private String title;
+    Bitmap image;
+    String title;
+    Long placeId;
+    Long tripId;
+
+
+    public Long getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
+    }
+
+    public Long getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(Long placeId) {
+        this.placeId = placeId;
+    }
 
     public ImageItem(Bitmap image, String title) {
         super();
