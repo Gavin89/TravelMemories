@@ -193,7 +193,7 @@ public class MainActivity extends FragmentActivity {
                 fragment = new TripListFragment();
                 break;
             case 1:
-                fragment = new GooglePlacesFragment();
+                fragment = new NearbyPlacesFragment();
                 break;
             case 2:
                 fragment = new PlaceListFragment();

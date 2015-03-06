@@ -77,8 +77,9 @@ public class GalleryFragment extends Fragment {
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-
+    public void onPrepareOptionsMenu(Menu menu){
+        MenuItem settings = menu.findItem(R.id.action_settings);
+        settings.setVisible(false);
     }
 
 

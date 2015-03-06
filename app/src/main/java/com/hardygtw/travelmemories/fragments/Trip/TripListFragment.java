@@ -58,6 +58,12 @@ public class TripListFragment extends Fragment {
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu){
+        MenuItem settings = menu.findItem(R.id.action_settings);
+        settings.setVisible(false);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
         super.onCreateOptionsMenu(menu, menuInflater);
         menuInflater.inflate(R.menu.menu_trips, menu);
