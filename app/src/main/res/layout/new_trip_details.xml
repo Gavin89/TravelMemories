@@ -39,7 +39,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="57dp" />
 
-        <TextView
+        <Button
             android:id="@+id/startDate"
             style="?android:attr/spinnerStyle"
             android:layout_width="match_parent"
@@ -48,7 +48,7 @@
             android:textSize="20sp"
             android:layout_marginTop="20dp" />
 
-        <TextView
+        <Button
             android:id="@+id/endDate"
             style="?android:attr/spinnerStyle"
             android:layout_width="match_parent"
@@ -56,6 +56,19 @@
             android:hint="End Date"
             android:textSize="20sp"
             android:layout_marginTop="20dp" />
+
+        <EditText
+            android:id="@+id/trip_notes"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:minLines="6"
+            android:gravity="top|left"
+            android:maxLines="10"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:scrollbars="vertical"
+            android:hint="Add notes here..."
+            android:layout_marginTop="57dp"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>
 

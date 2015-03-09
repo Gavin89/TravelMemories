@@ -12,13 +12,16 @@ import android.widget.TextView;
 
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.fragments.Trip.ViewTripFragment;
+import com.hardygtw.travelmemories.model.Trip;
+
+import java.util.ArrayList;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
-    private String[] mDataset;
+    private ArrayList<Trip> mDataset;
     private FragmentManager fm;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TripAdapter(String[] myDataset, FragmentManager fm) {
+    public TripAdapter(ArrayList<Trip> myDataset, FragmentManager fm) {
         mDataset = myDataset;
         this.fm = fm;
     }
@@ -40,11 +43,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     public void onBindViewHolder(TripViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset[position]);
+        holder.mTextView.setText(mDataset.get(position).getTripName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                         Fragment fragment = null;
 
@@ -66,7 +68,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 
     // Provide a reference to the views for each data item

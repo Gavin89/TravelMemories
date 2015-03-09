@@ -24,6 +24,7 @@
             android:textSize="18dp"/>
 
         <EditText
+            android:id="@+id/trip_notes"
             android:inputType="textMultiLine"
             android:lines="8"
             android:minLines="6"

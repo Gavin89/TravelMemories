@@ -12,18 +12,18 @@ public class Trip {
     private ArrayList<PlaceVisited> placesVisited;
     private ArrayList<Photo> tripPhotos;
     private String tripName;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
     private String notes;
 
-    public Trip(ArrayList<PlaceVisited> placesVisited, ArrayList<Photo> tripPhotos, String tripName, Date startDate, Date endDate, String notes) {
-    	this.placesVisited = placesVisited;
-        this.tripPhotos = tripPhotos;
-        this.tripName = tripName;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.notes = notes;
-    }
+//    public Trip(ArrayList<PlaceVisited> placesVisited, ArrayList<Photo> tripPhotos, String tripName, Date startDate, Date endDate, String notes) {
+//    	this.placesVisited = placesVisited;
+//        this.tripPhotos = tripPhotos;
+//        this.tripName = tripName;
+//        this.startDate = startDate;
+//        this.endDate = endDate;
+//        this.notes = notes;
+//    }
 
     public String getTripName() {
         return tripName;
@@ -33,19 +33,19 @@ public class Trip {
         this.tripName = tripName;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 

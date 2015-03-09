@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.MapFragment;
 import com.hardygtw.travelmemories.R;
 
 public class NearbyPlacesFragment extends Fragment {
@@ -51,7 +52,7 @@ public class NearbyPlacesFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("MAP", "Map");
 
-                fragment = new MapFragment();
+                fragment = new NearbyFragment();
                 fragment.setArguments(bundle);
 
                 ft.replace(R.id.frame_container, fragment,"MAP_FRAGMENT");

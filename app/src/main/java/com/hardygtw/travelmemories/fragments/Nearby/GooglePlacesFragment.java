@@ -309,6 +309,30 @@ public class GooglePlacesFragment extends Fragment implements AdapterView.OnItem
         ft.commit();**/
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.map:
+                Fragment fragment = null;
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("MAP", "Map");
+
+                fragment = new NearbyFragment();
+                fragment.setArguments(bundle);
+
+                ft.replace(R.id.frame_container, fragment,"MAP_FRAGMENT");
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
     private class GooglePlacesNearbySearch extends AsyncTask<View, Void, String> {
 
         String temp;
@@ -540,4 +564,5 @@ public class GooglePlacesFragment extends Fragment implements AdapterView.OnItem
         MenuItem settingsItem = menu.findItem(R.id.action_settings);
         settingsItem.setVisible(false);
     }
+
 }

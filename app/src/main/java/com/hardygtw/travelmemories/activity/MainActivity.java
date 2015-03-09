@@ -26,6 +26,7 @@ import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.adapters.NavDrawerListAdapter;
 import com.hardygtw.travelmemories.fragments.Gallery.GalleryFragment;
 import com.hardygtw.travelmemories.fragments.Nearby.GooglePlacesFragment;
+import com.hardygtw.travelmemories.fragments.Nearby.NearbyFragment;
 import com.hardygtw.travelmemories.fragments.Nearby.NearbyPlacesFragment;
 import com.hardygtw.travelmemories.fragments.Places.PlaceListFragment;
 import com.hardygtw.travelmemories.fragments.Trip.TripListFragment;
@@ -193,7 +194,7 @@ public class MainActivity extends FragmentActivity {
                 fragment = new TripListFragment();
                 break;
             case 1:
-                fragment = new NearbyPlacesFragment();
+                fragment = new NearbyFragment();
                 break;
             case 2:
                 fragment = new PlaceListFragment();

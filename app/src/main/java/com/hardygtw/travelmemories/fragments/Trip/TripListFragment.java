@@ -13,8 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.hardygtw.travelmemories.R;
+import com.hardygtw.travelmemories.SQLDatabaseSingleton;
 import com.hardygtw.travelmemories.adapters.TripAdapter;
 import com.hardygtw.travelmemories.fragments.Trip.NewTripFragment;
+import com.hardygtw.travelmemories.model.Trip;
+
+import java.util.ArrayList;
 
 public class TripListFragment extends Fragment {
 
@@ -25,6 +29,9 @@ public class TripListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+        ArrayList<Trip> trips = SQLDatabaseSingleton.getInstance(getActivity()).getAllTrips();
 
         View rootView = inflater.inflate(R.layout.recycler_view, container, false);
 
@@ -39,17 +46,9 @@ public class TripListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new TripAdapter(getTestData(),getFragmentManager());
+        mAdapter = new TripAdapter(trips,getFragmentManager());
         mRecyclerView.setAdapter(mAdapter);
         return rootView;
-    }
-
-    private String[] getTestData() {
-        String[] strings = new String[60];
-        for(int i =0; i < strings.length; i++) {
-            strings[i] = "Trip " + i;
-        }
-        return strings;
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
