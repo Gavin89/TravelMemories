@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Places {
+public class Place {
 
     public List<HashMap<String, String>> parse(JSONObject jsonObject) {
         JSONArray jsonArray = null;

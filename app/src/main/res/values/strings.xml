@@ -29,13 +29,7 @@
         <item>Nearby Places</item>
         <item>Places Visited</item>
         <item>Travel Gallery</item>
-    </string-array>
-
-    <string-array name="companions">
-        <item>Dave</item>
-        <item>Paul</item>
-        <item>John</item>
-        <item>Frank</item>
+        <item>Take Photo</item>
     </string-array>
 
     <!-- Navigation Icons -->
@@ -44,6 +38,7 @@
         <item>@drawable/ic_places</item>
         <item>@drawable/ic_visited</item>
         <item>@drawable/ic_gallery</item>
+        <item>@drawable/ic_camera</item>
     </array>
 
 

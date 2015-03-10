@@ -21,7 +21,7 @@ public class PlacesDisplayTask extends AsyncTask<Object, Integer, List<HashMap<S
     protected List<HashMap<String, String>> doInBackground(Object... inputObj) {
 
         List<HashMap<String, String>> googlePlacesList = null;
-        Places placeJsonParser = new Places();
+        Place placeJsonParser = new Place();
 
         try {
             googleMap = (GoogleMap) inputObj[0];

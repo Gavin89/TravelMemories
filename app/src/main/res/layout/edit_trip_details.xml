@@ -62,7 +62,7 @@
                 android:textSize="20dp"
                 android:layout_marginRight="50dp"
                 android:textStyle="bold"/>
-            <EditText
+            <Button
                 android:id="@+id/startDate"
                 style="?android:attr/spinnerStyle"
                 android:layout_width="match_parent"
@@ -84,7 +84,7 @@
                 android:textSize="20dp"
                 android:layout_marginRight="50dp"
                 android:textStyle="bold"/>
-            <EditText
+            <Button
                 android:id="@+id/endDate"
                 style="?android:attr/spinnerStyle"
                 android:layout_width="match_parent"
@@ -109,6 +109,7 @@
                 android:textStyle="bold"/>
 
             <EditText
+                android:id="@+id/editTripNotes"
                 android:inputType="textMultiLine"
                 android:lines="8"
                 android:minLines="6"

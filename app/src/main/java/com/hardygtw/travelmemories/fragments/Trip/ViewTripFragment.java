@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hardygtw.travelmemories.SQLDatabaseSingleton;
 import com.hardygtw.travelmemories.activity.MainActivity;
 import com.hardygtw.travelmemories.R;
 
@@ -29,6 +30,7 @@ public class ViewTripFragment extends Fragment {
 
     private ActionBar actionBar;
     private FragmentTabHost mTabHost;
+    private int trip_id;
 
     public ViewTripFragment() {
         // Required empty public constructor
@@ -41,17 +43,20 @@ public class ViewTripFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.tab_list,container, false);
         String title = "Trip x";
         actionBar = getActivity().getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.removeAllTabs();
         actionBar.setDisplayShowCustomEnabled(false);
+
+        trip_id = getArguments().getInt("TRIP_ID");
 
         ((MainActivity)getActivity()).getDrawerToggle().setDrawerIndicatorEnabled(false);
         mTabHost = (FragmentTabHost)rootView.findViewById(android.R.id.tabhost);
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.tabFrameLayout);
 
+        Bundle bundle = new Bundle(1);
+        bundle.putInt("TRIP_ID", trip_id);
+
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab1").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_details)),
-                ViewTripDetailsFragment.class, null);
+                ViewTripDetailsFragment.class, bundle);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_gallery)),
                 ViewTripGalleryFragment.class, null);
@@ -98,12 +103,17 @@ public class ViewTripFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.remove_trip:
+                SQLDatabaseSingleton.getInstance(getActivity()).deleteTrip(trip_id);
+                ((MainActivity)getActivity()).goBackFragment();
+                break;
             case R.id.edit_trip:
                 android.support.v4.app.Fragment fragment = null;
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
-                Bundle bundle = new Bundle();
+                Bundle bundle = new Bundle(2);
+                bundle.putInt("TRIP_ID", trip_id);
                 bundle.putString("EDIT_TRIP", "Edit Trip");
 
                 fragment = new EditTripFragment();
@@ -119,6 +129,7 @@ public class ViewTripFragment extends Fragment {
                 sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -107,6 +107,7 @@
                 android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/trip_notes"
                 android:inputType="textMultiLine"
                 android:lines="8"
                 android:minLines="6"

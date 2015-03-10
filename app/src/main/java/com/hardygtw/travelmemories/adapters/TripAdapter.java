@@ -1,5 +1,6 @@
 package com.hardygtw.travelmemories.adapters;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -40,7 +41,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(TripViewHolder holder, int position) {
+    public void onBindViewHolder(TripViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mTextView.setText(mDataset.get(position).getTripName());
@@ -52,8 +53,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 
 
                         FragmentTransaction ft = fm.beginTransaction();
+                        Bundle bundle = new Bundle(1);
+
+                        bundle.putInt("TRIP_ID",mDataset.get(position).getTripId());
 
                         fragment = new ViewTripFragment();
+                        fragment.setArguments(bundle);
 
                         ft.replace(R.id.frame_container, fragment, "VIEW_TRIP_FRAGMENT");
                         ft.addToBackStack(null);

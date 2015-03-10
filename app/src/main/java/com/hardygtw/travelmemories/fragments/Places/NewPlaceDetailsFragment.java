@@ -34,8 +34,8 @@ public class NewPlaceDetailsFragment extends Fragment {
 //                open();
 //            }
 //        });
-        return rootView;
-    }
+    return rootView;
+}
 
     public void open() {
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);

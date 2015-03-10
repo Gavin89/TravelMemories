@@ -53,9 +53,9 @@ public class TripPlacesAdapter extends RecyclerView.Adapter<TripPlacesAdapter.Pl
 
                 FragmentTransaction ft = fm.beginTransaction();
 
-                fragment = new ViewTripPlacesFragment();
+                fragment = new ViewPlaceFragment();
 
-                ft.replace(R.id.frame_container, fragment, "VIEW_TRIP_PLACES_FRAGMENT");
+                ft.replace(R.id.frame_container, fragment, "VIEW_PLACE_FRAGMENT");
                 ft.addToBackStack(null);
                 ft.commit();
 

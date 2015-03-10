@@ -133,7 +133,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Trip trip = new Trip();
 
-        Cursor cursor = db.rawQuery("SELECT * from " + TRIP_TABLE_NAME + " WHERE trip_id=" + tripId, new String [] {});
+        Cursor cursor = db.rawQuery("SELECT * from " + TRIP_TABLE_NAME + " WHERE tripId=" + tripId, new String [] {});
 
         if (cursor.moveToFirst())
         {

@@ -15,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.gms.maps.MapFragment;
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.adapters.PlacesAdapter;
 import com.hardygtw.travelmemories.adapters.TripAdapter;
@@ -95,6 +97,4 @@ public class PlaceListFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }
