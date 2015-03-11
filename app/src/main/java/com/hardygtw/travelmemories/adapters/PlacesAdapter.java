@@ -47,9 +47,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
             @Override
             public void onClick(View v) {
 
-
                 Fragment fragment = null;
-
 
                 FragmentTransaction ft = fm.beginTransaction();
 

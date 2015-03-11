@@ -1,105 +1,82 @@
-<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_view"
-    android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    card_view:cardPreventCornerOverlap="true"
-    card_view:cardElevation="4dp"
-    card_view:cardCornerRadius="4dp">
-
-    <TextView
-        android:id="@+id/info_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enter Place Details"
-        android:layout_gravity="center|top"
-        android:gravity="center|top"
-        android:typeface="monospace"
-        android:textSize="18dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:weightSum="1">
-
-
-        <EditText
-        android:id="@+id/trip_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Place Name"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="57dp" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/place_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Place name: "
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/place_name"
+            android:layout_below="@+id/place_name_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Place name"
+            android:textSize="25dp"
+            />
+
+        <TextView
+            android:id="@+id/date_visited_title"
+            android:layout_below="@+id/place_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date Visited: "
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+
+        <Button
             android:id="@+id/dateVisited"
+            android:layout_below="@+id/date_visited_title"
             style="?android:attr/spinnerStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Date Visited"
             android:textSize="20sp"
-            android:layout_marginTop="20dp" />
+            android:layout_marginLeft="10dp"/>
+
+
+        <TextView
+            android:id="@+id/companion_name_title"
+            android:layout_below="@+id/dateVisited"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Companion Name: "
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
 
         <EditText
-            android:id="@+id/location"
+            android:id="@+id/companion_name"
+            android:layout_below="@+id/companion_name_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Location - (Google Places)"
-            android:textSize="20sp"
-            android:layout_marginTop="20dp" />
+            android:hint="Enter name"
+            android:textSize="25dp"
+            />
 
-        <ImageView
-            android:scaleType="centerInside"
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            android:layout_weight="0.5"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/no_image"
-            android:layout_marginTop="30dp"
-            android:id="@+id/imageView"/>
+    <RelativeLayout
+        android:id="@+id/place_map"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/companion_name">
 
-    </LinearLayout>
-    <LinearLayout android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:id="@+id/linearLayout2"
-        android:layout_gravity="bottom"
-        android:layout_height="fill_parent">
-        <Button android:layout_weight="1"
-            android:text="Take Photo"
-            android:height="14dp"
-            android:textSize="15sp"
-            android:textColor="#ffffff"
-            android:background="#1C86EE"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:id="@+id/takePhoto"
-            android:layout_gravity="bottom"
-            android:layout_margin="1dp"
-            android:onClick="newImageIntent"
-            android:nestedScrollingEnabled="true">
-        </Button>
-        <Button android:layout_weight="1"
-            android:text="Add Photo"
-            android:background="#1C86EE"
-            android:textSize="15sp"
-            android:textColor="#ffffff"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:id="@+id/addPhoto"
-            android:layout_gravity="bottom"
-            android:layout_margin="1dp"
-            android:onClick="existingImageIntent">
-    </Button>
-    </LinearLayout>
-</android.support.v7.widget.CardView>
+        <TextView
+            android:id="@+id/mapLoadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loading map..."
+            android:layout_marginBottom="58dp"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 
+</RelativeLayout>

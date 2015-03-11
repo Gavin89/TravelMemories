@@ -1,6 +1,8 @@
 package com.hardygtw.travelmemories.activity;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.adapters.NavDrawerListAdapter;
 import com.hardygtw.travelmemories.fragments.Gallery.GalleryFragment;
+//import com.hardygtw.travelmemories.fragments.Nearby.GooglePlacesFragment;
 import com.hardygtw.travelmemories.fragments.Nearby.GooglePlacesFragment;
 import com.hardygtw.travelmemories.fragments.Nearby.NearbyFragment;
 import com.hardygtw.travelmemories.fragments.Nearby.NearbyPlacesFragment;
@@ -34,7 +37,7 @@ import com.hardygtw.travelmemories.model.NavDrawerItem;
 
 import java.util.ArrayList;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity{
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -82,17 +85,16 @@ public class MainActivity extends FragmentActivity {
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
 
         navDrawerItems = new ArrayList<NavDrawerItem>();
-
-        // adding nav drawer items to array
-        // Home
+        // Trips
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-        // Find People
+        // Nearby
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-        // Photos
+        // Places Visited
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-        // Communities, Will add a counter here
+        // Gallery
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
-
+        //Take Photo
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         // Recycle the typed array
         navMenuIcons.recycle();
 
@@ -194,13 +196,45 @@ public class MainActivity extends FragmentActivity {
                 fragment = new TripListFragment();
                 break;
             case 1:
-                fragment = new NearbyFragment();
+                fragment = new GooglePlacesFragment();
                 break;
             case 2:
                 fragment = new PlaceListFragment();
                 break;
             case 3:
                 fragment = new GalleryFragment();
+                break;
+            case 4:
+                String[] addPhoto=new String[]{ "Camera" , "Gallery" };
+                AlertDialog.Builder dialogBuilder=new AlertDialog.Builder(this);
+
+                dialogBuilder.setTitle("Select Photo");
+
+                dialogBuilder.setItems(addPhoto, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        if (id == 0) {
+                            // Call camera Intent
+                            Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(takePicture, 0);//zero can be replaced with any action code
+                        }
+                        if (id == 1) {
+                            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(pickPhoto , 1);//one can be replaced with any action code
+                        }
+                    }
+                });
+
+                dialogBuilder.setNeutralButton("Cancel",new android.content.DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }});
+                AlertDialog dialog = dialogBuilder.create();
+                dialog.show();
                 break;
 
             default:
@@ -285,20 +319,16 @@ public class MainActivity extends FragmentActivity {
          * e.g View Places Map is after View Trip so try to remove it first, then break out the loop
          * Break out of the loop when the current displayed element is found so it is removed from screen
          */
-        Fragment[] currentFrags = new Fragment[7];
+        Fragment[] currentFrags = new Fragment[8];
 
         currentFrags[0] = getSupportFragmentManager().findFragmentByTag("MAP_FRAGMENT");
         currentFrags[1] = getSupportFragmentManager().findFragmentByTag("EDIT_TRIP_FRAGMENT");
         currentFrags[2] = getSupportFragmentManager().findFragmentByTag("VIEW_PLACES_FRAGMENT");
-        currentFrags[3] = getSupportFragmentManager().findFragmentByTag("VIEW_TRIP_FRAGMENT");
-        currentFrags[4] = getSupportFragmentManager().findFragmentByTag("NEW_TRIP_FRAGMENT");
-        currentFrags[5] = getSupportFragmentManager().findFragmentByTag("NEW_PLACE_FRAGMENT");
-        currentFrags[6] = getSupportFragmentManager().findFragmentByTag("EDIT_PLACE_FRAGMENT");
-
-
-
-
-
+        currentFrags[3] = getSupportFragmentManager().findFragmentByTag("VIEW_PLACE_FRAGMENT");
+        currentFrags[4] = getSupportFragmentManager().findFragmentByTag("VIEW_TRIP_FRAGMENT");
+        currentFrags[5] = getSupportFragmentManager().findFragmentByTag("NEW_TRIP_FRAGMENT");
+        currentFrags[6] = getSupportFragmentManager().findFragmentByTag("NEW_PLACE_FRAGMENT");
+        currentFrags[7] = getSupportFragmentManager().findFragmentByTag("EDIT_PLACE_FRAGMENT");
 
         boolean finished = false;
 

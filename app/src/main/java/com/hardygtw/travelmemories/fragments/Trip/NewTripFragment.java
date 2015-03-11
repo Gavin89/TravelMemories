@@ -108,19 +108,6 @@ public class NewTripFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_cancel:
-                /**Fragment fragment = null;
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-
-                Bundle bundle = new Bundle();
-                bundle.putString("TRIP_LIST", "Trips");
-
-                fragment = new TripListFragment();
-                fragment.setArguments(bundle);
-
-                ft.replace(R.id.frame_container, fragment,"TRIP_LIST_FRAGMENT");
-                ft.addToBackStack(null);
-                ft.commit();**/
                 ((MainActivity)getActivity()).goBackFragment();
                return true;
             case R.id.add_accept:
