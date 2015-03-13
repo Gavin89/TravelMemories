@@ -2,6 +2,9 @@ package com.hardygtw.travelmemories.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +14,26 @@ import android.widget.TextView;
 
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.model.ImageItem;
+import com.hardygtw.travelmemories.model.Photo;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
  * Created by gavin on 09/02/2015.
  */
-public class GridViewAdapter extends ArrayAdapter<ImageItem> {
+public class GalleryAdapter extends ArrayAdapter<Photo> {
     private Context context;
     private int layoutResourceId;
-    private ArrayList<ImageItem> data = new ArrayList<ImageItem>();
+    private ArrayList<Photo> data = new ArrayList<Photo>();
 
-    public GridViewAdapter(Context context, int layoutResourceId,
-                           ArrayList<ImageItem> data) {
+    public GalleryAdapter(Context context, int layoutResourceId,
+                          ArrayList<Photo> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -46,9 +56,20 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
             holder = (ViewHolder) row.getTag();
         }
 
-        ImageItem item = data.get(position);
+        Photo item = data.get(position);
         holder.imageTitle.setText(item.getTitle());
-        holder.image.setImageBitmap(item.getImage());
+
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
+
+        ImageSize targetSize = new ImageSize(160,150);
+        Bitmap loadedImage = ImageLoader.getInstance().loadImageSync("file:///" + item.getPath(), targetSize, options);
+        holder.image.setImageBitmap(loadedImage);
 
         return row;
     }

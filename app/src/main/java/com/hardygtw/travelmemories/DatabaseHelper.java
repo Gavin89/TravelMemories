@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "TravelMemories";
 
     private static final String TRIP_TABLE_NAME = "trips";
@@ -229,7 +229,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-    public long createPhoto(String photoSrc, long placeVisitID, long tripID)
+    public long createPhoto(String photoSrc, long placeVisitID, long tripID, String tag)
     {
        SQLiteDatabase db = this.getWritableDatabase();
 
@@ -244,6 +244,57 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cv.put(COL_TRIP_ID_FOREIGN_PHOTOS, tripID);
         }
 
+        cv.put(COL_TAGS, tag);
+
         return db.insert(PHOTOS_TABLE_NAME, null, cv);
     }
+
+    public ArrayList<Photo> getTravelGalleryPhotos() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Photo> photos = new ArrayList<Photo>();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT ph.photoId, ph.photoSrc, ph.placeVisitId, ph.tripId FROM photos ph "
+                , new String [] {});
+
+        if (cursor.moveToFirst())
+        {
+            do {
+                Photo photo = new Photo();
+
+                photo.setPhotoId(cursor.getInt(cursor.getColumnIndex(COL_PHOTO_ID)));
+                photo.setPath(cursor.getString(cursor.getColumnIndex(COL_PHOTO_SRC)));
+
+
+
+                int placeVisitID = cursor.getInt(cursor.getColumnIndex(COL_PLACE_VISIT_ID_FOREIGN_PHOTOS));
+
+                if (placeVisitID > 0) {
+                    photo.setPlaceId(cursor.getInt(cursor.getColumnIndex(COL_PLACE_VISIT_ID_FOREIGN_PHOTOS)));
+                } else {
+                    photo.setPlaceId(0);
+                }
+
+                int tripID = cursor.getInt(cursor.getColumnIndex(COL_TRIP_ID_FOREIGN_PHOTOS));
+
+                if (tripID > 0) {
+                    photo.setTripId(cursor.getInt(cursor.getColumnIndex(COL_TRIP_ID_FOREIGN_PHOTOS)));
+                } else {
+                    photo.setTripId(0);
+                }
+
+                //Set Photo tags here
+                photo.setTags("");
+
+                photos.add(photo);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return photos;
+
+    }
+
 }

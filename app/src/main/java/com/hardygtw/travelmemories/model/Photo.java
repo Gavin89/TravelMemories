@@ -7,18 +7,20 @@ import java.util.ArrayList;
  */
 public class Photo {
     private int photoId;
-    private ArrayList<Tag> tags;
-    Long tripId;
-    Long placeId;
+    String tags;
+    int tripId;
+    int placeId;
     String title;
+    String path;
 
-    public Photo(int photoId, ArrayList<Tag> tags, String title) {
-        this.photoId = photoId;
-        this.tags = tags;
-        this.title = title;
+    public void setPath(String path) {
+        this.path = path;
     }
 
 
+    public String getPath() {
+        return this.path;
+    }
     public String getTitle() {
         return title;
     }
@@ -28,20 +30,20 @@ public class Photo {
     }
 
 
-    public Long getPlaceId() {
+    public int getPlaceId() {
         return placeId;
     }
 
-    public void setPlaceId(Long placeId) {
+    public void setPlaceId(int placeId) {
         this.placeId = placeId;
     }
 
 
-    public Long getTripId() {
+    public int getTripId() {
         return tripId;
     }
 
-    public void setTripId(Long tripId) {
+    public void setTripId(int tripId) {
         this.tripId = tripId;
     }
 
@@ -53,11 +55,11 @@ public class Photo {
         this.photoId = photoId;
     }
 
-	public ArrayList<Tag> getTags() {
+	public String getTags() {
 		return tags;
 	}
 
-	public void setTags(ArrayList<Tag> tags) {
+	public void setTags(String tags) {
 		this.tags = tags;
 	}
 }

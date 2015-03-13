@@ -6,7 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -25,6 +28,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.hardygtw.travelmemories.R;
+import com.hardygtw.travelmemories.SQLDatabaseSingleton;
 import com.hardygtw.travelmemories.adapters.NavDrawerListAdapter;
 import com.hardygtw.travelmemories.fragments.Gallery.GalleryFragment;
 //import com.hardygtw.travelmemories.fragments.Nearby.GooglePlacesFragment;
@@ -34,10 +38,27 @@ import com.hardygtw.travelmemories.fragments.Nearby.NearbyPlacesFragment;
 import com.hardygtw.travelmemories.fragments.Places.PlaceListFragment;
 import com.hardygtw.travelmemories.fragments.Trip.TripListFragment;
 import com.hardygtw.travelmemories.model.NavDrawerItem;
+import com.hardygtw.travelmemories.model.Photo;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends FragmentActivity{
+
+    static final int REQUEST_IMAGE_CAPTURE = 0;
+    static final int REQUEST_IMAGE_GALLERY = 1;
+
+    String mCurrentPhotoPath;
+
+
+
+
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -65,6 +86,8 @@ public class MainActivity extends FragmentActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -135,6 +158,9 @@ public class MainActivity extends FragmentActivity{
             // on first time display view for first nav item
             displayView(0);
         }
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+        ImageLoader.getInstance().init(config);
     }
 
     /**
@@ -216,16 +242,15 @@ public class MainActivity extends FragmentActivity{
 
                         if (id == 0) {
                             // Call camera Intent
-                            Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(takePicture, 0);//zero can be replaced with any action code
+                            dispatchTakePictureIntent();
                         }
                         if (id == 1) {
-                            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            startActivityForResult(pickPhoto , 1);//one can be replaced with any action code
+                            // Call gallery intent
+                            dispatchGalleryIntent();
                         }
                     }
                 });
+
 
                 dialogBuilder.setNeutralButton("Cancel",new android.content.DialogInterface.OnClickListener(){
                     @Override
@@ -342,15 +367,80 @@ public class MainActivity extends FragmentActivity{
         transaction.commit();
 
     }
-    public void newImageIntent(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAPTURE_IMAGE_CALLBACK);
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
-    public void existingImageIntent(View view) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
-        intent.setType("image/*");
-        intent.putExtra("return-data", true);
-        startActivityForResult(intent, SELECT_PICTURE_CALLBACK);
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    private void dispatchGalleryIntent() {
+        Intent galleryIntent = new Intent();
+        galleryIntent.setType("image/*");
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+        // Ensure that there's a camera activity to handle the intent
+        if (galleryIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                galleryIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(galleryIntent, REQUEST_IMAGE_GALLERY);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Photo photo = new Photo();
+            photo.setTitle("Photo");
+            photo.setPath(mCurrentPhotoPath);
+
+            SQLDatabaseSingleton.getInstance(this).createPhoto(photo.getPath(), 0, 0, photo.getTitle());
+        } else if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == RESULT_OK) {
+            Photo photo = new Photo();
+            photo.setTitle("Photo");
+            photo.setPath(mCurrentPhotoPath);
+        }
     }
 }

@@ -13,7 +13,8 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.hardygtw.travelmemories.R;
-import com.hardygtw.travelmemories.adapters.GridViewAdapter;
+import com.hardygtw.travelmemories.SQLDatabaseSingleton;
+import com.hardygtw.travelmemories.adapters.GalleryAdapter;
 import com.hardygtw.travelmemories.model.ImageItem;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 public class ViewPlaceGalleryFragment extends Fragment{
 
     private GridView gridView;
-    private GridViewAdapter customGridAdapter;
+    private GalleryAdapter customGridAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,7 +33,7 @@ public class ViewPlaceGalleryFragment extends Fragment{
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.view_place_gallery, container, false);
         gridView = (GridView)rootView.findViewById(R.id.gridView);
-        customGridAdapter = new GridViewAdapter(getActivity(), R.layout.grid_view_item, getData());
+        customGridAdapter = new GalleryAdapter(getActivity(), R.layout.grid_view_item, SQLDatabaseSingleton.getInstance(getActivity()).getTravelGalleryPhotos());
         gridView.setAdapter(customGridAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
