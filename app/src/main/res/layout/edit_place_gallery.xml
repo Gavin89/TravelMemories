@@ -31,6 +31,13 @@
                 android:onClick="newImageIntent"
                 android:nestedScrollingEnabled="true">
             </Button>
+
+            <FrameLayout
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#dddddd">
+            </FrameLayout>
+
             <Button android:layout_weight="1"
                 android:text="Add Photo"
                 android:background="#1C86EE"

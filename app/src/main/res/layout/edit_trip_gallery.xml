@@ -27,10 +27,17 @@
                 android:layout_height="50dp"
                 android:id="@+id/takePhoto"
                 android:layout_gravity="bottom"
-                android:layout_margin="1dp"
+
                 android:onClick="newImageIntent"
                 android:nestedScrollingEnabled="true">
             </Button>
+
+            <FrameLayout
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#dddddd">
+            </FrameLayout>
+
             <Button android:layout_weight="1"
                 android:text="Add Photo"
                 android:background="#1C86EE"
@@ -40,7 +47,7 @@
                 android:layout_height="50dp"
                 android:id="@+id/addPhoto"
                 android:layout_gravity="bottom"
-                android:layout_margin="1dp"
+
                 android:onClick="existingImageIntent">
             </Button>
         </LinearLayout>

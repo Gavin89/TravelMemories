@@ -30,10 +30,15 @@
             android:text="Take Photo"
             android:textColor="#FFFFFF"
             android:background="@drawable/photo_selector"
-            android:layout_marginRight="1dp"
             android:layout_alignParentLeft="true"
             android:layout_gravity="bottom"
             />
+
+        <FrameLayout
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#dddddd">
+        </FrameLayout>
 
         <Button
             android:id="@+id/add_trip_photo"
@@ -42,7 +47,6 @@
             android:layout_weight="1"
             android:background="@drawable/photo_selector"
             android:textColor="#FFFFFF"
-            android:layout_marginLeft="1dp"
             android:text="Add Photo"
             android:layout_gravity="bottom"
             />

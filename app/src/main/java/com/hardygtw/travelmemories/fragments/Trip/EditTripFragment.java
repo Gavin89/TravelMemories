@@ -63,7 +63,7 @@ public class EditTripFragment extends Fragment {
         tripName = (EditText) rootView.findViewById(R.id.trip_name);
         startDate = (Button) rootView.findViewById(R.id.startDate);
         endDate = (Button) rootView.findViewById(R.id.endDate);
-        editTripNotes = (EditText) rootView.findViewById(R.id.editTripNotes);
+        editTripNotes = (EditText) rootView.findViewById(R.id.edit_trip_notes);
 
         setStartDate(rootView);
         setEndDate(rootView);

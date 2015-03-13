@@ -39,7 +39,7 @@ import com.hardygtw.travelmemories.fragments.Nearby.NearbyFragment;
 import java.util.Calendar;
 
 
-public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
+public class NewPlaceFragment extends Fragment {
 
     private ActionBar actionBar;
     private TextView placeVisited;
@@ -85,7 +85,7 @@ public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
         if (!title.equals("")) {
             actionBar.setTitle(title);
         }
-        new LongOperation(this).execute("");
+      //  new LongOperation(this).execute("");
         return rootView;
     }
 
@@ -163,7 +163,7 @@ public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
             //Default location set to London
             LOCATION = new LatLng(51.5008, 0.1247);
         }
-        new LongOperation(this).execute("");
+       // new LongOperation(this).execute("");
     }
 
 
@@ -184,64 +184,64 @@ public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
 
 
     }
+//
+//    private class LongOperation extends AsyncTask<String, Void, Boolean> {
+//
+//        //ProgressDialog progressDialog;
+//        NewPlaceFragment placeFragment;
+//
+//
+//        public LongOperation(NewPlaceFragment placeFragment) {
+//
+//            this.placeFragment = placeFragment;
+//        }
 
-    private class LongOperation extends AsyncTask<String, Void, Boolean> {
+//        @Override
+//        protected Boolean doInBackground(String... params) {
+//
+//            try {
+//                FragmentManager fm = getChildFragmentManager();
+//                fragment = (SupportMapFragment) fm.findFragmentById(R.id.place_map);
+//                if (fragment == null) {
+//                    fragment = SupportMapFragment.newInstance(new GoogleMapOptions().zOrderOnTop(true));
+//                    fm.beginTransaction().replace(R.id.place_map, fragment).commit();
+//                    fragment.getMap().setMyLocationEnabled(true);
+//                    fragment.getMap().setIndoorEnabled(true);
+//                }
+//
+//                return true;
+//
+//            } catch (Exception e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//                return false;
+//            }
+//        }
 
-        //ProgressDialog progressDialog;
-        NewPlaceFragment placeFragment;
+//        @Override
+//        protected void onPostExecute(final Boolean success) {
+//            // Update UI here
+//            //progressDialog.dismiss();
+//            textView.setVisibility(View.GONE);
+//            fragment.getMapAsync(placeFragment);
+//        }
+//    }
 
-
-        public LongOperation(NewPlaceFragment placeFragment) {
-
-            this.placeFragment = placeFragment;
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-
-            try {
-                FragmentManager fm = getChildFragmentManager();
-                fragment = (SupportMapFragment) fm.findFragmentById(R.id.place_map);
-                if (fragment == null) {
-                    fragment = SupportMapFragment.newInstance(new GoogleMapOptions().zOrderOnTop(true));
-                    fm.beginTransaction().replace(R.id.place_map, fragment).commit();
-                    fragment.getMap().setMyLocationEnabled(true);
-                    fragment.getMap().setIndoorEnabled(true);
-                }
-
-                return true;
-
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            // Update UI here
-            //progressDialog.dismiss();
-            textView.setVisibility(View.GONE);
-            fragment.getMapAsync(placeFragment);
-        }
-    }
-
-    @Override
-    public void onMapReady(GoogleMap map) {
-
-        map.addMarker(new MarkerOptions().position(NewPlaceFragment.LOCATION));
-
-        // Construct a CameraPosition focusing on Mountain View and animate the camera to that position.
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(NewPlaceFragment.LOCATION)      // Sets the center of the map to COLOSSEUM
-                .zoom(10)                   // Sets the zoom
-                        //.bearing(90)                // Sets the orientation of the camera to east
-                        //.tilt(30)                   // Sets the tilt of the camera to 30 degrees
-                .build();                   // Creates a CameraPosition from the builder
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-    }
+//    @Override
+//    public void onMapReady(GoogleMap map) {
+//
+//        map.addMarker(new MarkerOptions().position(NewPlaceFragment.LOCATION));
+//
+//        // Construct a CameraPosition focusing on Mountain View and animate the camera to that position.
+//        CameraPosition cameraPosition = new CameraPosition.Builder()
+//                .target(NewPlaceFragment.LOCATION)      // Sets the center of the map to COLOSSEUM
+//                .zoom(10)                   // Sets the zoom
+//                        //.bearing(90)                // Sets the orientation of the camera to east
+//                        //.tilt(30)                   // Sets the tilt of the camera to 30 degrees
+//                .build();                   // Creates a CameraPosition from the builder
+//        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//
+//    }
 
 
 }

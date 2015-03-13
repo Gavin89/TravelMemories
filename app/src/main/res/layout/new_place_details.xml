@@ -1,26 +1,33 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
-        <TextView
-            android:id="@+id/place_name_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Place name: "
-            android:layout_marginTop="20dp"
-            android:paddingLeft="10dp"
-            android:textSize="20dp"
-            android:textStyle="bold"/>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/mLlayoutBottomButtons" >
 
-        <EditText
-            android:id="@+id/place_name"
-            android:layout_below="@+id/place_name_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Place name"
-            android:textSize="25dp"
-            />
+    <TextView
+    android:id="@+id/place_name_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Place name: "
+    android:layout_marginTop="20dp"
+    android:paddingLeft="10dp"
+    android:textSize="15dp"
+    android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/place_name"
+        android:layout_below="@+id/place_name_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Place name"
+        android:lines="1"
+        android:textSize="15dp"
+        />
 
         <TextView
             android:id="@+id/date_visited_title"
@@ -30,7 +37,7 @@
             android:text="Date Visited: "
             android:layout_marginTop="20dp"
             android:paddingLeft="10dp"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:textStyle="bold"/>
 
         <Button
@@ -40,8 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Date Visited"
-            android:textSize="20sp"
-            android:layout_marginLeft="10dp"/>
+            android:textSize="15dp"
+            />
 
 
         <TextView
@@ -52,7 +59,7 @@
             android:text="Companion Name: "
             android:layout_marginTop="20dp"
             android:paddingLeft="10dp"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:textStyle="bold"/>
 
         <EditText
@@ -60,23 +67,95 @@
             android:layout_below="@+id/companion_name_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter name"
-            android:textSize="25dp"
+            android:hint="Enter name(s)"
+            android:lines="2"
+            android:textSize="15dp"
             />
 
-    <RelativeLayout
-        android:id="@+id/place_map"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@+id/companion_name">
+    <TextView
+        android:id="@+id/place_notes_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trip Notes: "
+        android:layout_below="@+id/companion_name"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:textSize="15dp"
+        android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/mapLoadingText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Loading map..."
-            android:layout_marginBottom="58dp"
-            android:layout_centerHorizontal="true" />
+    <EditText
+        android:id="@+id/trip_notes"
+        android:inputType="textMultiLine"
+        android:layout_below="@+id/place_notes_title"
+        android:lines="2"
+        android:minLines="3"
+        android:gravity="top|left"
+        android:maxLines="3"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:scrollbars="vertical"
+        android:textSize="15dp"
+        android:hint="Add notes here..."/>
+
+    <TextView
+        android:id="@+id/location_title"
+        android:layout_below="@+id/trip_notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location: "
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:textSize="15dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Current or Nearby"
+        android:lines="4"
+        android:textSize="15dp"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/location_title"
+        />
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/mLlayoutBottomButtons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/capture_trip_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Current Location"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/photo_selector"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="bottom"
+            android:drawableLeft="@drawable/ic_action_current"
+            />
+
+        <FrameLayout
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#dddddd">
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/add_trip_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/photo_selector"
+            android:textColor="#FFFFFF"
+            android:text="Nearby Places"
+            android:layout_gravity="bottom"
+            android:drawableLeft="@drawable/ic_action_nearby"
+            android:layout_alignTop="@+id/capture_trip_photo"/>
+    </LinearLayout>
 </RelativeLayout>
