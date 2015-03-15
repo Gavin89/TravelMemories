@@ -12,7 +12,7 @@
         android:id="@+id/info_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter Trip Details"
+        android:text="Trip Name"
         android:layout_gravity="center|top"
         android:gravity="center|top"
         android:typeface="monospace"
@@ -34,8 +34,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Trip name: "
+            android:drawableLeft="@drawable/ic_new_trip"
             android:paddingTop="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:paddingLeft="10dp"
             android:textSize="15dp"
             android:textStyle="bold"/>
@@ -45,6 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Trip Name"
+            android:layout_marginTop="10dp"
             android:textSize="15dp"
             android:paddingLeft="10dp"
             android:layout_alignParentTop="true"
@@ -58,6 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Start Date: "
+            android:drawableLeft="@drawable/ic_calendar"
             android:layout_marginTop="20dp"
             android:paddingLeft="10dp"
             android:textSize="15dp"
@@ -65,13 +68,12 @@
 
         <TextView
             android:id="@+id/startDate"
-            style="?android:attr/spinnerStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Start Date"
             android:textSize="15dp"
             android:paddingLeft="10dp"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/end_date_title"
@@ -79,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="End Date: "
+            android:drawableLeft="@drawable/ic_calendar"
             android:layout_marginTop="20dp"
             android:paddingLeft="10dp"
             android:textSize="15dp"
@@ -87,13 +90,12 @@
 
         <TextView
             android:id="@+id/endDate"
-            style="?android:attr/spinnerStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="End Date"
             android:textSize="15dp"
             android:paddingLeft="10dp"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/trip_notes_title"
@@ -101,6 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Trip Notes: "
+            android:drawableLeft="@drawable/ic_notes"
             android:layout_marginTop="20dp"
             android:paddingLeft="10dp"
             android:textSize="15dp"
@@ -114,6 +117,7 @@
             android:gravity="top|left"
             android:maxLines="10"
             android:textSize="15dp"
+            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:scrollbars="vertical"
