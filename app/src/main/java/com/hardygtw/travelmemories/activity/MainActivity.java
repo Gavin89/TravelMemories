@@ -56,9 +56,6 @@ public class MainActivity extends FragmentActivity{
 
     String mCurrentPhotoPath;
 
-
-
-
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -76,9 +73,7 @@ public class MainActivity extends FragmentActivity{
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
 
-    // camera
-    protected static final int CAPTURE_IMAGE_CALLBACK = 0;
-    protected static final int SELECT_PICTURE_CALLBACK = 1;
+
 
     public void changeIconColours() {
 

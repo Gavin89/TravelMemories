@@ -45,6 +45,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mTextView.setText(mDataset.get(position).getTripName());
+        holder.mTextViewDate.setText(mDataset.get(position).getStartDate());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,11 +84,13 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         // each data item is just a string in this case
         public TextView mTextView;
         public ImageView mImageView;
+        public TextView mTextViewDate;
 
         public TripViewHolder(View v) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.info_text);
             mImageView = (ImageView) v.findViewById(R.id.trip_image);
+            mTextViewDate = (TextView) v.findViewById(R.id.start_date);
         }
     }
 }

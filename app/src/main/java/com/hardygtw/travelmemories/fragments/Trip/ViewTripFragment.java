@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.hardygtw.travelmemories.SQLDatabaseSingleton;
 import com.hardygtw.travelmemories.activity.MainActivity;
 import com.hardygtw.travelmemories.R;
+import com.hardygtw.travelmemories.model.Trip;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,12 +42,13 @@ public class ViewTripFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment let me watch the video
         View rootView = inflater.inflate(R.layout.tab_list,container, false);
-        String title = "Trip x";
+
         actionBar = getActivity().getActionBar();
         actionBar.setDisplayShowCustomEnabled(false);
 
         trip_id = getArguments().getInt("TRIP_ID");
-
+        Trip trip = SQLDatabaseSingleton.getInstance(getActivity()).getTripDetails(trip_id);
+        String title = trip.getTripName();
         ((MainActivity)getActivity()).getDrawerToggle().setDrawerIndicatorEnabled(false);
         mTabHost = (FragmentTabHost)rootView.findViewById(android.R.id.tabhost);
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.tabFrameLayout);
