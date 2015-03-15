@@ -57,9 +57,6 @@ public class ViewTripGalleryFragment extends Fragment {
         customGridAdapter = new GridViewImageAdapter(getActivity(), R.layout.grid_view_item, SQLDatabaseSingleton.getInstance(getActivity()).getTravelGalleryPhotos());
         gridView.setAdapter(customGridAdapter);
 
-        trip_id = getArguments().getInt("TRIP_ID");
-        Trip trip = SQLDatabaseSingleton.getInstance(getActivity()).getTripDetails(trip_id);
-
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
