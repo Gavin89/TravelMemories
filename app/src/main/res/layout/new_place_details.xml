@@ -1,13 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/mLlayoutBottomButtons" >
+    android:orientation="vertical">
 
 
         <TextView
@@ -105,10 +100,8 @@
     <EditText
         android:id="@+id/place_notes"
         android:inputType="textMultiLine"
-        android:layout_below="@+id/place_notes_title"
         android:lines="2"
         android:minLines="3"
-        android:gravity="top|left"
         android:layout_marginTop="10dp"
         android:maxLines="3"
         android:layout_height="wrap_content"
@@ -139,14 +132,11 @@
         android:paddingLeft="10dp"
         android:layout_below="@+id/location_title"
         />
-    </RelativeLayout>
-
+    <!---->
     <LinearLayout
         android:id="@+id/mLlayoutBottomButtons"
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:layout_width="match_parent">
         <Button
             android:id="@+id/current_location"
             android:layout_width="match_parent"
@@ -178,4 +168,5 @@
             android:drawableLeft="@drawable/ic_action_nearby"
             android:layout_alignTop="@+id/capture_trip_photo"/>
     </LinearLayout>
-</RelativeLayout>
+
+</LinearLayout>
