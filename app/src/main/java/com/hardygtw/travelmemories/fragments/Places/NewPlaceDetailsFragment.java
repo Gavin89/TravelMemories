@@ -15,11 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.hardygtw.travelmemories.GPSTracker;
 import com.hardygtw.travelmemories.R;
 
 public class NewPlaceDetailsFragment extends Fragment {
 
     ImageView imgFavorite;
+
+    private GPSTracker gps;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

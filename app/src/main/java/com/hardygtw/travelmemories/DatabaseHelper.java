@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.hardygtw.travelmemories.model.Photo;
 import com.hardygtw.travelmemories.model.PlaceVisited;
 import com.hardygtw.travelmemories.model.Trip;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_NAME = "TravelMemories";
 
     private static final String TRIP_TABLE_NAME = "trips";
@@ -38,11 +39,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String PLACE_VISIT_TABLE_NAME = "place_visit";
-    public static final String COL_PLACE_NAME = "placeName";
-    public static final String COL_PLACE_ADDRESS = "address";
-    public static final String COL_PLACE_LONGITUDE = "longitude";
-    public static final String COL_PLACE_LATITUDE = "latitude";
     public static final String COL_PLACE_VISIT_ID = "place_visit_id";
+    public static final String COL_PLACE_VISIT_NAME = "placeName";
+    public static final String COL_PLACE_VISIT_ADDRESS = "address";
+    public static final String COL_PLACE_VISIT_LONGITUDE = "longitude";
+    public static final String COL_PLACE_VISIT_LATITUDE = "latitude";
     public static final String COL_PLACE_VISIT_DATE = "visit_date";
     public static final String COL_PLACE_VISIT_NOTES = "notes";
     public static final String COL_PLACE_VISIT_TRAVEL_COMPANIONS = "travel_companions";
@@ -79,10 +80,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_PLACE_VISIT_DATE + " TEXT NOT NULL,"
                 + COL_PLACE_VISIT_NOTES + " TEXT NOT NULL,"
                 + COL_PLACE_VISIT_TRAVEL_COMPANIONS + " TEXT NOT NULL,"
-                + COL_PLACE_NAME + " TEXT NOT NULL,"
-                + COL_PLACE_ADDRESS + "TEXT NOT NULL,"
-                + COL_PLACE_LATITUDE + "REAL,"
-                + COL_PLACE_LONGITUDE + "REAL,"
+                + COL_PLACE_VISIT_NAME + " TEXT NOT NULL,"
+                + COL_PLACE_VISIT_ADDRESS + " TEXT NOT NULL,"
+                + COL_PLACE_VISIT_LATITUDE + " REAL,"
+                + COL_PLACE_VISIT_LONGITUDE + " REAL,"
                 + COL_TRIP_ID_FOREIGN_PLACE_VISIT + " INTEGER" +
                 ")");
 
@@ -199,6 +200,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return trips;
     }
 
+
+    public ArrayList<PlaceVisited> getAllPlaceVisits()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<PlaceVisited> placesVisited = new ArrayList<PlaceVisited>();
+
+        Cursor cursor = db.rawQuery("SELECT * from " + PLACE_VISIT_TABLE_NAME, new String [] {});
+
+        if (cursor.moveToFirst())
+        {
+            do {
+                PlaceVisited placeVisited = new PlaceVisited();
+
+                placeVisited.setPlaceVisitId(cursor.getInt(cursor.getColumnIndex(COL_PLACE_VISIT_ID)));
+                placeVisited.setPlaceName(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_NAME)));
+                placeVisited.setAddress(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_ADDRESS)));
+                placeVisited.setDateVisited(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_DATE)));
+                placeVisited.setTravelCompanions(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_TRAVEL_COMPANIONS)));
+                placeVisited.setLocation(new LatLng(cursor.getDouble(cursor.getColumnIndex(COL_PLACE_VISIT_LATITUDE)),cursor.getDouble(cursor.getColumnIndex(COL_PLACE_VISIT_LONGITUDE))));
+                placeVisited.setPlacePhotos(new ArrayList<Photo>());
+
+                String notes = cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_NOTES));
+
+                if (notes == null) {
+                    placeVisited.setTravellerNotes("");
+                } else {
+                    placeVisited.setTravellerNotes(notes);
+                }
+
+                placesVisited.add(placeVisited);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return placesVisited;
+    }
+
+
     /*
 * //This method deletes a trip from the database.
 */
@@ -210,15 +250,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TRIP_TABLE_NAME + " WHERE " + COL_TRIP_ID + "=" + id + "");
     }
 
-
-
-    public long createPlaceVisit(String visitDate, String notes, String travelCompanions, long place_id, long trip_id)
+    public long createPlaceVisit(String placeName, String visitDate, String notes, String travelCompanions, LatLng location, String address, long trip_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
+        cv.put(COL_PLACE_VISIT_NAME, placeName);
         cv.put(COL_PLACE_VISIT_DATE, visitDate);
         cv.put(COL_PLACE_VISIT_NOTES, notes);
         cv.put(COL_PLACE_VISIT_TRAVEL_COMPANIONS, travelCompanions);
+        cv.put(COL_PLACE_VISIT_LATITUDE, location.latitude);
+        cv.put(COL_PLACE_VISIT_LONGITUDE,location.longitude);
+        cv.put(COL_PLACE_VISIT_ADDRESS, address);
 
         if (trip_id > 0) {
             cv.put(COL_TRIP_ID_FOREIGN_PLACE_VISIT, trip_id);

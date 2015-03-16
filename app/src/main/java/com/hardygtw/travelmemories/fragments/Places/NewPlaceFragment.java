@@ -3,6 +3,7 @@ package com.hardygtw.travelmemories.fragments.Places;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.wallet.Address;
 import com.hardygtw.travelmemories.DatePickerFragment;
 import com.hardygtw.travelmemories.GPSTracker;
 import com.hardygtw.travelmemories.SQLDatabaseSingleton;
@@ -36,10 +38,12 @@ import com.hardygtw.travelmemories.activity.MainActivity;
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.fragments.Nearby.NearbyFragment;
 
+import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 
-public class NewPlaceFragment extends Fragment {
+public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
 
     private ActionBar actionBar;
     private TextView placeVisited;
@@ -48,6 +52,8 @@ public class NewPlaceFragment extends Fragment {
     private TextView textView;
     private GPSTracker gps;
     private TextView placeNotes;
+    private String address;
+    private TextView location;
     private SupportMapFragment fragment;
     public static LatLng LOCATION = null;
 
@@ -61,11 +67,13 @@ public class NewPlaceFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.new_place_details,container, false);
 
+        address = "";
         textView = (TextView) rootView.findViewById(R.id.mapLoadingText);
         placeVisited = (TextView) rootView.findViewById(R.id.place_name);
         dateVisited = (Button) rootView.findViewById(R.id.dateVisited);
         companions = (TextView)rootView.findViewById(R.id.companion_name);
-      //  placeNotes = (TextView) rootView.findViewById(R.id.place_notes);
+        placeNotes = (TextView) rootView.findViewById(R.id.place_notes);
+        location = (TextView) rootView.findViewById(R.id.location);
         setDateVisited(rootView);
         addButtonListener(rootView);
         gps = new GPSTracker(getActivity());
@@ -125,10 +133,10 @@ public class NewPlaceFragment extends Fragment {
                 break;
             case R.id.add_accept:
 
-                if(placeVisited.getText().toString().equals("") || dateVisited.getText().toString().equals("")){
+                if(location == null || address.equals("") || placeVisited.getText().toString().equals("") || dateVisited.getText().toString().equals("") || companions.getText().toString().equals("")){
                     Toast.makeText(getActivity(), "You must fill in all the fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    //SQLDatabaseSingleton.getInstance(getActivity()).createPlaceVisit(placeVisited.getText().toString(), dateVisited.getText().toString(), placeNotes.getText().toString());
+                    SQLDatabaseSingleton.getInstance(getActivity()).createPlaceVisit(placeVisited.getText().toString(), dateVisited.getText().toString(), placeNotes.getText().toString(), companions.getText().toString(), NewPlaceFragment.LOCATION, address, 0);
                     ((MainActivity)getActivity()).goBackFragment();
                     Toast.makeText(getActivity(),"Place Created",Toast.LENGTH_SHORT).show();
                 }
@@ -163,7 +171,7 @@ public class NewPlaceFragment extends Fragment {
             //Default location set to London
             LOCATION = new LatLng(51.5008, 0.1247);
         }
-       // new LongOperation(this).execute("");
+        new LongOperation(this).execute("");
     }
 
 
@@ -184,64 +192,103 @@ public class NewPlaceFragment extends Fragment {
 
 
     }
-//
-//    private class LongOperation extends AsyncTask<String, Void, Boolean> {
-//
-//        //ProgressDialog progressDialog;
-//        NewPlaceFragment placeFragment;
-//
-//
-//        public LongOperation(NewPlaceFragment placeFragment) {
-//
-//            this.placeFragment = placeFragment;
-//        }
 
-//        @Override
-//        protected Boolean doInBackground(String... params) {
-//
-//            try {
-//                FragmentManager fm = getChildFragmentManager();
-//                fragment = (SupportMapFragment) fm.findFragmentById(R.id.place_map);
-//                if (fragment == null) {
-//                    fragment = SupportMapFragment.newInstance(new GoogleMapOptions().zOrderOnTop(true));
-//                    fm.beginTransaction().replace(R.id.place_map, fragment).commit();
-//                    fragment.getMap().setMyLocationEnabled(true);
-//                    fragment.getMap().setIndoorEnabled(true);
-//                }
-//
-//                return true;
-//
-//            } catch (Exception e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//                return false;
-//            }
-//        }
+    private class LongOperation extends AsyncTask<String, Void, Boolean> {
 
-//        @Override
-//        protected void onPostExecute(final Boolean success) {
-//            // Update UI here
-//            //progressDialog.dismiss();
-//            textView.setVisibility(View.GONE);
-//            fragment.getMapAsync(placeFragment);
-//        }
-//    }
+        //ProgressDialog progressDialog;
+        NewPlaceFragment placeFragment;
 
-//    @Override
-//    public void onMapReady(GoogleMap map) {
-//
-//        map.addMarker(new MarkerOptions().position(NewPlaceFragment.LOCATION));
-//
-//        // Construct a CameraPosition focusing on Mountain View and animate the camera to that position.
-//        CameraPosition cameraPosition = new CameraPosition.Builder()
-//                .target(NewPlaceFragment.LOCATION)      // Sets the center of the map to COLOSSEUM
-//                .zoom(10)                   // Sets the zoom
-//                        //.bearing(90)                // Sets the orientation of the camera to east
-//                        //.tilt(30)                   // Sets the tilt of the camera to 30 degrees
-//                .build();                   // Creates a CameraPosition from the builder
-//        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-//
-//    }
+
+        public LongOperation(NewPlaceFragment placeFragment) {
+
+            this.placeFragment = placeFragment;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+
+            try {
+                FragmentManager fm = getChildFragmentManager();
+                fragment = (SupportMapFragment) fm.findFragmentById(R.id.place_map);
+                if (fragment == null) {
+                    fragment = SupportMapFragment.newInstance(new GoogleMapOptions().zOrderOnTop(true));
+                    fm.beginTransaction().replace(R.id.place_map, fragment).commit();
+                }
+
+                return true;
+
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            // Update UI here
+            //progressDialog.dismiss();
+            textView.setVisibility(View.GONE);
+            fragment.getMapAsync(placeFragment);
+        }
+    }
+
+    @Override
+    public void onMapReady(final GoogleMap map) {
+
+        map.setMyLocationEnabled(true);
+        map.setIndoorEnabled(true);
+
+        if (NewPlaceFragment.LOCATION == null) {
+            NewPlaceFragment.LOCATION = new LatLng(0,0);
+        }
+
+        map.addMarker(new MarkerOptions().position(NewPlaceFragment.LOCATION));
+
+        Geocoder geoCoder = new Geocoder(getActivity());
+        List<android.location.Address> matches = null;
+        try {
+            matches = geoCoder.getFromLocation(NewPlaceFragment.LOCATION.latitude, NewPlaceFragment.LOCATION.longitude, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        android.location.Address bestMatch = (matches.isEmpty() ? null : matches.get(0));
+        if (bestMatch != null) {
+            location.setText(bestMatch.getAddressLine(0) + ", " + bestMatch.getLocality() + ", " + bestMatch.getCountryName());
+            address = bestMatch.getAddressLine(0) + ", " + bestMatch.getLocality() + ", " + bestMatch.getCountryName();
+        }
+
+        // Construct a CameraPosition focusing on Mountain View and animate the camera to that position.
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(NewPlaceFragment.LOCATION)      // Sets the center of the map to COLOSSEUM
+                .zoom(10)                   // Sets the zoom
+                        //.bearing(90)                // Sets the orientation of the camera to east
+                        //.tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                .build();                   // Creates a CameraPosition from the builder
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+                map.clear();
+                map.addMarker(new MarkerOptions().position(latLng));
+                NewPlaceFragment.LOCATION = latLng;
+
+                Geocoder geoCoder = new Geocoder(getActivity());
+                List<android.location.Address> matches = null;
+                try {
+                    matches = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                android.location.Address bestMatch = (matches.isEmpty() ? null : matches.get(0));
+                location.setText(bestMatch.getAddressLine(0)+", " + bestMatch.getLocality() + ", " + bestMatch.getCountryName());
+                address = bestMatch.getAddressLine(0)+", " + bestMatch.getLocality() + ", " + bestMatch.getCountryName();
+            }
+        });
+
+    }
 
 
 }

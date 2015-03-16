@@ -1,10 +1,31 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_gravity="center"
+    android:layout_above="@+id/mLlayoutBottomButtons"
+    card_view:cardPreventCornerOverlap="true"
+    card_view:cardElevation="4dp"
+    card_view:cardCornerRadius="4dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_above="@+id/mLlayoutBottomButtons" >
+
+        <LinearLayout
+                android:id="@+id/place_add"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
         <TextView
             android:id="@+id/info_text"
             android:layout_width="match_parent"
@@ -18,17 +39,16 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true" />
 
-
         <TextView
-    android:id="@+id/place_name_title"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Place name: "
-    android:layout_marginTop="40dp"
-    android:paddingLeft="10dp"
-    android:textSize="15dp"
-    android:drawableLeft="@drawable/ic_new_place"
-    android:textStyle="bold"/>
+            android:id="@+id/place_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Place name: "
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:textSize="15dp"
+            android:drawableLeft="@drawable/ic_new_place"
+            android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/place_name"
@@ -100,10 +120,10 @@
     <EditText
         android:id="@+id/place_notes"
         android:inputType="textMultiLine"
-        android:lines="2"
-        android:minLines="3"
+        android:lines="1"
+        android:minLines="2"
         android:layout_marginTop="10dp"
-        android:maxLines="3"
+        android:maxLines="2"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:scrollbars="vertical"
@@ -132,41 +152,27 @@
         android:paddingLeft="10dp"
         android:layout_below="@+id/location_title"
         />
+      </LinearLayout>
+
+       <RelativeLayout
+                    android:id="@+id/place_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_below="@+id/place_add"
+                    android:background="#d3d3d3" >
+                    <TextView
+                        android:id="@+id/mapLoadingText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="Map loading..." />
+        </RelativeLayout>
+
+
+
+
+      </RelativeLayout>
+    </ScrollView>
     <!---->
-    <LinearLayout
-        android:id="@+id/mLlayoutBottomButtons"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-        <Button
-            android:id="@+id/current_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Current Location"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/photo_selector"
-            android:layout_alignParentLeft="true"
-            android:layout_gravity="bottom"
-            android:drawableLeft="@drawable/ic_action_current"
-            />
 
-        <FrameLayout
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="#dddddd">
-        </FrameLayout>
-
-        <Button
-            android:id="@+id/nearby_places"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/photo_selector"
-            android:textColor="#FFFFFF"
-            android:text="Nearby Places"
-            android:layout_gravity="bottom"
-            android:drawableLeft="@drawable/ic_action_nearby"
-            android:layout_alignTop="@+id/capture_trip_photo"/>
-    </LinearLayout>
-
-</LinearLayout>
+</android.support.v7.widget.CardView>
