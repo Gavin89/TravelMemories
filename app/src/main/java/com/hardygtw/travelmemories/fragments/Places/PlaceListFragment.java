@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.maps.MapFragment;
 import com.hardygtw.travelmemories.R;
+import com.hardygtw.travelmemories.SQLDatabaseSingleton;
 import com.hardygtw.travelmemories.adapters.PlacesAdapter;
 import com.hardygtw.travelmemories.adapters.TripAdapter;
 import com.hardygtw.travelmemories.fragments.Places.NewPlaceFragment;
@@ -45,7 +46,7 @@ public class PlaceListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new PlacesAdapter(getTestData(),getFragmentManager());
+        mAdapter = new PlacesAdapter(SQLDatabaseSingleton.getInstance(getActivity()).getAllPlaceVisits(),getFragmentManager());
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;

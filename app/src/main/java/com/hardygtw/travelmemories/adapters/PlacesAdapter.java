@@ -1,5 +1,6 @@
 package com.hardygtw.travelmemories.adapters;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,15 +14,18 @@ import android.widget.TextView;
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.fragments.Places.ViewPlaceFragment;
 import com.hardygtw.travelmemories.fragments.Trip.ViewTripFragment;
+import com.hardygtw.travelmemories.model.PlaceVisited;
+
+import java.util.ArrayList;
 
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewHolder> {
-    private String[] mDataset;
+    private ArrayList<PlaceVisited> myDataset;
     private FragmentManager fm;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public PlacesAdapter(String[] myDataset, FragmentManager fm) {
+    public PlacesAdapter(ArrayList<PlaceVisited> myDataset, FragmentManager fm) {
 
-        mDataset = myDataset;
+        this.myDataset = myDataset;
         this.fm = fm;
     }
 
@@ -39,10 +43,10 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(PlaceViewHolder holder, int position) {
+    public void onBindViewHolder(PlaceViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset[position]);
+        holder.mTextView.setText(myDataset.get(position).getPlaceName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +56,10 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
                 FragmentTransaction ft = fm.beginTransaction();
 
                 fragment = new ViewPlaceFragment();
+
+                Bundle bundle = new Bundle(1);
+                bundle.putInt("PLACE_VISIT_ID", myDataset.get(position).getPlaceVisitId());
+                fragment.setArguments(bundle);
 
                 ft.replace(R.id.frame_container, fragment, "VIEW_PLACES_FRAGMENT");
                 ft.addToBackStack(null);
@@ -64,7 +72,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return myDataset.size();
     }
 
     // Provide a reference to the views for each data item
