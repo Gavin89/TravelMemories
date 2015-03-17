@@ -12,6 +12,7 @@ package com.hardygtw.travelmemories.fragments.Trip;
         import android.view.ViewGroup;
         import android.support.v4.app.Fragment;
         import com.hardygtw.travelmemories.R;
+        import com.hardygtw.travelmemories.SQLDatabaseSingleton;
         import com.hardygtw.travelmemories.adapters.PlacesAdapter;
         import com.hardygtw.travelmemories.adapters.TripPlacesAdapter;
         import com.hardygtw.travelmemories.fragments.Places.NewPlaceFragment;
@@ -53,7 +54,7 @@ public class ViewTripPlacesFragment extends Fragment implements View.OnClickList
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new TripPlacesAdapter(getTestData(), getParentFragment().getFragmentManager());
+        mAdapter = new TripPlacesAdapter(SQLDatabaseSingleton.getInstance(getActivity()).getAllPlaceVisits(),getFragmentManager());
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;

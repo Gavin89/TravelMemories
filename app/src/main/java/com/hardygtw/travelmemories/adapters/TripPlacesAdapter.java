@@ -1,5 +1,6 @@
 package com.hardygtw.travelmemories.adapters;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,23 +13,26 @@ import android.widget.TextView;
 
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.fragments.Places.ViewPlaceFragment;
-import com.hardygtw.travelmemories.fragments.Trip.ViewTripPlacesFragment;
+import com.hardygtw.travelmemories.fragments.Trip.ViewTripFragment;
+import com.hardygtw.travelmemories.model.PlaceVisited;
+
+import java.util.ArrayList;
 
 public class TripPlacesAdapter extends RecyclerView.Adapter<TripPlacesAdapter.PlaceViewHolder> {
-    private String[] mDataset;
+    private ArrayList<PlaceVisited> myDataset;
     private FragmentManager fm;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TripPlacesAdapter(String[] myDataset, FragmentManager fm) {
+    public TripPlacesAdapter(ArrayList<PlaceVisited> myDataset, FragmentManager fm) {
 
-        mDataset = myDataset;
+        this.myDataset = myDataset;
         this.fm = fm;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
     public TripPlacesAdapter.PlaceViewHolder onCreateViewHolder(ViewGroup parent,
-                                                         int viewType) {
+                                                            int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.view_trip_places, parent, false);
@@ -39,23 +43,27 @@ public class TripPlacesAdapter extends RecyclerView.Adapter<TripPlacesAdapter.Pl
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(PlaceViewHolder holder, int position) {
+    public void onBindViewHolder(PlaceViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset[position]);
+        holder.mTextViewPlace.setText(myDataset.get(position).getPlaceName());
+        holder.mTextViewLocation.setText(myDataset.get(position).getAddress());
+        holder.mTextViewDate.setText(myDataset.get(position).getDateVisited());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
                 Fragment fragment = null;
-
 
                 FragmentTransaction ft = fm.beginTransaction();
 
                 fragment = new ViewPlaceFragment();
 
-                ft.replace(R.id.frame_container, fragment, "VIEW_PLACE_FRAGMENT");
+                Bundle bundle = new Bundle(1);
+                bundle.putInt("PLACE_VISIT_ID", myDataset.get(position).getPlaceVisitId());
+                fragment.setArguments(bundle);
+
+                ft.replace(R.id.frame_container, fragment, "VIEW_PLACES_FRAGMENT");
                 ft.addToBackStack(null);
                 ft.commit();
 
@@ -66,7 +74,7 @@ public class TripPlacesAdapter extends RecyclerView.Adapter<TripPlacesAdapter.Pl
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return myDataset.size();
     }
 
     // Provide a reference to the views for each data item
@@ -74,12 +82,16 @@ public class TripPlacesAdapter extends RecyclerView.Adapter<TripPlacesAdapter.Pl
     // you provide access to all the views for a data item in a view holder
     public static class PlaceViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mTextView;
+        public TextView mTextViewPlace;
+        public TextView mTextViewLocation;
+        public TextView mTextViewDate;
         public ImageView mImageView;
 
         public PlaceViewHolder(View v) {
             super(v);
-            mTextView = (TextView) v.findViewById(R.id.info_text);
+            mTextViewPlace = (TextView) v.findViewById(R.id.place_name);
+            mTextViewLocation = (TextView) v.findViewById(R.id.location);
+            mTextViewDate = (TextView) v.findViewById(R.id.dateVisited);
             mImageView = (ImageView) v.findViewById(R.id.place_image);
         }
     }

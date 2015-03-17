@@ -233,6 +233,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public ArrayList<PlaceVisited> getAllTripPlaceVisits(int trip_id)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<PlaceVisited> placesVisited = new ArrayList<PlaceVisited>();
+
+        Cursor cursor = db.rawQuery("SELECT * from " + PLACE_VISIT_TABLE_NAME + " WHERE tripId=" + trip_id, new String [] {});
+
+        if (cursor.moveToFirst())
+        {
+            do {
+                PlaceVisited placeVisited = new PlaceVisited();
+
+                placeVisited.setPlaceVisitId(cursor.getInt(cursor.getColumnIndex(COL_PLACE_VISIT_ID)));
+                placeVisited.setPlaceName(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_NAME)));
+                placeVisited.setAddress(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_ADDRESS)));
+                placeVisited.setDateVisited(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_DATE)));
+                placeVisited.setTravelCompanions(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_TRAVEL_COMPANIONS)));
+                placeVisited.setLocation(new LatLng(cursor.getDouble(cursor.getColumnIndex(COL_PLACE_VISIT_LATITUDE)),cursor.getDouble(cursor.getColumnIndex(COL_PLACE_VISIT_LONGITUDE))));
+                placeVisited.setPlacePhotos(new ArrayList<Photo>());
+
+                String notes = cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_NOTES));
+
+                if (notes == null) {
+                    placeVisited.setTravellerNotes("");
+                } else {
+                    placeVisited.setTravellerNotes(notes);
+                }
+
+                placesVisited.add(placeVisited);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return placesVisited;
+    }
+
     public ArrayList<PlaceVisited> getAllPlaceVisits()
     {
         SQLiteDatabase db = this.getReadableDatabase();

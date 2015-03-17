@@ -19,6 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 import com.hardygtw.travelmemories.SQLDatabaseSingleton;
 import com.hardygtw.travelmemories.activity.MainActivity;
 import com.hardygtw.travelmemories.R;
@@ -31,6 +34,7 @@ public class ViewPlaceFragment extends Fragment {
     private ActionBar actionBar;
     private FragmentTabHost mTabHost;
     private int place_id;
+    private ShowcaseView sv;
 
     public ViewPlaceFragment() {
         // Required empty public constructor
@@ -137,6 +141,29 @@ public class ViewPlaceFragment extends Fragment {
                 sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+                break;
+            case R.id.help_icon:
+                sv =  new ShowcaseView.Builder(getActivity())
+                        .setTarget(new ActionItemTarget(getActivity(), R.id.remove_place))
+                        .setContentTitle("Delete Place")
+                        .setContentText("This allows you to remove the current place")
+                        .setStyle(R.style.CustomShowcaseTheme)
+                        .hideOnTouchOutside()
+                        .setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                sv.hide();
+                                new ShowcaseView.Builder(getActivity())
+                                        .setTarget(new ActionItemTarget(getActivity(), R.id.share_place))
+                                        .setContentTitle("Share Place")
+                                        .setContentText("You can share your place visited with your friends")
+                                        .hideOnTouchOutside()
+                                        .setStyle(R.style.CustomShowcaseTheme2)
+                                        .build();
+                            }
+                        })
+                        .build();
         }
         return super.onOptionsItemSelected(item);
     }

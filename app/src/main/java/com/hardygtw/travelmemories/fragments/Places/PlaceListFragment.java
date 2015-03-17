@@ -52,14 +52,6 @@ public class PlaceListFragment extends Fragment {
         return rootView;
     }
 
-    private String[] getTestData() {
-        String[] strings = new String[20];
-        for(int i =0; i < strings.length; i++) {
-            strings[i] = "Place " + i;
-        }
-        return strings;
-    }
-
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
