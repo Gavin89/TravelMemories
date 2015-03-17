@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 9;
     private static final String DATABASE_NAME = "TravelMemories";
 
     private static final String TRIP_TABLE_NAME = "trips";
@@ -161,6 +161,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return trip;
     }
 
+    public PlaceVisited getPlaceDetails(int place_visit_id) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        PlaceVisited place = new PlaceVisited();
+
+        Cursor cursor = db.rawQuery("SELECT * from " + PLACE_VISIT_TABLE_NAME + " WHERE place_visit_id=" + place_visit_id, new String [] {});
+
+        if (cursor.moveToFirst())
+        {
+            place.setPlaceVisitId(cursor.getInt(cursor.getColumnIndex(COL_PLACE_VISIT_ID)));
+            place.setPlaceName(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_NAME)));
+            place.setDateVisited(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_DATE)));
+            place.setAddress(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_ADDRESS)));
+            place.setTravelCompanions(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_TRAVEL_COMPANIONS)));
+            place.setPlacePhotos(new ArrayList<Photo>());
+
+            String notes = cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_NOTES));
+
+            if (notes == null) {
+                place.setTravellerNotes("");
+            } else {
+                place.setTravellerNotes(notes);
+            }
+        } else {
+            return null;
+        }
+
+        cursor.close();
+
+        return place;
+    }
+
     /**
      * //This method returns all trips from the database
      */
@@ -250,7 +282,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TRIP_TABLE_NAME + " WHERE " + COL_TRIP_ID + "=" + id + "");
     }
 
-    public long createPlaceVisit(String placeName, String visitDate, String notes, String travelCompanions, LatLng location, String address, long trip_id)
+    /*
+* //This method deletes a trip from the database.
+*/
+    public void deletePlace(long id)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String string = String.valueOf(id);
+        db.execSQL("DELETE FROM " + PLACE_VISIT_TABLE_NAME + " WHERE " + COL_PLACE_VISIT_ID + "=" + id + "");
+    }
+
+    public long createPlaceVisit(String placeName, String visitDate, String notes, String travelCompanions, LatLng location, String address, long place_id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -262,8 +305,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COL_PLACE_VISIT_LONGITUDE,location.longitude);
         cv.put(COL_PLACE_VISIT_ADDRESS, address);
 
-        if (trip_id > 0) {
-            cv.put(COL_TRIP_ID_FOREIGN_PLACE_VISIT, trip_id);
+        if (place_id > 0) {
+            cv.put(COL_TRIP_ID_FOREIGN_PLACE_VISIT, place_id);
         }
 
         return db.insert(PLACE_VISIT_TABLE_NAME, null, cv);

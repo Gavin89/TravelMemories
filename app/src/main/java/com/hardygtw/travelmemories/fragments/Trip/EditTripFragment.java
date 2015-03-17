@@ -2,7 +2,9 @@ package com.hardygtw.travelmemories.fragments.Trip;
 
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -105,13 +107,28 @@ public class EditTripFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_accept:
-                if (tripName.getText().toString().equals("") || startDate.getText().toString().equals("") || endDate.getText().toString().equals("")) {
-                    Toast.makeText(getActivity(), "Fields must not be empty", Toast.LENGTH_SHORT).show();
-                } else {
-                    SQLDatabaseSingleton.getInstance(getActivity()).updateTrip(trip_id, tripName.getText().toString(), startDate.getText().toString(), endDate.getText().toString(), editTripNotes.getText().toString());
-                    Toast.makeText(getActivity(), "Trip Updated", Toast.LENGTH_SHORT).show();
-                    ((MainActivity) getActivity()).goBackFragment();
-                }
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Edit entry")
+                        .setMessage("Are you sure you want to edit this trip?")
+                        .setMessage("Are you sure you want to edit this trip?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (tripName.getText().toString().equals("") || startDate.getText().toString().equals("") || endDate.getText().toString().equals("")) {
+                                    Toast.makeText(getActivity(), "Fields must not be empty", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    SQLDatabaseSingleton.getInstance(getActivity()).updateTrip(trip_id, tripName.getText().toString(), startDate.getText().toString(), endDate.getText().toString(), editTripNotes.getText().toString());
+                                    Toast.makeText(getActivity(), "Trip Updated", Toast.LENGTH_SHORT).show();
+                                    ((MainActivity) getActivity()).goBackFragment();
+                                }
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
                 break;
             case R.id.add_cancel:
                 ((MainActivity)getActivity()).goBackFragment();

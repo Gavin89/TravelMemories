@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -133,8 +134,11 @@ public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
                 break;
             case R.id.add_accept:
 
-                if(location == null || address.equals("") || placeVisited.getText().toString().equals("") || dateVisited.getText().toString().equals("") || companions.getText().toString().equals("")){
+                if(location == null || address.equals("") || placeVisited.getText().toString().equals("") || dateVisited.getText().toString().equals("")){
                     Toast.makeText(getActivity(), "You must fill in all the fields", Toast.LENGTH_SHORT).show();
+
+                    if( placeVisited.getText().toString().length() == 0 )
+                        placeVisited.setError( "Place name is required!" );
                 } else {
                     SQLDatabaseSingleton.getInstance(getActivity()).createPlaceVisit(placeVisited.getText().toString(), dateVisited.getText().toString(), placeNotes.getText().toString(), companions.getText().toString(), NewPlaceFragment.LOCATION, address, 0);
                     ((MainActivity)getActivity()).goBackFragment();

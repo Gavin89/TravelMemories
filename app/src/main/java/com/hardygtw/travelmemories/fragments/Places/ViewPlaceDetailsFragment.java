@@ -14,8 +14,12 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.hardygtw.travelmemories.R;
+import com.hardygtw.travelmemories.SQLDatabaseSingleton;
+import com.hardygtw.travelmemories.model.PlaceVisited;
+import com.hardygtw.travelmemories.model.Trip;
 
 public class ViewPlaceDetailsFragment extends Fragment {
 
@@ -27,6 +31,23 @@ public class ViewPlaceDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View rootView = inflater.inflate(R.layout.view_place_details, container, false);
+
+        int place_id = getArguments().getInt("PLACE_VISIT_ID");
+
+        TextView placeName = (TextView) rootView.findViewById(R.id.place_name);
+        TextView dateVisited = (TextView) rootView.findViewById(R.id.dateVisited);
+        TextView location = (TextView) rootView.findViewById(R.id.location);
+        TextView notes = (TextView) rootView.findViewById(R.id.place_notes);
+        TextView companions = (TextView) rootView.findViewById(R.id.companion_name);
+
+
+        PlaceVisited place = SQLDatabaseSingleton.getInstance(getActivity()).getPlaceDetails(place_id);
+
+        placeName.setText(place.getPlaceName());
+        dateVisited.setText(place.getDateVisited());
+        location.setText(place.getAddress());
+        notes.setText(place.getTravellerNotes());
+        companions.setText(place.getTravelCompanions());
         return rootView;
     }
 

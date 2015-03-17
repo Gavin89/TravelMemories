@@ -14,13 +14,13 @@ import android.widget.Toast;
 
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.SQLDatabaseSingleton;
-import com.hardygtw.travelmemories.adapters.GalleryAdapter;
+import com.hardygtw.travelmemories.adapters.GridViewImageAdapter;
 
 public class GalleryFragment extends Fragment {
 
 
     private GridView gridView;
-    private GalleryAdapter customGridAdapter;
+    private GridViewImageAdapter customGridAdapter;
 
     public GalleryFragment(){}
 
@@ -34,7 +34,7 @@ public class GalleryFragment extends Fragment {
 
         //gridView = (GridView) findViewById(R.id.gridView);
         gridView = (GridView)rootView.findViewById(R.id.gridView);
-        customGridAdapter = new GalleryAdapter(getActivity(), R.layout.grid_view_item, SQLDatabaseSingleton.getInstance(getActivity()).getTravelGalleryPhotos());
+        customGridAdapter = new GridViewImageAdapter(getActivity(), R.layout.grid_view_item, SQLDatabaseSingleton.getInstance(getActivity()).getTravelGalleryPhotos());
         gridView.setAdapter(customGridAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

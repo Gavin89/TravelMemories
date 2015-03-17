@@ -2,7 +2,9 @@ package com.hardygtw.travelmemories.fragments.Trip;
 
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -106,8 +108,22 @@ public class ViewTripFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.remove_trip:
-                SQLDatabaseSingleton.getInstance(getActivity()).deleteTrip(trip_id);
-                ((MainActivity)getActivity()).goBackFragment();
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Delete entry")
+                        .setMessage("Are you sure you want to delete this place?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                SQLDatabaseSingleton.getInstance(getActivity()).deleteTrip(trip_id);
+                                ((MainActivity)getActivity()).goBackFragment();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
                 break;
             case R.id.edit_trip:
                 android.support.v4.app.Fragment fragment = null;

@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -97,16 +99,40 @@
             android:scrollbars="vertical"
             android:textSize="15dp"
             android:paddingLeft="10dp"
-            android:hint="I really enjoyed going to x place"/>
+            android:hint="Add notes here"/>
+
+        <TextView
+            android:id="@+id/companion_name_title"
+            android:layout_below="@+id/place_notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Companion Name: "
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:textSize="15dp"
+            android:drawableLeft="@drawable/ic_user"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/companion_name"
+            android:layout_below="@+id/companion_name_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter name(s)"
+            android:layout_marginTop="10dp"
+            android:lines="1"
+            android:paddingLeft="10dp"
+            android:textSize="15dp"
+            />
 
         <TextView
             android:id="@+id/location_title"
-            android:layout_below="@+id/place_notes"
+            android:layout_below="@+id/companion_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Location: "
             android:paddingLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:textSize="15dp"
             android:drawableLeft="@drawable/ic_location"
             android:textStyle="bold"/>
@@ -123,4 +149,5 @@
             android:layout_below="@+id/location_title"
             />
     </RelativeLayout>
+</ScrollView>
 </RelativeLayout>

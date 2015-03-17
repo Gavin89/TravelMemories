@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.SQLDatabaseSingleton;
-import com.hardygtw.travelmemories.adapters.GalleryAdapter;
 import com.hardygtw.travelmemories.adapters.GridViewImageAdapter;
 import com.hardygtw.travelmemories.model.ImageItem;
 

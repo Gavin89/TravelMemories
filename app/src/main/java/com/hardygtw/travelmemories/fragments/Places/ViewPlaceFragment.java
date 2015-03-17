@@ -2,7 +2,9 @@ package com.hardygtw.travelmemories.fragments.Places;
 
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,14 +19,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.hardygtw.travelmemories.SQLDatabaseSingleton;
 import com.hardygtw.travelmemories.activity.MainActivity;
 import com.hardygtw.travelmemories.R;
+import com.hardygtw.travelmemories.model.PlaceVisited;
+import com.hardygtw.travelmemories.model.Trip;
 
 
 public class ViewPlaceFragment extends Fragment {
 
     private ActionBar actionBar;
     private FragmentTabHost mTabHost;
+    private int place_id;
 
     public ViewPlaceFragment() {
         // Required empty public constructor
@@ -36,23 +42,27 @@ public class ViewPlaceFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.tab_list,container, false);
-        String title = "Paris";
         actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.removeAllTabs();
+
+        place_id = getArguments().getInt("PLACE_VISIT_ID");
+        PlaceVisited place = SQLDatabaseSingleton.getInstance(getActivity()).getPlaceDetails(place_id);
+        String title = place.getPlaceName();
+
         ((MainActivity)getActivity()).getDrawerToggle().setDrawerIndicatorEnabled(false);
         mTabHost = (FragmentTabHost)rootView.findViewById(android.R.id.tabhost);
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.tabFrameLayout);
 
+        Bundle bundle = new Bundle(1);
+        bundle.putInt("PLACE_VISIT_ID", place_id);
+
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab1").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_details)),
-                ViewPlaceDetailsFragment.class, null);
+                ViewPlaceDetailsFragment.class, bundle);
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab2").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_gallery)),
                 ViewPlaceGalleryFragment.class, null);
-        mTabHost.addTab(
-                mTabHost.newTabSpec("tab3").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_companions)),
-                ViewPlaceCompanionsFragment.class, null);
         if (!title.equals("")) {
             actionBar.setTitle(title);
         }
@@ -88,6 +98,24 @@ public class ViewPlaceFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.remove_place:
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Delete entry")
+                        .setMessage("Are you sure you want to delete this place?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                 SQLDatabaseSingleton.getInstance(getActivity()).deletePlace(place_id);
+                                ((MainActivity)getActivity()).goBackFragment();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                break;
             case R.id.edit_place:
                 android.support.v4.app.Fragment fragment = null;
                 FragmentManager fm = getFragmentManager();

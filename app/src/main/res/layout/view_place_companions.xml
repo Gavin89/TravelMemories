@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Companions: "
-            android:textSize="25dp"
+            android:textSize="15dp"
             android:textStyle="bold"/>
 
         <TextView
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Dave"
-            android:textSize="25dp"
+            android:textSize="15dp"
             android:layout_marginLeft="30dp"
             />
 

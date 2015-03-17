@@ -114,6 +114,8 @@ public class NewTripFragment extends Fragment {
 
                     if(tripTitle.getText().toString().equals("") || startButton.getText().toString().equals("") || endButton.toString().equals("")){
                         Toast.makeText(getActivity(),"You must fill in all the fields",Toast.LENGTH_SHORT).show();
+                        if( tripTitle.getText().toString().length() == 0 )
+                            tripTitle.setError( "Trip name is required!" );
                     } else {
                         SQLDatabaseSingleton.getInstance(getActivity()).createTrip(tripTitle.getText().toString(), startButton.getText().toString(), endButton.getText().toString(), tripNotes.getText().toString());
                         ((MainActivity)getActivity()).goBackFragment();
