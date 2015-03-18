@@ -21,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
 import com.hardygtw.travelmemories.SQLDatabaseSingleton;
 import com.hardygtw.travelmemories.activity.MainActivity;
 import com.hardygtw.travelmemories.R;
@@ -34,6 +36,7 @@ public class ViewTripFragment extends Fragment {
     private ActionBar actionBar;
     private FragmentTabHost mTabHost;
     private int trip_id;
+    private ShowcaseView sv;
 
     public ViewTripFragment() {
         // Required empty public constructor
@@ -148,6 +151,28 @@ public class ViewTripFragment extends Fragment {
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
                 break;
+            case R.id.help_icon:
+                sv =  new ShowcaseView.Builder(getActivity())
+                        .setTarget(new ActionItemTarget(getActivity(), R.id.edit_trip))
+                        .setContentTitle("Edit Trip")
+                        .setContentText("This allows you to edit the current trip")
+                        .setStyle(R.style.CustomShowcaseTheme)
+                        .hideOnTouchOutside()
+                        .setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                sv.hide();
+                                new ShowcaseView.Builder(getActivity())
+                                        .setTarget(new ActionItemTarget(getActivity(), R.id.remove_trip))
+                                        .setContentTitle("Remove Trip")
+                                        .setContentText("Remove the current trip you are viewing")
+                                        .hideOnTouchOutside()
+                                        .setStyle(R.style.CustomShowcaseTheme2)
+                                        .build();
+                            }
+                        })
+                        .build();
         }
         return super.onOptionsItemSelected(item);
     }

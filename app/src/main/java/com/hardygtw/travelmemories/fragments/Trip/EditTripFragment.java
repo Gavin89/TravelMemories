@@ -106,10 +106,12 @@ public class EditTripFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.add_cancel:
+                ((MainActivity)getActivity()).goBackFragment();
+                break;
             case R.id.add_accept:
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Edit entry")
-                        .setMessage("Are you sure you want to edit this trip?")
+                        .setTitle("Edit Trip")
                         .setMessage("Are you sure you want to edit this trip?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -129,9 +131,6 @@ public class EditTripFragment extends Fragment {
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
-                break;
-            case R.id.add_cancel:
-                ((MainActivity)getActivity()).goBackFragment();
                 break;
         }
         return super.onOptionsItemSelected(item);

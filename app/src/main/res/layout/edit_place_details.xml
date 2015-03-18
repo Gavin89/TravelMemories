@@ -1,161 +1,167 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    >
+    android:layout_gravity="center"
+    android:layout_above="@+id/mLlayoutBottomButtons"
+    card_view:cardPreventCornerOverlap="true"
+    card_view:cardElevation="4dp"
+    card_view:cardCornerRadius="4dp">
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/mLlayoutBottomButtons" >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/place_name_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Place name: "
-            android:layout_marginTop="20dp"
-            android:paddingLeft="10dp"
-            android:textSize="15dp"
-            android:textStyle="bold"/>
-
-        <EditText
-            android:id="@+id/place_name"
-            android:layout_below="@+id/place_name_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Place name"
-            android:lines="1"
-            android:textSize="15dp"
-            />
-
-        <TextView
-            android:id="@+id/date_visited_title"
-            android:layout_below="@+id/place_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date Visited: "
-            android:layout_marginTop="20dp"
-            android:paddingLeft="10dp"
-            android:textSize="15dp"
-            android:textStyle="bold"/>
-
-        <Button
-            android:id="@+id/dateVisited"
-            android:layout_below="@+id/date_visited_title"
-            style="?android:attr/spinnerStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Date Visited"
-            android:textSize="15dp"
-            />
-
-
-        <TextView
-            android:id="@+id/companion_name_title"
-            android:layout_below="@+id/dateVisited"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Companion Name: "
-            android:layout_marginTop="20dp"
-            android:paddingLeft="10dp"
-            android:textSize="15dp"
-            android:textStyle="bold"/>
-
-        <EditText
-            android:id="@+id/companion_name"
-            android:layout_below="@+id/companion_name_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter name(s)"
-            android:lines="2"
-            android:textSize="15dp"
-            />
-
-        <TextView
-            android:id="@+id/place_notes_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Trip Notes: "
-            android:layout_below="@+id/companion_name"
-            android:layout_marginTop="20dp"
-            android:paddingLeft="10dp"
-            android:textSize="15dp"
-            android:textStyle="bold"/>
-
-        <EditText
-            android:id="@+id/trip_notes"
-            android:inputType="textMultiLine"
-            android:layout_below="@+id/place_notes_title"
-            android:lines="2"
-            android:minLines="3"
-            android:gravity="top|left"
-            android:maxLines="3"
-            android:layout_height="wrap_content"
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:scrollbars="vertical"
-            android:textSize="15dp"
-            android:hint="Add notes here..."/>
+            android:layout_height="fill_parent" >
 
-        <TextView
-            android:id="@+id/location_title"
-            android:layout_below="@+id/trip_notes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Location: "
-            android:layout_marginTop="20dp"
-            android:paddingLeft="10dp"
-            android:textSize="15dp"
-            android:textStyle="bold"/>
+            <LinearLayout
+                android:id="@+id/place_add"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+                <TextView
+                    android:id="@+id/info_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enter Place Details"
+                    android:layout_gravity="center|top"
+                    android:gravity="center|top"
+                    android:typeface="monospace"
+                    android:textSize="18dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true" />
 
-        <TextView
-            android:id="@+id/location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Select Current or Nearby"
-            android:lines="4"
-            android:textSize="15dp"
-            android:paddingLeft="10dp"
-            android:layout_below="@+id/location_title"
-            />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/place_name_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Place name: "
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:textSize="15dp"
+                    android:drawableLeft="@drawable/ic_new_place"
+                    android:textStyle="bold"/>
 
-    <LinearLayout
-        android:id="@+id/mLlayoutBottomButtons"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        >
-        <Button
-            android:id="@+id/capture_trip_photo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Current Location"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/photo_selector"
-            android:layout_alignParentLeft="true"
-            android:layout_gravity="bottom"
-            android:drawableLeft="@drawable/ic_action_current"
-            />
+                <EditText
+                    android:id="@+id/place_name"
+                    android:layout_below="@+id/place_name_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Place name"
+                    android:lines="1"
+                    android:textSize="15dp"
+                    />
 
-        <FrameLayout
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="#dddddd">
-        </FrameLayout>
+                <TextView
+                    android:id="@+id/date_visited_title"
+                    android:layout_below="@+id/place_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date Visited: "
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:textSize="15dp"
+                    android:drawableLeft="@drawable/ic_calendar"
+                    android:textStyle="bold"/>
 
-        <Button
-            android:id="@+id/add_trip_photo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/photo_selector"
-            android:textColor="#FFFFFF"
-            android:text="Nearby Places"
-            android:layout_gravity="bottom"
-            android:drawableLeft="@drawable/ic_action_nearby"
-            android:layout_alignTop="@+id/capture_trip_photo"/>
-    </LinearLayout>
-</RelativeLayout>
+                <Button
+                    android:id="@+id/dateVisited"
+                    android:layout_below="@+id/date_visited_title"
+                    style="?android:attr/spinnerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Date Visited"
+                    android:textSize="15dp"
+                    />
+
+
+                <TextView
+                    android:id="@+id/companion_name_title"
+                    android:layout_below="@+id/dateVisited"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Companion Name: "
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:textSize="15dp"
+                    android:drawableLeft="@drawable/ic_user"
+                    android:textStyle="bold"/>
+
+                <EditText
+                    android:id="@+id/companion_name"
+                    android:layout_below="@+id/companion_name_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter name(s)"
+                    android:lines="1"
+                    android:textSize="15dp"
+                    />
+
+                <TextView
+                    android:id="@+id/place_notes_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Place Notes: "
+                    android:layout_below="@+id/companion_name"
+                    android:paddingLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:textSize="15dp"
+                    android:drawableLeft="@drawable/ic_notes"
+                    android:textStyle="bold"/>
+
+                <EditText
+                    android:id="@+id/place_notes"
+                    android:inputType="textMultiLine"
+                    android:lines="1"
+                    android:minLines="2"
+                    android:layout_marginTop="10dp"
+                    android:maxLines="2"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:scrollbars="vertical"
+                    android:textSize="15dp"
+                    android:hint="Add notes here..."/>
+
+                <TextView
+                    android:id="@+id/location_title"
+                    android:layout_below="@+id/place_notes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location: "
+                    android:paddingLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:textSize="15dp"
+                    android:drawableLeft="@drawable/ic_location"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Select Current or Nearby"
+                    android:lines="1"
+                    android:textSize="15dp"
+                    android:paddingLeft="10dp"
+                    android:layout_below="@+id/location_title"
+                    />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/place_map"
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                android:layout_below="@+id/place_add"
+                android:background="#d3d3d3" >
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+    <!---->
+
+</android.support.v7.widget.CardView>

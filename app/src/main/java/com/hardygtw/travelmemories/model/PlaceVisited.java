@@ -2,13 +2,14 @@ package com.hardygtw.travelmemories.model;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by Gavin
  */
-public class PlaceVisited {
+public class PlaceVisited implements Serializable{
 
     private int placeVisitId;
     private String placeName;

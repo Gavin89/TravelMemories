@@ -2,6 +2,7 @@ package com.hardygtw.travelmemories.fragments.Trip;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -43,6 +45,8 @@ public class ViewTripGalleryFragment extends Fragment {
     static final int REQUEST_IMAGE_CAPTURE = 0;
     static final int REQUEST_IMAGE_GALLERY = 1;
     private int trip_id;
+    private Button trip_take_photo;
+    private Button trip_add_photo;
 
     String mCurrentPhotoPath;
 
@@ -56,14 +60,22 @@ public class ViewTripGalleryFragment extends Fragment {
         customGridAdapter = new GridViewImageAdapter(getActivity(), R.layout.grid_view_item, SQLDatabaseSingleton.getInstance(getActivity()).getTravelGalleryPhotos());
         gridView.setAdapter(customGridAdapter);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(getActivity(), position + "#Selected",
-                        Toast.LENGTH_SHORT).show();
+        trip_take_photo=(Button) rootView.findViewById(R.id.capture_trip_photo);
+        trip_take_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
             }
-
         });
+
+        trip_add_photo=(Button) rootView.findViewById(R.id.add_trip_photo);
+        trip_add_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchGalleryIntent();
+            }
+        });
+
         return rootView;
     }
     private ArrayList<ImageItem> getData() {
@@ -80,49 +92,51 @@ public class ViewTripGalleryFragment extends Fragment {
 
     }
 
-//    private void dispatchTakePictureIntent() {
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        // Ensure that there's a camera activity to handle the intent
-//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//            // Create the File where the photo should go
-//            File photoFile = null;
-//            try {
-//                photoFile = createImageFile();
-//            } catch (IOException ex) {
-//                // Error occurred while creating the File
-//
-//            }
-//            // Continue only if the File was successfully created
-//            if (photoFile != null) {
-//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-//                        Uri.fromFile(photoFile));
-//                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//            }
-//        }
-//    }
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
 
-//    private void dispatchGalleryIntent() {
-//        Intent galleryIntent = new Intent();
-//        galleryIntent.setType("image/*");
-//        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-//        // Ensure that there's a camera activity to handle the intent
-//        if (galleryIntent.resolveActivity(getPackageManager()) != null) {
-//            // Create the File where the photo should go
-//            File photoFile = null;
-//            try {
-//                photoFile = createImageFile();
-//            } catch (IOException ex) {
-//                // Error occurred while creating the File
-//
-//            }
-//            // Continue only if the File was successfully created
-//            if (photoFile != null) {
-//                galleryIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-//                        Uri.fromFile(photoFile));
-//                startActivityForResult(galleryIntent, REQUEST_IMAGE_GALLERY);
-//            }
-//        }
-//    }
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    private void dispatchGalleryIntent() {
+
+        Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i, REQUEST_IMAGE_GALLERY);
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        // Ensure that there's a camera activity to handle the intent
+        if (i.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                i.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(i, REQUEST_IMAGE_GALLERY);
+            }
+        }
+    }
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -140,4 +154,25 @@ public class ViewTripGalleryFragment extends Fragment {
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
-}
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
+            Photo photo = new Photo();
+            photo.setTitle("Photo");
+            photo.setPath(mCurrentPhotoPath);
+
+            SQLDatabaseSingleton.getInstance(getActivity()).createPhoto(photo.getPath(), 0, 0, photo.getTitle());
+        } else if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == getActivity().RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            if(columnIndex < 0)
+                return;
+            String picturePath = cursor.getString(columnIndex);}
+        }
+
+    }

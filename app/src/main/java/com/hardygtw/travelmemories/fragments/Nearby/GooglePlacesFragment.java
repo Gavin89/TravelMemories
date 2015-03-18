@@ -386,7 +386,7 @@ public class GooglePlacesFragment extends Fragment implements AdapterView.OnItem
                     }
 
                     if (placeList.size() == 0) {
-                        Toast.makeText(getActivity(), "Failed to find any venues.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Failed to find any places.", Toast.LENGTH_SHORT).show();
                     }
 
                     adapter = new CustomListSearchPlacesAdapter(getActivity(), placeList);
@@ -417,7 +417,7 @@ public class GooglePlacesFragment extends Fragment implements AdapterView.OnItem
 
         @Override
         protected void onPreExecute() {
-            dialog= ProgressDialog.show(getActivity(), "Loading", "Searching Venues...");
+            dialog= ProgressDialog.show(getActivity(), "Loading", "Searching Places...");
         }
 
         @Override
@@ -443,7 +443,7 @@ public class GooglePlacesFragment extends Fragment implements AdapterView.OnItem
                 }
 
                 if (placeList.size() == 0) {
-                    Toast.makeText(getActivity(), "Failed to find any venues.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Failed to find any places.", Toast.LENGTH_SHORT).show();
                 }
 
                 adapter = new CustomListSearchPlacesAdapter(getActivity(), placeList);
@@ -550,14 +550,6 @@ public class GooglePlacesFragment extends Fragment implements AdapterView.OnItem
         super.onAttach(activity);
     }
 
-    //@Override
-    /**public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater){
-     super.onCreateOptionsMenu(menu, menuInflater);
-     menuInflater.inflate(R.menu.search_places_menu, menu);
-
-     MenuItem searchItem = menu.findItem(R.id.search_icon);
-     searchItem.setEnabled(false);
-     }**/
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {

@@ -1,11 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:icon="@drawable/ic_action_discard" android:title="@string/action_settings"
+    <item android:icon="@drawable/ic_action_discard" android:title="@string/action_remove"
          android:id="@+id/remove_trip" android:showAsAction="always" />
-    <item android:icon="@drawable/ic_action_share" android:title="@string/action_settings"
-        android:id="@+id/share_trip" android:showAsAction="always" />
-    <item android:icon="@drawable/ic_action_edit" android:title="@string/action_settings"
+    <item android:icon="@drawable/ic_action_share" android:title="@string/action_share"
+        android:id="@+id/share_trip" android:showAsAction="ifRoom" />
+    <item android:icon="@drawable/ic_action_edit" android:title="@string/action_edit"
         android:id="@+id/edit_trip" android:showAsAction="always" />
+    <item android:icon="@drawable/ic_action_help" android:title="@string/action_help"
+        android:id="@+id/help_icon" android:showAsAction="ifRoom" />
 
 </menu>

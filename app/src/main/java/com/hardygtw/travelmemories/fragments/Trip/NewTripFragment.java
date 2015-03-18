@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
 import com.hardygtw.travelmemories.DatePickerFragment;
 import com.hardygtw.travelmemories.SQLDatabaseSingleton;
 import com.hardygtw.travelmemories.activity.MainActivity;
@@ -41,6 +43,7 @@ public class NewTripFragment extends Fragment {
     private Button startButton;
     private Button endButton;
     private TextView tripNotes;
+    private ShowcaseView sv;
 
 
     public NewTripFragment() {
@@ -109,7 +112,7 @@ public class NewTripFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.add_cancel:
                 ((MainActivity)getActivity()).goBackFragment();
-               return true;
+            break;
             case R.id.add_accept:
 
                     if(tripTitle.getText().toString().equals("") || startButton.getText().toString().equals("") || endButton.toString().equals("")){
@@ -121,6 +124,29 @@ public class NewTripFragment extends Fragment {
                         ((MainActivity)getActivity()).goBackFragment();
                         Toast.makeText(getActivity(),"Trip Created",Toast.LENGTH_SHORT).show();
                     }
+                break;
+            case R.id.help_icon:
+                sv =  new ShowcaseView.Builder(getActivity())
+                        .setTarget(new ActionItemTarget(getActivity(), R.id.add_accept))
+                        .setContentTitle("Accept new trip")
+                        .setContentText("Select this icon when you are happy with your new trip")
+                        .setStyle(R.style.CustomShowcaseTheme)
+                        .hideOnTouchOutside()
+                        .setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                sv.hide();
+                                new ShowcaseView.Builder(getActivity())
+                                        .setTarget(new ActionItemTarget(getActivity(), R.id.add_cancel))
+                                        .setContentTitle("Cancel new entry")
+                                        .setContentText("Select this icon if you have changed your mind about adding a new trip")
+                                        .hideOnTouchOutside()
+                                        .setStyle(R.style.CustomShowcaseTheme2)
+                                        .build();
+                            }
+                        })
+                        .build();
 
             return true;
 

@@ -142,7 +142,7 @@ public class MainActivity extends FragmentActivity{
 
             public void onDrawerOpened(View drawerView) {
                 getActionBar().setTitle(mDrawerTitle);
-                // calling onPrepareOptionsMenu() to hide action bar icons
+
                 invalidateOptionsMenu();
             }
         };
@@ -339,7 +339,7 @@ public class MainActivity extends FragmentActivity{
          * e.g View Places Map is after View Trip so try to remove it first, then break out the loop
          * Break out of the loop when the current displayed element is found so it is removed from screen
          */
-        Fragment[] currentFrags = new Fragment[8];
+        Fragment[] currentFrags = new Fragment[9];
 
         currentFrags[0] = getSupportFragmentManager().findFragmentByTag("MAP_FRAGMENT");
         currentFrags[1] = getSupportFragmentManager().findFragmentByTag("EDIT_TRIP_FRAGMENT");
@@ -349,6 +349,7 @@ public class MainActivity extends FragmentActivity{
         currentFrags[5] = getSupportFragmentManager().findFragmentByTag("NEW_TRIP_FRAGMENT");
         currentFrags[6] = getSupportFragmentManager().findFragmentByTag("NEW_PLACE_FRAGMENT");
         currentFrags[7] = getSupportFragmentManager().findFragmentByTag("EDIT_PLACE_FRAGMENT");
+        currentFrags[8] = getSupportFragmentManager().findFragmentByTag("VIEW_PLACES_MAP_FRAGMENT");
 
         boolean finished = false;
 
@@ -402,11 +403,13 @@ public class MainActivity extends FragmentActivity{
     }
 
     private void dispatchGalleryIntent() {
-        Intent galleryIntent = new Intent();
-        galleryIntent.setType("image/*");
-        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+        Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i, REQUEST_IMAGE_GALLERY);
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
         // Ensure that there's a camera activity to handle the intent
-        if (galleryIntent.resolveActivity(getPackageManager()) != null) {
+        if (i.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
             File photoFile = null;
             try {
@@ -417,12 +420,13 @@ public class MainActivity extends FragmentActivity{
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                galleryIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                i.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(photoFile));
-                startActivityForResult(galleryIntent, REQUEST_IMAGE_GALLERY);
+                startActivityForResult(i, REQUEST_IMAGE_GALLERY);
             }
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

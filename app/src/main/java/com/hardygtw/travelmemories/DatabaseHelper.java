@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "TravelMemories";
 
     private static final String TRIP_TABLE_NAME = "trips";
@@ -161,12 +161,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return trip;
     }
 
+    /**
+     * This method updates a place
+     */
+    public long updatePlace(int place_id, String place_name, String dateVisited, String companions, String notes, String location)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COL_PLACE_VISIT_NAME, place_name);
+        cv.put(COL_PLACE_VISIT_DATE, dateVisited);
+        cv.put(COL_PLACE_VISIT_TRAVEL_COMPANIONS, companions);
+        cv.put(COL_PLACE_VISIT_NOTES, notes);
+        cv.put(COL_PLACE_VISIT_ADDRESS, location);
+
+        return db.update(PLACE_VISIT_TABLE_NAME, cv, COL_PLACE_VISIT_ID + " = ?", new String[] { String.valueOf(place_id) });
+    }
+
     public PlaceVisited getPlaceDetails(int place_visit_id) {
 
         SQLiteDatabase db = this.getReadableDatabase();
         PlaceVisited place = new PlaceVisited();
 
-        Cursor cursor = db.rawQuery("SELECT * from " + PLACE_VISIT_TABLE_NAME + " WHERE place_visit_id=" + place_visit_id, new String [] {});
+        Cursor cursor = db.rawQuery("SELECT * from " + PLACE_VISIT_TABLE_NAME + " WHERE "+COL_PLACE_VISIT_ID+"=" + place_visit_id, new String [] {});
 
         if (cursor.moveToFirst())
         {
@@ -175,6 +191,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             place.setDateVisited(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_DATE)));
             place.setAddress(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_ADDRESS)));
             place.setTravelCompanions(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_TRAVEL_COMPANIONS)));
+            place.setLocation(new LatLng(cursor.getDouble(cursor.getColumnIndex(COL_PLACE_VISIT_LATITUDE)),cursor.getDouble(cursor.getColumnIndex(COL_PLACE_VISIT_LONGITUDE))));
             place.setPlacePhotos(new ArrayList<Photo>());
 
             String notes = cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_NOTES));
@@ -347,6 +364,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return db.insert(PLACE_VISIT_TABLE_NAME, null, cv);
+    }
+
+    public ArrayList<Photo> getPlacePhotos() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Photo> photos = new ArrayList<Photo>();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT ph.photoId, ph.photoSrc, ph.placeVisitId FROM photos ph "
+                , new String [] {});
+
+        if (cursor.moveToFirst())
+        {
+            do {
+                Photo photo = new Photo();
+
+                photo.setPhotoId(cursor.getInt(cursor.getColumnIndex(COL_PHOTO_ID)));
+                photo.setPath(cursor.getString(cursor.getColumnIndex(COL_PHOTO_SRC)));
+
+
+
+                int placeVisitID = cursor.getInt(cursor.getColumnIndex(COL_PLACE_VISIT_ID_FOREIGN_PHOTOS));
+
+                if (placeVisitID > 0) {
+                    photo.setPlaceId(cursor.getInt(cursor.getColumnIndex(COL_PLACE_VISIT_ID_FOREIGN_PHOTOS)));
+                } else {
+                    photo.setPlaceId(0);
+                }
+
+                //Set Photo tags here
+                photo.setTags("");
+
+                photos.add(photo);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return photos;
+
     }
 
 

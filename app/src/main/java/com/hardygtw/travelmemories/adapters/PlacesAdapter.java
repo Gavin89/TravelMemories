@@ -12,9 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hardygtw.travelmemories.R;
+import com.hardygtw.travelmemories.SQLDatabaseSingleton;
 import com.hardygtw.travelmemories.fragments.Places.ViewPlaceFragment;
 import com.hardygtw.travelmemories.fragments.Trip.ViewTripFragment;
 import com.hardygtw.travelmemories.model.PlaceVisited;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
@@ -47,6 +49,11 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mTextView.setText(myDataset.get(position).getPlaceName());
+        holder.mTextViewDate.setText(myDataset.get(position).getDateVisited());
+        ImageLoader imgLoader = ImageLoader.getInstance();
+//        pathtoImage = SQLDatabaseSingleton.getInstance().getPlacePhotos();
+//        imgLoader.loadImage(pathtoImage, holder.mImageView);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,12 +88,14 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     public static class PlaceViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
+        public TextView mTextViewDate;
         public ImageView mImageView;
 
         public PlaceViewHolder(View v) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.info_text);
             mImageView = (ImageView) v.findViewById(R.id.place_image);
+            mTextViewDate = (TextView) v.findViewById(R.id.dateVisited);
         }
     }
 }

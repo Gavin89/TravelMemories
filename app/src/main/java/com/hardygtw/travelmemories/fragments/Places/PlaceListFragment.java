@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
 import com.google.android.gms.maps.MapFragment;
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.SQLDatabaseSingleton;
@@ -28,6 +30,7 @@ public class PlaceListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private ShowcaseView sv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,13 +74,28 @@ public class PlaceListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.add_icon:
-                Fragment fragment = null;
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
 
-                Bundle bundle = new Bundle();
+        Fragment fragment = null;
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        Bundle bundle = new Bundle();
+
+        switch (item.getItemId()) {
+
+            case R.id.map:
+
+                bundle.putString("NEW_PLACE", "Create New Place");
+
+                fragment = new com.hardygtw.travelmemories.fragments.Nearby.MapFragment();
+                fragment.setArguments(bundle);
+
+                ft.replace(R.id.frame_container, fragment,"VIEW_PLACES_MAP_FRAGMENT");
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case R.id.add_icon:
+
                 bundle.putString("NEW_PLACE", "Create New Place");
 
                 fragment = new NewPlaceFragment();
@@ -87,6 +105,28 @@ public class PlaceListFragment extends Fragment {
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
+            case R.id.help_icon:
+                sv =  new ShowcaseView.Builder(getActivity())
+                        .setTarget(new ActionItemTarget(getActivity(), R.id.add_icon))
+                        .setContentTitle("Add new place")
+                        .setContentText("Select this icon when to add a new place visit")
+                        .setStyle(R.style.CustomShowcaseTheme)
+                        .hideOnTouchOutside()
+                        .setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                sv.hide();
+                                new ShowcaseView.Builder(getActivity())
+                                        .setTarget(new ActionItemTarget(getActivity(), R.id.map))
+                                        .setContentTitle("Places Visited Map")
+                                        .setContentText("Select this icon if you wish to see all your places visited on a map")
+                                        .hideOnTouchOutside()
+                                        .setStyle(R.style.CustomShowcaseTheme2)
+                                        .build();
+                            }
+                        })
+                        .build();
         }
         return super.onOptionsItemSelected(item);
     }

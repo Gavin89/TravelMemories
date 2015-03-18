@@ -69,7 +69,6 @@ public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
         View rootView = inflater.inflate(R.layout.new_place_details,container, false);
 
         address = "";
-        textView = (TextView) rootView.findViewById(R.id.mapLoadingText);
         placeVisited = (TextView) rootView.findViewById(R.id.place_name);
         dateVisited = (Button) rootView.findViewById(R.id.dateVisited);
         companions = (TextView)rootView.findViewById(R.id.companion_name);
@@ -134,7 +133,7 @@ public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
                 break;
             case R.id.add_accept:
 
-                if(location == null || address.equals("") || placeVisited.getText().toString().equals("") || dateVisited.getText().toString().equals("")){
+                if (LOCATION == null || address.equals("") || placeVisited.getText().toString().equals("") || dateVisited.getText().toString().equals("")){
                     Toast.makeText(getActivity(), "You must fill in all the fields", Toast.LENGTH_SHORT).show();
 
                     if( placeVisited.getText().toString().length() == 0 )
@@ -230,9 +229,7 @@ public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            // Update UI here
-            //progressDialog.dismiss();
-            textView.setVisibility(View.GONE);
+
             fragment.getMapAsync(placeFragment);
         }
     }

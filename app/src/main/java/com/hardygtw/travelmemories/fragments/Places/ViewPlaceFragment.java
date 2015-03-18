@@ -127,6 +127,7 @@ public class ViewPlaceFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("EDIT_PLACE", "Edit Place");
+                bundle.putInt("PLACE_VISIT_ID", place_id);
 
                 fragment = new EditPlaceFragment();
                 fragment.setArguments(bundle);
@@ -155,9 +156,9 @@ public class ViewPlaceFragment extends Fragment {
                             public void onClick(View v) {
                                 sv.hide();
                                 new ShowcaseView.Builder(getActivity())
-                                        .setTarget(new ActionItemTarget(getActivity(), R.id.share_place))
-                                        .setContentTitle("Share Place")
-                                        .setContentText("You can share your place visited with your friends")
+                                        .setTarget(new ActionItemTarget(getActivity(), R.id.edit_place))
+                                        .setContentTitle("Edit Place")
+                                        .setContentText("You can edit the current place")
                                         .hideOnTouchOutside()
                                         .setStyle(R.style.CustomShowcaseTheme2)
                                         .build();
