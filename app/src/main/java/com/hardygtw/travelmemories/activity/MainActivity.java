@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.SQLDatabaseSingleton;
+import com.hardygtw.travelmemories.ThemeUtils;
 import com.hardygtw.travelmemories.adapters.NavDrawerListAdapter;
 import com.hardygtw.travelmemories.fragments.Gallery.GalleryFragment;
 //import com.hardygtw.travelmemories.fragments.Nearby.GooglePlacesFragment;
@@ -49,7 +51,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class MainActivity extends FragmentActivity{
+public class MainActivity extends FragmentActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 0;
     static final int REQUEST_IMAGE_GALLERY = 1;
@@ -72,24 +74,19 @@ public class MainActivity extends FragmentActivity{
 
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
-
-
-
-    public void changeIconColours() {
-
-    }
+    public  ThemeUtils themeUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
+
+        themeUtils.onActivityCreateSetTheme(this);
+
         setContentView(R.layout.activity_main);
 
         ViewGroup topLayout = (ViewGroup) findViewById(R.id.frame_container);
         topLayout.requestTransparentRegion(topLayout);
-
-        changeIconColours();
 
         mTitle = mDrawerTitle = getTitle();
 
@@ -125,8 +122,10 @@ public class MainActivity extends FragmentActivity{
 
         // enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayShowHomeEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setDisplayShowCustomEnabled(false);
+        //getActionBar().setDisplayShowCustomEnabled(false);
+
 
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -173,6 +172,7 @@ public class MainActivity extends FragmentActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -187,12 +187,50 @@ public class MainActivity extends FragmentActivity{
         switch (item.getItemId()) {
             case android.R.id.home:
                 goBackFragment();
+                break;
             case R.id.action_settings:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+                String[] addPhoto = new String[]{"Purple", "Blue", "Orange", "Red"};
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+                dialogBuilder.setTitle("Select Theme Colour");
+
+                dialogBuilder.setItems(addPhoto, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        if (id == 0) {
+                            // Change theme to purple
+                            themeUtils.changeToTheme(MainActivity.this, themeUtils.PURPLE);
+                        }
+                        if (id == 1) {
+                            // Call gallery intent
+                            themeUtils.changeToTheme(MainActivity.this, themeUtils.BLUE);
+                        }
+                        if (id == 2) {
+                            // Call gallery intent
+                            themeUtils.changeToTheme(MainActivity.this, themeUtils.ORANGE);
+                        }
+                        if (id == 3) {
+                            // Call gallery intent
+                            themeUtils.changeToTheme(MainActivity.this, themeUtils.RED);
+                        }
+                    }
+                });
+
+                dialogBuilder.setNeutralButton("Cancel", new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = dialogBuilder.create();
+                dialog.show();
+                break;
         }
-    }
+            return super.onOptionsItemSelected(item);
+        }
+
 
     /**
      * Called when invalidateOptionsMenu() is triggered
@@ -201,7 +239,8 @@ public class MainActivity extends FragmentActivity{
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        MenuItem settings = menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        settings.setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
 

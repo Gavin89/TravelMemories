@@ -11,6 +11,7 @@
     <string name="action_remove">Remove</string>
     <string name="action_help">Help</string>
     <string name="action_edit">Edit</string>
+    <string name="action_theme">Theme</string>
 
     <!-- Trip Strings -->
     <string name="trip_details">Trip Details</string>
@@ -23,6 +24,11 @@
     <string name="place_details">Place Details</string>
     <string name="place_notes">Place Notes</string>
     <string name="place_gallery">Place Gallery</string>
+
+    <string name="Purple">Purple</string>
+    <string name="Red">Red</string>
+    <string name="Orange">Orange</string>
+    <string name="Blue">Blue</string>
 
 
     <string name="send_to">Send</string>

@@ -5,5 +5,7 @@
          android:id="@+id/add_accept" android:showAsAction="always" />
     <item android:icon="@drawable/ic_action_cancel" android:title="@string/decline"
         android:id="@+id/add_cancel" android:showAsAction="always" />
+    <item android:id="@+id/action_settings" android:title="@string/action_theme"
+        android:orderInCategory="100" app:showAsAction="ifRoom" />
 
 </menu>

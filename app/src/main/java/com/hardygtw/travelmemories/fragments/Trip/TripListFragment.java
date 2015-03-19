@@ -1,5 +1,7 @@
 package com.hardygtw.travelmemories.fragments.Trip;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,24 +17,28 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
 import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.SQLDatabaseSingleton;
+import com.hardygtw.travelmemories.ThemeUtils;
+import com.hardygtw.travelmemories.activity.MainActivity;
 import com.hardygtw.travelmemories.adapters.TripAdapter;
 import com.hardygtw.travelmemories.model.Trip;
 
 import java.util.ArrayList;
 
-public class TripListFragment extends Fragment implements GestureDetector.OnGestureListener {
+public class TripListFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private ShowcaseView sv;
     private RecyclerView.LayoutManager mLayoutManager;
     private static final String DEBUG_TAG = "Gestures";
+    public static ThemeUtils themeUtils;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,38 +126,15 @@ public class TripListFragment extends Fragment implements GestureDetector.OnGest
                             }
                         })
                         .build();
+                break;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
+    public void onClick(View v) {
 
-    @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-        Log.d(DEBUG_TAG, "onLongPress: " + e.toString());
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        return false;
     }
 }
