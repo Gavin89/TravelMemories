@@ -201,7 +201,7 @@ public class GooglePlacesFragment extends Fragment implements AdapterView.OnItem
         StrictMode.setThreadPolicy(policy);
 
         ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_USE_LOGO | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP); // what's mainly important here is DISPLAY_SHOW_CUSTOM. the rest is optional
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_USE_LOGO | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP);
         actionBar.setDisplayShowTitleEnabled(true);
 
         LayoutInflater inflaterActionBar = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -309,29 +309,6 @@ public class GooglePlacesFragment extends Fragment implements AdapterView.OnItem
         ft.commit();**/
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.map:
-                Fragment fragment = null;
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-
-                Bundle bundle = new Bundle();
-                bundle.putString("MAP", "Map");
-
-                fragment = new NearbyFragment();
-                fragment.setArguments(bundle);
-
-                ft.replace(R.id.frame_container, fragment,"MAP_FRAGMENT");
-                ft.addToBackStack(null);
-                ft.commit();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 
     private class GooglePlacesNearbySearch extends AsyncTask<View, Void, String> {
 
@@ -360,7 +337,7 @@ public class GooglePlacesFragment extends Fragment implements AdapterView.OnItem
             if (mFailLocation) {
                 return "FAIL";
             } else {
-                temp = makeCall("https://maps.googleapis.com/maps/api/place/search/json?location="+ latitude + "," + longitude + "&radius=100&sensor=true&key=" + GOOGLE_KEY );
+                temp = makeCall("https://maps.googleapis.com/maps/api/place/search/json?location="+ latitude + "," + longitude + "&radius=200&sensor=true&key=" + GOOGLE_KEY );
                 return "";
             }
         }
@@ -423,7 +400,7 @@ public class GooglePlacesFragment extends Fragment implements AdapterView.OnItem
         @Override
         protected String doInBackground(String... text) {
             // make Call to the url
-            temp = makeCall("https://maps.googleapis.com/maps/api/place/textsearch/json?&query="+ searchTerm + "&radius=100&sensor=true&key=" + GOOGLE_KEY);
+            temp = makeCall("https://maps.googleapis.com/maps/api/place/textsearch/json?&query="+ searchTerm + "&radius=200&sensor=true&key=" + GOOGLE_KEY);
 
             return "";
         }

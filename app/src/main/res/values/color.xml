@@ -24,7 +24,9 @@
     <color name="black">#000000</color>
     <color name="blue">#ff2b73ff</color>
     <color name="grey">#d3d3d3</color>
+    <color name="yellow">#EFD13C</color>
     <drawable name="item_background_selected">#ffffff</drawable>
+
 
 
 </resources>

@@ -146,17 +146,7 @@ public class GooglePlace implements Serializable {
         private String author_name;
         private int rating;
         private String text;
-                /*
-                 * For example, the JSON data looks like this...
-                 *
-                "author_name" : "Little Al",
-                "author_url" : "https://plus.google.com/103209428135026695692",
-                "language" : "en",
-                "rating" : 5,
-                "text" : "fabulous experience ..really enjoyed",
-                "time" : 1422356740
-                *
-                */
+
 
         public int getRating() { return rating; }
 

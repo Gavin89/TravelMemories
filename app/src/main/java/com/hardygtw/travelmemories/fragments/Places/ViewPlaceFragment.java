@@ -122,7 +122,7 @@ public class ViewPlaceFragment extends Fragment {
                 break;
             case R.id.edit_place:
                 android.support.v4.app.Fragment fragment = null;
-                FragmentManager fm = getFragmentManager();
+                FragmentManager fm = getParentFragment().getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
                 Bundle bundle = new Bundle();

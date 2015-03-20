@@ -11,6 +11,8 @@ package com.hardygtw.travelmemories.fragments.Trip;
         import android.view.View;
         import android.view.ViewGroup;
         import android.support.v4.app.Fragment;
+        import android.widget.Button;
+
         import com.hardygtw.travelmemories.R;
         import com.hardygtw.travelmemories.SQLDatabaseSingleton;
         import com.hardygtw.travelmemories.adapters.PlacesAdapter;
@@ -27,6 +29,7 @@ public class ViewTripPlacesFragment extends Fragment implements View.OnClickList
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private int trip_id;
+    private Button trip_add_place;
 
     public ViewTripPlacesFragment() {
         // Required empty public constructor
@@ -40,13 +43,30 @@ public class ViewTripPlacesFragment extends Fragment implements View.OnClickList
         // Inflate the layout for this fragment
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
-//        trip_id = getArguments().getInt("TRIP_ID");
+        trip_id = getParentFragment().getArguments().getInt("TRIP_ID");
 
+        trip_add_place=(Button) rootView.findViewById(R.id.new_trip_place);
+        trip_add_place.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Bundle bundle = new Bundle(2);
+               bundle.putString("NEW_PLACE", "Create_New_Place");
+               bundle.putInt("TRIP_ID", trip_id);
 
-      //  Bundle bundle = new Bundle(1);
-      //  bundle.putInt("TRIP_ID", trip_id);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
+               android.support.v4.app.Fragment fragment = null;
+               FragmentManager fm = getParentFragment().getFragmentManager();
+               FragmentTransaction ft = fm.beginTransaction();
+
+                fragment = new NewPlaceFragment();
+                fragment.setArguments(bundle);
+
+                ft.replace(R.id.frame_container, fragment,"NEW_TRIP_PLACE");
+                ft.addToBackStack(null);
+                ft.commit();
+
+            }
+        });
+
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
@@ -54,18 +74,10 @@ public class ViewTripPlacesFragment extends Fragment implements View.OnClickList
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new TripPlacesAdapter(SQLDatabaseSingleton.getInstance(getActivity()).getAllPlaceVisits(),getFragmentManager());
+        mAdapter = new TripPlacesAdapter(SQLDatabaseSingleton.getInstance(getActivity()).getAllTripPlaceVisits(trip_id),getParentFragment().getFragmentManager());
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
-    }
-
-    private String[] getTestData() {
-        String[] strings = new String[10];
-        for (int i = 0; i < strings.length; i++) {
-            strings[i] = "Place " + i;
-        }
-        return strings;
     }
 
     @Override
@@ -73,7 +85,7 @@ public class ViewTripPlacesFragment extends Fragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.new_trip_place:
                 android.support.v4.app.Fragment fragment = null;
-                FragmentManager fm = getFragmentManager();
+                FragmentManager fm = getParentFragment().getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
                 Bundle bundle = new Bundle(1);

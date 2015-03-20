@@ -37,7 +37,7 @@
                     android:id="@+id/place_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Trip Name: "
+                    android:text="Place Name: "
                     android:maxLines="1"
                     android:maxLength="20"
                     android:textSize="12sp"/>

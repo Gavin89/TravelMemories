@@ -3,6 +3,7 @@ package com.hardygtw.travelmemories.fragments.Places;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
     private TextView placeVisited;
     private Button dateVisited;
     private TextView companions;
+    private TextView locationTitle;
     private TextView textView;
     private GPSTracker gps;
     private TextView placeNotes;
@@ -57,6 +59,7 @@ public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
     private TextView location;
     private SupportMapFragment fragment;
     public static LatLng LOCATION = null;
+    private int trip_id = 0;
 
     public NewPlaceFragment() {
         // Required empty public constructor
@@ -74,6 +77,15 @@ public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
         companions = (TextView)rootView.findViewById(R.id.companion_name);
         placeNotes = (TextView) rootView.findViewById(R.id.place_notes);
         location = (TextView) rootView.findViewById(R.id.location);
+        locationTitle = (TextView) rootView.findViewById(R.id.location_title);
+
+        if (getArguments().get("TRIP_ID") != null) {
+            trip_id = getArguments().getInt("TRIP_ID");
+        }
+
+        String title = getArguments().getString("NEW_PLACE");
+
+        locationTitle.setHint("Tap on map to change location");
         setDateVisited(rootView);
         addButtonListener(rootView);
         gps = new GPSTracker(getActivity());
@@ -85,15 +97,16 @@ public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
         } else {
             gps.showSettingsAlert();
         }
-        String title = getArguments().getString("NEW_PLACE");
         actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.removeAllTabs();
         ((MainActivity)getActivity()).getDrawerToggle().setDrawerIndicatorEnabled(false);
+
         if (!title.equals("")) {
             actionBar.setTitle(title);
         }
-      //  new LongOperation(this).execute("");
+
+        //  new LongOperation(this).execute("");
         return rootView;
     }
 
@@ -139,7 +152,7 @@ public class NewPlaceFragment extends Fragment implements OnMapReadyCallback {
                     if( placeVisited.getText().toString().length() == 0 )
                         placeVisited.setError( "Place name is required!" );
                 } else {
-                    SQLDatabaseSingleton.getInstance(getActivity()).createPlaceVisit(placeVisited.getText().toString(), dateVisited.getText().toString(), placeNotes.getText().toString(), companions.getText().toString(), NewPlaceFragment.LOCATION, address, 0);
+                    SQLDatabaseSingleton.getInstance(getActivity()).createPlaceVisit(placeVisited.getText().toString(), dateVisited.getText().toString(), placeNotes.getText().toString(), companions.getText().toString(), NewPlaceFragment.LOCATION, address,/** This is 0 by default which means no trip id e.g. when we click it from the navbar **/ trip_id);
                     ((MainActivity)getActivity()).goBackFragment();
                     Toast.makeText(getActivity(),"Place Created",Toast.LENGTH_SHORT).show();
                 }
