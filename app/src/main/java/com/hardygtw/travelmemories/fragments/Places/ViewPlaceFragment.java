@@ -35,6 +35,7 @@ public class ViewPlaceFragment extends Fragment {
     private FragmentTabHost mTabHost;
     private int place_id;
     private ShowcaseView sv;
+    private PlaceVisited place;
 
     public ViewPlaceFragment() {
         // Required empty public constructor
@@ -50,8 +51,8 @@ public class ViewPlaceFragment extends Fragment {
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.removeAllTabs();
 
-        place_id = getArguments().getInt("PLACE_VISIT_ID");
-        PlaceVisited place = SQLDatabaseSingleton.getInstance(getActivity()).getPlaceDetails(place_id);
+        place_id = getArguments().getInt("PLACE_ID");
+        place = SQLDatabaseSingleton.getInstance(getActivity()).getPlaceDetails(place_id);
         String title = place.getPlaceName();
 
         ((MainActivity)getActivity()).getDrawerToggle().setDrawerIndicatorEnabled(false);
@@ -59,7 +60,7 @@ public class ViewPlaceFragment extends Fragment {
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.tabFrameLayout);
 
         Bundle bundle = new Bundle(1);
-        bundle.putInt("PLACE_VISIT_ID", place_id);
+        bundle.putInt("PLACE_ID", place_id);
 
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab1").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.place_details)),
@@ -122,12 +123,12 @@ public class ViewPlaceFragment extends Fragment {
                 break;
             case R.id.edit_place:
                 android.support.v4.app.Fragment fragment = null;
-                FragmentManager fm = getParentFragment().getFragmentManager();
+                FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
                 Bundle bundle = new Bundle();
                 bundle.putString("EDIT_PLACE", "Edit Place");
-                bundle.putInt("PLACE_VISIT_ID", place_id);
+                bundle.putInt("PLACE_ID", place_id);
 
                 fragment = new EditPlaceFragment();
                 fragment.setArguments(bundle);
@@ -138,8 +139,12 @@ public class ViewPlaceFragment extends Fragment {
                 break;
             case R.id.share_place:
                 Intent sendIntent = new Intent();
+
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+
+                String summary = "Place name: " + place.getPlaceName() + "\nPlace Address: " + place.getAddress() +  "\nDate Visited: " + place.getDateVisited()
+                        + "\nCompanions: " + place.getTravelCompanions() + "\nNotes: " + place.getTravellerNotes();
+                sendIntent.putExtra(Intent.EXTRA_TEXT, summary);
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
                 break;

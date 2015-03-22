@@ -36,6 +36,7 @@ public class ViewTripFragment extends Fragment {
     private ActionBar actionBar;
     private FragmentTabHost mTabHost;
     private int trip_id;
+    private Trip trip;
     private ShowcaseView sv;
 
     public ViewTripFragment() {
@@ -52,7 +53,7 @@ public class ViewTripFragment extends Fragment {
         actionBar.setDisplayShowCustomEnabled(false);
 
         trip_id = getArguments().getInt("TRIP_ID");
-        Trip trip = SQLDatabaseSingleton.getInstance(getActivity()).getTripDetails(trip_id);
+        trip = SQLDatabaseSingleton.getInstance(getActivity()).getTripDetails(trip_id);
         String title = trip.getTripName();
         ((MainActivity)getActivity()).getDrawerToggle().setDrawerIndicatorEnabled(false);
         mTabHost = (FragmentTabHost)rootView.findViewById(android.R.id.tabhost);
@@ -60,6 +61,7 @@ public class ViewTripFragment extends Fragment {
 
         Bundle bundle = new Bundle(1);
         bundle.putInt("TRIP_ID", trip_id);
+
 
         mTabHost.addTab(
                 mTabHost.newTabSpec("tab1").setIndicator(getTabIndicator(mTabHost.getContext(), R.string.trip_details)),
@@ -144,10 +146,14 @@ public class ViewTripFragment extends Fragment {
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
-            case R.id.share_place:
+            case R.id.share_trip:
                 Intent sendIntent = new Intent();
+
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+
+                String summary = "Trip name: " + trip.getTripName() + "\nStart date: " + trip.getStartDate() +  "\nEnd date: " + trip.getEndDate()
+                        + "\nNotes: " + trip.getNotes();
+                sendIntent.putExtra(Intent.EXTRA_TEXT, summary);
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
                 break;

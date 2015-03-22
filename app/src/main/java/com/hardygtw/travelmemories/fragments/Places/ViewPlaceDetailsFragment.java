@@ -32,7 +32,7 @@ public class ViewPlaceDetailsFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.view_place_details, container, false);
 
-        int place_id = getArguments().getInt("PLACE_VISIT_ID");
+        int place_id = getParentFragment().getArguments().getInt("PLACE_ID");
 
         TextView placeName = (TextView) rootView.findViewById(R.id.place_name);
         TextView dateVisited = (TextView) rootView.findViewById(R.id.dateVisited);

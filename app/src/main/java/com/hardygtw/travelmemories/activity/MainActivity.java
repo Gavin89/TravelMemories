@@ -1,12 +1,15 @@
 package com.hardygtw.travelmemories.activity;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,14 +32,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.hardygtw.travelmemories.R;
-import com.hardygtw.travelmemories.SQLDatabaseSingleton;
+
 import com.hardygtw.travelmemories.ThemeUtils;
 import com.hardygtw.travelmemories.adapters.NavDrawerListAdapter;
 import com.hardygtw.travelmemories.fragments.Gallery.GalleryFragment;
-//import com.hardygtw.travelmemories.fragments.Nearby.GooglePlacesFragment;
+import com.hardygtw.travelmemories.fragments.Gallery.PhotoFragment;
 import com.hardygtw.travelmemories.fragments.Nearby.GooglePlacesFragment;
-import com.hardygtw.travelmemories.fragments.Nearby.NearbyFragment;
-import com.hardygtw.travelmemories.fragments.Nearby.NearbyPlacesFragment;
+
 import com.hardygtw.travelmemories.fragments.Places.PlaceListFragment;
 import com.hardygtw.travelmemories.fragments.Trip.TripListFragment;
 import com.hardygtw.travelmemories.model.NavDrawerItem;
@@ -75,6 +77,9 @@ public class MainActivity extends FragmentActivity {
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
     public  ThemeUtils themeUtils;
+
+    private final static String CAPTURED_PHOTO_PATH_KEY = "mCurrentPhotoPath";
+    private final static String CAPTURED_PHOTO_URI_KEY = "mCapturedImageURI";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,6 +270,7 @@ public class MainActivity extends FragmentActivity {
                 fragment = new GalleryFragment();
                 break;
             case 4:
+
                 String[] addPhoto=new String[]{ "Camera" , "Gallery" };
                 AlertDialog.Builder dialogBuilder=new AlertDialog.Builder(this);
 
@@ -284,8 +290,6 @@ public class MainActivity extends FragmentActivity {
                         }
                     }
                 });
-
-
                 dialogBuilder.setNeutralButton("Cancel",new android.content.DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -378,19 +382,19 @@ public class MainActivity extends FragmentActivity {
          * e.g View Places Map is after View Trip so try to remove it first, then break out the loop
          * Break out of the loop when the current displayed element is found so it is removed from screen
          */
-        Fragment[] currentFrags = new Fragment[10];
+        Fragment[] currentFrags = new Fragment[11];
 
         currentFrags[0] = getSupportFragmentManager().findFragmentByTag("MAP_FRAGMENT");
         currentFrags[1] = getSupportFragmentManager().findFragmentByTag("EDIT_TRIP_FRAGMENT");
-        currentFrags[2] = getSupportFragmentManager().findFragmentByTag("VIEW_PLACES_FRAGMENT");
-        currentFrags[3] = getSupportFragmentManager().findFragmentByTag("VIEW_PLACE_FRAGMENT");
-        currentFrags[4] = getSupportFragmentManager().findFragmentByTag("NEW_TRIP_PLACE");
-        currentFrags[5] = getSupportFragmentManager().findFragmentByTag("VIEW_TRIP_FRAGMENT");
-        currentFrags[6] = getSupportFragmentManager().findFragmentByTag("NEW_PLACE_FRAGMENT");
-        currentFrags[7] = getSupportFragmentManager().findFragmentByTag("NEW_TRIP_FRAGMENT");
-        currentFrags[8] = getSupportFragmentManager().findFragmentByTag("EDIT_PLACE_FRAGMENT");
-        currentFrags[9] = getSupportFragmentManager().findFragmentByTag("VIEW_PLACES_MAP_FRAGMENT");
-
+        currentFrags[2] = getSupportFragmentManager().findFragmentByTag("PHOTO_FRAGMENT");
+        currentFrags[3] = getSupportFragmentManager().findFragmentByTag("VIEW_PLACES_FRAGMENT");
+        currentFrags[4] = getSupportFragmentManager().findFragmentByTag("VIEW_PLACE_FRAGMENT");
+        currentFrags[5] = getSupportFragmentManager().findFragmentByTag("NEW_TRIP_PLACE");
+        currentFrags[6] = getSupportFragmentManager().findFragmentByTag("VIEW_TRIP_FRAGMENT");
+        currentFrags[7] = getSupportFragmentManager().findFragmentByTag("NEW_PLACE_FRAGMENT");
+        currentFrags[8] = getSupportFragmentManager().findFragmentByTag("NEW_TRIP_FRAGMENT");
+        currentFrags[9] = getSupportFragmentManager().findFragmentByTag("EDIT_PLACE_FRAGMENT");
+        currentFrags[10] = getSupportFragmentManager().findFragmentByTag("VIEW_PLACES_MAP_FRAGMENT");
 
 
         boolean finished = false;
@@ -421,6 +425,10 @@ public class MainActivity extends FragmentActivity {
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
+    }
+
+    public void setCurrentPhotoPath(String path) {
+        this.mCurrentPhotoPath = path;
     }
 
     private void dispatchTakePictureIntent() {
@@ -469,19 +477,128 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+    }
+
+    public  String getRealPathFromURI(Uri contentUri, Activity activity) {
+        String res = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = activity.getContentResolver().query(contentUri, proj, null, null, null);
+        if(cursor.moveToFirst()){;
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Photo photo = new Photo();
-            photo.setTitle("Photo");
-            photo.setPath(mCurrentPhotoPath);
+            photo.setPath("file:///"+mCurrentPhotoPath);
 
-            SQLDatabaseSingleton.getInstance(this).createPhoto(photo.getPath(), 0, 0, photo.getTitle());
+            android.support.v4.app.Fragment fragment = null;
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("TAKE_PHOTO", "Take Photo");
+            bundle.putSerializable("PHOTO", photo);
+
+            fragment = new PhotoFragment();
+            fragment.setArguments(bundle);
+
+            ft.replace(R.id.frame_container, fragment,"PHOTO_FRAGMENT");
+            ft.addToBackStack(null);
+            ft.commitAllowingStateLoss();
+
         } else if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == RESULT_OK) {
             Photo photo = new Photo();
-            photo.setTitle("Photo");
-            photo.setPath(mCurrentPhotoPath);
+            String realPath = "file://"+getRealPathFromURI(data.getData(), this);
+            photo.setPath(realPath);
+            android.support.v4.app.Fragment fragment = null;
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("TAKE_PHOTO", "Take Photo");
+            bundle.putSerializable("PHOTO", photo);
+
+            fragment = new PhotoFragment();
+            fragment.setArguments(bundle);
+
+            ft.replace(R.id.frame_container, fragment,"PHOTO_FRAGMENT");
+            ft.addToBackStack(null);
+            ft.commitAllowingStateLoss();
+
+       }
+
+        Fragment target= null;
+
+        if (requestCode == 2 || requestCode == 3) {
+
+            target = getSupportFragmentManager().findFragmentByTag("VIEW_PLACES_FRAGMENT");
+
+            if (target != null) {
+
+
+                target = target.getChildFragmentManager().findFragmentByTag("tab2");
+
+                target.onActivityResult(requestCode, resultCode, data);
+            }
+
+        } else if (requestCode ==4 || requestCode ==5) {
+
+            target = getSupportFragmentManager().findFragmentByTag("VIEW_TRIP_FRAGMENT");
+            target = target.getChildFragmentManager().findFragmentByTag("tab2");
+
+            target.onActivityResult(requestCode, resultCode, data);
         }
+
     }
+
+    public void clearBackStack() {
+        FragmentManager manager = getSupportFragmentManager();
+        if (manager.getBackStackEntryCount() > 0) {
+            FragmentManager.BackStackEntry first = manager.getBackStackEntryAt(0);
+            manager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+        removeAllFragments();
+        getActionBar().setDisplayShowCustomEnabled(false);
+    }
+
+    public void removeAllFragments() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        Fragment[] currentFrags = new Fragment[11];
+
+        currentFrags[0] = getSupportFragmentManager().findFragmentByTag("MAP_FRAGMENT");
+        currentFrags[1] = getSupportFragmentManager().findFragmentByTag("EDIT_TRIP_FRAGMENT");
+        currentFrags[2] = getSupportFragmentManager().findFragmentByTag("PHOTO_FRAGMENT");
+        currentFrags[3] = getSupportFragmentManager().findFragmentByTag("VIEW_PLACES_FRAGMENT");
+        currentFrags[4] = getSupportFragmentManager().findFragmentByTag("VIEW_PLACE_FRAGMENT");
+        currentFrags[5] = getSupportFragmentManager().findFragmentByTag("NEW_TRIP_PLACE");
+        currentFrags[6] = getSupportFragmentManager().findFragmentByTag("VIEW_TRIP_FRAGMENT");
+        currentFrags[7] = getSupportFragmentManager().findFragmentByTag("NEW_PLACE_FRAGMENT");
+        currentFrags[8] = getSupportFragmentManager().findFragmentByTag("NEW_TRIP_FRAGMENT");
+        currentFrags[9] = getSupportFragmentManager().findFragmentByTag("EDIT_PLACE_FRAGMENT");
+        currentFrags[10] = getSupportFragmentManager().findFragmentByTag("VIEW_PLACES_MAP_FRAGMENT");
+
+
+        for (int i = 0; i < currentFrags.length; i++) {
+            if (currentFrags[i] != null) {
+                transaction.remove(currentFrags[i]);
+
+            }
+        }
+
+        transaction.commit();
+
+    }
+
 }

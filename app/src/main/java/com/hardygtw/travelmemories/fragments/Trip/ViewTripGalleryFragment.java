@@ -1,5 +1,8 @@
 package com.hardygtw.travelmemories.fragments.Trip;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -12,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +26,9 @@ import android.widget.Toast;
 
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.SQLDatabaseSingleton;
+import com.hardygtw.travelmemories.activity.MainActivity;
 import com.hardygtw.travelmemories.adapters.GridViewImageAdapter;
+import com.hardygtw.travelmemories.fragments.Gallery.PhotoFragment;
 import com.hardygtw.travelmemories.fragments.Places.NewPlaceFragment;
 import com.hardygtw.travelmemories.model.ImageItem;
 import com.hardygtw.travelmemories.model.Photo;
@@ -42,11 +48,12 @@ public class ViewTripGalleryFragment extends Fragment {
 
     private GridView gridView;
     private GridViewImageAdapter customGridAdapter;
-    static final int REQUEST_IMAGE_CAPTURE = 0;
-    static final int REQUEST_IMAGE_GALLERY = 1;
-    private int trip_id;
+    static final int REQUEST_IMAGE_CAPTURE = 4;
+    static final int REQUEST_IMAGE_GALLERY = 5;
     private Button trip_take_photo;
     private Button trip_add_photo;
+    private int trip_id = 0;
+    private int place_id = 0;
 
     String mCurrentPhotoPath;
 
@@ -57,8 +64,38 @@ public class ViewTripGalleryFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.view_trip_gallery, container, false);
         gridView = (GridView) rootView.findViewById(R.id.gridView);
-        customGridAdapter = new GridViewImageAdapter(getActivity(), R.layout.grid_view_item, SQLDatabaseSingleton.getInstance(getActivity()).getTravelGalleryPhotos());
+        trip_id = getParentFragment().getArguments().getInt("TRIP_ID");
+        customGridAdapter = new GridViewImageAdapter(getActivity(), R.layout.grid_view_item, SQLDatabaseSingleton.getInstance(getActivity()).getTripPhotos(trip_id));
         gridView.setAdapter(customGridAdapter);
+        gridView.setClickable(true);
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int position, long arg3) {
+                final Photo photo =  customGridAdapter.getItem(position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                builder.setItems(R.array.long_hold_item_list, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        final Uri selectedImage = Uri.fromFile(new File(photo.getPath()));
+                        Log.d("SELECT IMAGE URI", selectedImage.getPath());
+
+                        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+
+                        sharingIntent.setType("image/jpeg");
+                        sharingIntent.putExtra(Intent.EXTRA_STREAM, selectedImage);
+                        startActivity(Intent.createChooser(sharingIntent, "Share image using"));
+                    }
+                });
+
+                builder.create();
+
+                builder.show();
+
+                return true;
+            }
+        });
 
         trip_take_photo=(Button) rootView.findViewById(R.id.capture_trip_photo);
         trip_take_photo.setOnClickListener(new View.OnClickListener() {
@@ -76,20 +113,39 @@ public class ViewTripGalleryFragment extends Fragment {
             }
         });
 
-        return rootView;
-    }
-    private ArrayList<ImageItem> getData() {
-        final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
-        // retrieve String drawable array
-        TypedArray imgs = getResources().obtainTypedArray(R.array.image_ids);
-        for (int i = 0; i < imgs.length(); i++) {
-            Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),
-                    imgs.getResourceId(i, -1));
-            imageItems.add(new ImageItem(bitmap, "Image#" + i));
+        if (getParentFragment().getArguments().get("TRIP_ID") != null) {
+            trip_id = getParentFragment().getArguments().getInt("TRIP_ID");
         }
 
-        return imageItems;
 
+        if (getParentFragment().getArguments().get("PLACE_ID") != null) {
+            place_id = getArguments().getInt("PLACE_ID");
+        }
+        return rootView;
+    }
+
+    private void dispatchGalleryIntent() {
+
+        Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        // Ensure that there's a camera activity to handle the intent
+        if (i.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                i.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                getActivity().startActivityForResult(i, REQUEST_IMAGE_GALLERY);
+            }
+        }
     }
 
     private void dispatchTakePictureIntent() {
@@ -108,32 +164,7 @@ public class ViewTripGalleryFragment extends Fragment {
             if (photoFile != null) {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(photoFile));
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
-        }
-    }
-
-    private void dispatchGalleryIntent() {
-
-        Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(i, REQUEST_IMAGE_GALLERY);
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        // Ensure that there's a camera activity to handle the intent
-        if (i.resolveActivity(getActivity().getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                i.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
-                startActivityForResult(i, REQUEST_IMAGE_GALLERY);
+               getActivity().startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
     }
@@ -154,25 +185,64 @@ public class ViewTripGalleryFragment extends Fragment {
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
             Photo photo = new Photo();
-            photo.setTitle("Photo");
-            photo.setPath(mCurrentPhotoPath);
+            photo.setPath("file:///"+mCurrentPhotoPath);
 
-            SQLDatabaseSingleton.getInstance(getActivity()).createPhoto(photo.getPath(), 0, 0, photo.getTitle());
-        } else if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == getActivity().RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            if(columnIndex < 0)
-                return;
-            String picturePath = cursor.getString(columnIndex);}
+            android.support.v4.app.Fragment fragment = null;
+            FragmentManager fm = getParentFragment().getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("TAKE_PHOTO", "Take Photo");
+            bundle.putSerializable("PHOTO", photo);
+            bundle.putInt("TRIP_ID", trip_id);
+
+            fragment = new PhotoFragment();
+            fragment.setArguments(bundle);
+
+            ft.replace(R.id.frame_container, fragment,"PHOTO_FRAGMENT");
+            ft.addToBackStack(null);
+            ft.commitAllowingStateLoss();
+
+        } else if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == getActivity().RESULT_OK) {
+            Photo photo = new Photo();
+            String realPath = "file://"+getRealPathFromURI(data.getData(), getActivity());
+            photo.setPath(realPath);
+            android.support.v4.app.Fragment fragment = null;
+            FragmentManager fm = getParentFragment().getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("TAKE_PHOTO", "Take Photo");
+            bundle.putSerializable("PHOTO", photo);
+            bundle.putInt("TRIP_ID", trip_id);
+
+            fragment = new PhotoFragment();
+            fragment.setArguments(bundle);
+
+            ft.replace(R.id.frame_container, fragment,"PHOTO_FRAGMENT");
+
+            ft.commitAllowingStateLoss();
         }
 
+        super.onActivityResult(requestCode, resultCode, data);
     }
+
+
+    public  String getRealPathFromURI(Uri contentUri, Activity activity) {
+        String res = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = activity.getContentResolver().query(contentUri, proj, null, null, null);
+        if(cursor.moveToFirst()){;
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
+    }
+
+}

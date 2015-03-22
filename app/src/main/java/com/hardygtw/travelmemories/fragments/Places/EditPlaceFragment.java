@@ -71,7 +71,7 @@ public class EditPlaceFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.edit_place_details,container, false);
 
-        place_id = getArguments().getInt("PLACE_VISIT_ID");
+        place_id = getArguments().getInt("PLACE_ID");
         actionBar = getActivity().getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.removeAllTabs();

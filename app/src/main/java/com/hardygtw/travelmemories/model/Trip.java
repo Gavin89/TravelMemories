@@ -16,14 +16,6 @@ public class Trip {
     private String endDate;
     private String notes;
 
-//    public Trip(ArrayList<PlaceVisited> placesVisited, ArrayList<Photo> tripPhotos, String tripName, Date startDate, Date endDate, String notes) {
-//    	this.placesVisited = placesVisited;
-//        this.tripPhotos = tripPhotos;
-//        this.tripName = tripName;
-//        this.startDate = startDate;
-//        this.endDate = endDate;
-//        this.notes = notes;
-//    }
 
     public String getTripName() {
         return tripName;

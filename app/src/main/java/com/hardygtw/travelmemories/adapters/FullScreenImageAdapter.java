@@ -66,7 +66,7 @@ public class FullScreenImageAdapter extends PagerAdapter {
                 .build();
 
 
-        Bitmap loadedImage = ImageLoader.getInstance().loadImageSync("file:///" + item.getPath(), options);
+        Bitmap loadedImage = ImageLoader.getInstance().loadImageSync(item.getPath(), options);
         imageView.setImageBitmap(loadedImage);
 
         closeImageButton.setOnClickListener(new View.OnClickListener() {

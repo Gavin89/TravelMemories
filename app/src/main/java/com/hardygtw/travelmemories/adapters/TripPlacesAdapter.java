@@ -1,5 +1,6 @@
 package com.hardygtw.travelmemories.adapters;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,9 +15,15 @@ import android.widget.TextView;
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.fragments.Places.ViewPlaceFragment;
 import com.hardygtw.travelmemories.fragments.Trip.ViewTripFragment;
+import com.hardygtw.travelmemories.model.Photo;
 import com.hardygtw.travelmemories.model.PlaceVisited;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class TripPlacesAdapter extends RecyclerView.Adapter<TripPlacesAdapter.PlaceViewHolder> {
     private ArrayList<PlaceVisited> myDataset;
@@ -49,6 +56,27 @@ public class TripPlacesAdapter extends RecyclerView.Adapter<TripPlacesAdapter.Pl
         holder.mTextViewPlace.setText(myDataset.get(position).getPlaceName());
         holder.mTextViewLocation.setText(myDataset.get(position).getAddress());
         holder.mTextViewDate.setText(myDataset.get(position).getDateVisited());
+
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
+
+        PlaceVisited item = myDataset.get(position);
+        ImageSize targetSize = new ImageSize(160,150);
+
+        if (item.getPlacePhotos().size() > 0) {
+            Random r = new Random();
+            Photo photo = item.getPlacePhotos().get(r.nextInt(item.getPlacePhotos().size()));
+            Bitmap loadedImage = ImageLoader.getInstance().loadImageSync(photo.getPath(), targetSize, options);
+            holder.mImageView.setImageBitmap(loadedImage);
+
+        } else {
+            holder.mImageView.setImageResource(R.drawable.no_image);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +88,7 @@ public class TripPlacesAdapter extends RecyclerView.Adapter<TripPlacesAdapter.Pl
                 fragment = new ViewPlaceFragment();
 
                 Bundle bundle = new Bundle(1);
-                bundle.putInt("PLACE_VISIT_ID", myDataset.get(position).getPlaceVisitId());
+                bundle.putInt("PLACE_ID", myDataset.get(position).getPlaceVisitId());
                 fragment.setArguments(bundle);
 
                 ft.replace(R.id.frame_container, fragment, "VIEW_PLACES_FRAGMENT");

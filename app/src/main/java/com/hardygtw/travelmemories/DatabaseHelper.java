@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 10004;
     private static final String DATABASE_NAME = "TravelMemories";
 
     private static final String TRIP_TABLE_NAME = "trips";
@@ -39,7 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     private static final String PLACE_VISIT_TABLE_NAME = "place_visit";
-    public static final String COL_PLACE_VISIT_ID = "place_visit_id";
+    public static final String COL_PLACE_VISIT_ID = "placeVisitId";
     public static final String COL_PLACE_VISIT_NAME = "placeName";
     public static final String COL_PLACE_VISIT_ADDRESS = "address";
     public static final String COL_PLACE_VISIT_LONGITUDE = "longitude";
@@ -47,7 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_PLACE_VISIT_DATE = "visit_date";
     public static final String COL_PLACE_VISIT_NOTES = "notes";
     public static final String COL_PLACE_VISIT_TRAVEL_COMPANIONS = "travel_companions";
-    public static final String COL_TRIP_ID_FOREIGN_PLACE_VISIT = "trip_id";
+    public static final String COL_TRIP_ID_FOREIGN_PLACE_VISIT = "tripId";
 
     DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -143,9 +143,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             trip.setStartDate(cursor.getString(cursor.getColumnIndex(COL_TRIP_START_DATE)));
             trip.setEndDate(cursor.getString(cursor.getColumnIndex(COL_TRIP_END_DATE)));
             trip.setPlacesVisited(new ArrayList<PlaceVisited>());
-            trip.setTripPhotos(new ArrayList<Photo>());
 
             String notes = cursor.getString(cursor.getColumnIndex(COL_TRIP_NOTES));
+
+            ArrayList<Photo> tripPhotos = getTripPhotos(tripId);
+            trip.setTripPhotos(tripPhotos);
 
             if (notes == null) {
                 trip.setNotes("");
@@ -196,6 +198,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             String notes = cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_NOTES));
 
+            ArrayList<Photo> placePhotos = getPlacePhotos(place_visit_id);
+            place.setPlacePhotos(placePhotos);
+
             if (notes == null) {
                 place.setTravellerNotes("");
             } else {
@@ -232,6 +237,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 trip.setPlacesVisited(new ArrayList<PlaceVisited>());
                 trip.setTripPhotos(new ArrayList<Photo>());
 
+                ArrayList<Photo> tripPhotos = getTripPhotos(trip.getTripId());
+                trip.setTripPhotos(tripPhotos);
+
                 String notes = cursor.getString(cursor.getColumnIndex(COL_TRIP_NOTES));
 
                 if (notes == null) {
@@ -255,7 +263,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<PlaceVisited> placesVisited = new ArrayList<PlaceVisited>();
 
-        Cursor cursor = db.rawQuery("SELECT * from " + PLACE_VISIT_TABLE_NAME + " WHERE trip_id=" + trip_id, new String [] {});
+        Cursor cursor = db.rawQuery("SELECT * from " + PLACE_VISIT_TABLE_NAME + " WHERE tripId=" + trip_id, new String [] {});
 
         if (cursor.moveToFirst())
         {
@@ -269,6 +277,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 placeVisited.setTravelCompanions(cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_TRAVEL_COMPANIONS)));
                 placeVisited.setLocation(new LatLng(cursor.getDouble(cursor.getColumnIndex(COL_PLACE_VISIT_LATITUDE)),cursor.getDouble(cursor.getColumnIndex(COL_PLACE_VISIT_LONGITUDE))));
                 placeVisited.setPlacePhotos(new ArrayList<Photo>());
+
+                ArrayList<Photo> placePhotos = getPlacePhotos(placeVisited.getPlaceVisitId());
+                placeVisited.setPlacePhotos(placePhotos);
 
                 String notes = cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_NOTES));
 
@@ -307,6 +318,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 placeVisited.setLocation(new LatLng(cursor.getDouble(cursor.getColumnIndex(COL_PLACE_VISIT_LATITUDE)),cursor.getDouble(cursor.getColumnIndex(COL_PLACE_VISIT_LONGITUDE))));
                 placeVisited.setPlacePhotos(new ArrayList<Photo>());
 
+                ArrayList<Photo> placePhotos = getPlacePhotos(placeVisited.getPlaceVisitId());
+                placeVisited.setPlacePhotos(placePhotos);
                 String notes = cursor.getString(cursor.getColumnIndex(COL_PLACE_VISIT_NOTES));
 
                 if (notes == null) {
@@ -332,7 +345,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String string = String.valueOf(id);
         db.execSQL("DELETE FROM " + TRIP_TABLE_NAME + " WHERE " + COL_TRIP_ID + "=" + id + "");
     }
 
@@ -343,7 +355,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String string = String.valueOf(id);
         db.execSQL("DELETE FROM " + PLACE_VISIT_TABLE_NAME + " WHERE " + COL_PLACE_VISIT_ID + "=" + id + "");
     }
 
@@ -366,13 +377,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(PLACE_VISIT_TABLE_NAME, null, cv);
     }
 
-    public ArrayList<Photo> getPlacePhotos() {
+    public ArrayList<Photo> getPlacePhotos(int placeId) {
 
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Photo> photos = new ArrayList<Photo>();
 
         Cursor cursor = db.rawQuery(
-                "SELECT ph.photoId, ph.photoSrc, ph.placeVisitId FROM photos ph "
+                "SELECT ph.photoId, ph.photoSrc, ph.placeVisitId, ph.tags FROM photos ph WHERE placeVisitId=" +placeId + ""
                 , new String [] {});
 
         if (cursor.moveToFirst())
@@ -382,6 +393,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 photo.setPhotoId(cursor.getInt(cursor.getColumnIndex(COL_PHOTO_ID)));
                 photo.setPath(cursor.getString(cursor.getColumnIndex(COL_PHOTO_SRC)));
+                photo.setTags(cursor.getString(cursor.getColumnIndex(COL_TAGS)));
 
 
 
@@ -393,8 +405,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     photo.setPlaceId(0);
                 }
 
-                //Set Photo tags here
-                photo.setTags("");
 
                 photos.add(photo);
             } while (cursor.moveToNext());
@@ -406,11 +416,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public ArrayList<Photo> getTripPhotos(int tripId) {
 
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Photo> photos = new ArrayList<Photo>();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT ph.photoId, ph.photoSrc, ph.tripId, ph.tags FROM photos ph WHERE tripId=" + tripId + ""
+                , new String [] {});
+
+        if (cursor.moveToFirst())
+        {
+            do {
+                Photo photo = new Photo();
+
+                photo.setPhotoId(cursor.getInt(cursor.getColumnIndex(COL_PHOTO_ID)));
+                photo.setPath(cursor.getString(cursor.getColumnIndex(COL_PHOTO_SRC)));
+                photo.setTags(cursor.getString(cursor.getColumnIndex(COL_TAGS)));
+
+                int tripID = cursor.getInt(cursor.getColumnIndex(COL_TRIP_ID_FOREIGN_PHOTOS));
+
+                if (tripID > 0) {
+                    photo.setTripId(cursor.getInt(cursor.getColumnIndex(COL_TRIP_ID_FOREIGN_PHOTOS)));
+                } else {
+                    photo.setTripId(0);
+                }
+                photos.add(photo);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return photos;
+
+    }
+
+    public void deletePhoto(long id)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String string = String.valueOf(id);
+        db.execSQL("DELETE FROM " + PHOTOS_TABLE_NAME + " WHERE " + COL_PHOTO_ID + "=" + id + "");
+    }
 
     public long createPhoto(String photoSrc, long placeVisitID, long tripID, String tag)
     {
-       SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put(COL_PHOTO_SRC, photoSrc);
@@ -434,7 +485,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Photo> photos = new ArrayList<Photo>();
 
         Cursor cursor = db.rawQuery(
-                "SELECT ph.photoId, ph.photoSrc, ph.placeVisitId, ph.tripId FROM photos ph "
+                "SELECT ph.photoId, ph.photoSrc, ph.placeVisitId, ph.tripId, ph.tags FROM photos ph "
                 , new String [] {});
 
         if (cursor.moveToFirst())
@@ -444,7 +495,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 photo.setPhotoId(cursor.getInt(cursor.getColumnIndex(COL_PHOTO_ID)));
                 photo.setPath(cursor.getString(cursor.getColumnIndex(COL_PHOTO_SRC)));
-
+                photo.setTags(cursor.getString(cursor.getColumnIndex(COL_TAGS)));
 
 
                 int placeVisitID = cursor.getInt(cursor.getColumnIndex(COL_PLACE_VISIT_ID_FOREIGN_PHOTOS));
@@ -462,9 +513,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 } else {
                     photo.setTripId(0);
                 }
-
-                //Set Photo tags here
-                photo.setTags("");
 
                 photos.add(photo);
             } while (cursor.moveToNext());

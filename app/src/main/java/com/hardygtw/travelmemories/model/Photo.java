@@ -1,16 +1,16 @@
 package com.hardygtw.travelmemories.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Gavin
  */
-public class Photo {
+public class Photo implements Serializable{
     private int photoId;
     String tags;
     int tripId;
     int placeId;
-    String title;
     String path;
 
     public void setPath(String path) {
@@ -21,14 +21,6 @@ public class Photo {
     public String getPath() {
         return this.path;
     }
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
 
     public int getPlaceId() {
         return placeId;
@@ -56,7 +48,11 @@ public class Photo {
     }
 
 	public String getTags() {
-		return tags;
+        if (tags == null) {
+            return "";
+        } else {
+            return tags;
+        }
 	}
 
 	public void setTags(String tags) {

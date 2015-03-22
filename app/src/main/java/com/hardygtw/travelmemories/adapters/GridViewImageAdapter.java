@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.hardygtw.travelmemories.R;
 import com.hardygtw.travelmemories.activity.FullScreenImageActivity;
 import com.hardygtw.travelmemories.model.Photo;
+import com.hardygtw.travelmemories.views.SquareImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
@@ -48,6 +49,11 @@ public class GridViewImageAdapter extends ArrayAdapter<Photo> {
     }
 
     @Override
+    public Photo getItem(int location) {
+        return data.get(location);
+    }
+
+    @Override
     public int getCount() {
         return this.data.size();
     }
@@ -64,17 +70,16 @@ public class GridViewImageAdapter extends ArrayAdapter<Photo> {
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) _activity).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId, parent, false);
+            row = inflater.inflate(R.layout.grid_view_item, parent, false);
             holder = new ViewHolder();
-            holder.imageTitle = (TextView) row.findViewById(R.id.text);
-            holder.image = (ImageView) row.findViewById(R.id.image);
+            holder.imageTag = (TextView) row.findViewById(R.id.photo_tag);
+            holder.image = (SquareImageView) row.findViewById(R.id.image);
             row.setTag(holder);
         } else {
             holder = (ViewHolder) row.getTag();
         }
 
         Photo item = data.get(position);
-        holder.imageTitle.setText(item.getTitle());
 
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
@@ -85,8 +90,11 @@ public class GridViewImageAdapter extends ArrayAdapter<Photo> {
                 .build();
 
         ImageSize targetSize = new ImageSize(160,0150);
-        Bitmap loadedImage = ImageLoader.getInstance().loadImageSync("file:///" + item.getPath(), targetSize, options);
+        Bitmap loadedImage = ImageLoader.getInstance().loadImageSync(item.getPath(), targetSize, options);
         holder.image.setImageBitmap(loadedImage);
+
+
+        holder.imageTag.setText(item.getTags());
 
         row.setOnClickListener(new OnClickListener() {
             @Override
@@ -104,36 +112,8 @@ public class GridViewImageAdapter extends ArrayAdapter<Photo> {
     }
 
     static class ViewHolder {
-        TextView imageTitle;
-        ImageView image;
-    }
-
-    /*
-     * Resizing image size
-     */
-    public static Bitmap decodeFile(String filePath, int WIDTH, int HIGHT) {
-        try {
-
-            File f = new File(filePath);
-
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(new FileInputStream(f), null, o);
-
-            final int REQUIRED_WIDTH = WIDTH;
-            final int REQUIRED_HIGHT = HIGHT;
-            int scale = 1;
-            while (o.outWidth / scale / 2 >= REQUIRED_WIDTH
-                    && o.outHeight / scale / 2 >= REQUIRED_HIGHT)
-                scale *= 2;
-
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize = scale;
-            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+        TextView imageTag;
+        SquareImageView image;
     }
 
 }

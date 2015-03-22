@@ -41,6 +41,10 @@
         <item>Take Photo</item>
     </string-array>
 
+    <string-array name="long_hold_item_list">
+    <item>Share</item>
+    </string-array>
+
     <!-- Navigation Icons -->
     <array name="nav_drawer_icons">
         <item>@drawable/ic_trip</item>
